@@ -8,6 +8,6 @@
   },
   "scripts": {
     "bootstrap": "lerna clean && lerna bootstrap",
-    "start": "node ./scripts/inquirer.js"
+    "start": "node ./scripts/inquirer.js --dev"
   }
 }

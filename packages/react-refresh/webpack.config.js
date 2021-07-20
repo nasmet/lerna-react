@@ -2,7 +2,7 @@
  * @Description: webpack配置文件
  * @Author: 吴锦辉
  * @Date: 2021-07-20 13:55:02
- * @LastEditTime: 2021-07-20 14:19:29
+ * @LastEditTime: 2021-07-20 17:40:22
  */
 
 const ReactRefreshPlugin = require('@pmmmwh/react-refresh-webpack-plugin');
@@ -29,4 +29,7 @@ module.exports = {
       template: './src/index.html',
     }),
   ],
+  devServer: {
+    open: true,
+  },
 };
