@@ -2,33 +2,52 @@
  * @Description: 用户与命令行交互的工具学习
  * @Author: 吴锦辉
  * @Date: 2021-07-20 14:27:20
- * @LastEditTime: 2021-07-20 17:32:16
+ * @LastEditTime: 2021-08-04 11:31:14
  */
 
 const inquirer = require('inquirer');
 const shelljs = require('shelljs');
-const fs = require('fs');
-const path = require('path');
-const root = process.cwd();
+const { getAllPackageJsonInfo } = require('./package-operator');
 const devEnv = process.argv.includes('--dev');
 
-const projects = [
-  {
-    name: 'react-refresh',
-    value: 1,
-  },
-];
+function init() {
+  getAllPackageJsonInfo().then((res) => {
+    const packageInfos = res;
 
-inquirer
-  .prompt({
-    name: 'project',
-    message: '请选择项目',
-    type: 'list',
-    choices: projects,
-  })
-  .then((res) => {
-    /** 根据不同项目名和环境执行相应的shell命令 */
-    if (res.project === 1) {
-      shelljs.exec('cd ./packages/react-refresh &&  npm run start');
-    }
+    const projects = res.map((v, index) => ({
+      name: v.name,
+      value: index,
+    }));
+
+    inquirer
+      .prompt({
+        name: 'project',
+        message: '请选择项目',
+        type: 'list',
+        choices: projects,
+      })
+      .then((res) => {
+        const { name: packageName, scripts } = packageInfos[res.project];
+
+        const commands = Object.keys(scripts).map((v) => ({
+          name: v,
+          value: v,
+        }));
+
+        inquirer
+          .prompt({
+            name: 'command',
+            message: '请选择执行的命令',
+            type: 'list',
+            choices: commands,
+          })
+          .then((res) => {
+            shelljs.exec(
+              `cd ./packages/${packageName} &&  npm run ${res.command}`
+            );
+          });
+      });
   });
+}
+
+init();

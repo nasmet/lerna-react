@@ -1,10 +1,10 @@
 {
-  "name": "react-refresh",
+  "name": "react-context",
   "version": "1.0.0",
-  "description": "react热更新",
+  "description": "使用useContext和useReducer实现类似react-redux功能",
   "main": "index.js",
   "keywords": [
-    "react-refresh"
+    "react-context"
   ],
   "author": "jinhuiwu",
   "license": "ISC",
