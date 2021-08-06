@@ -1,0 +1,33 @@
+{
+  "name": "components",
+  "version": "1.0.0",
+  "description": "通用组件",
+  "main": "./build/index.js",
+  "scripts": {
+    "start": "webpack serve --env=development",
+    "build": "webpack --env=production"
+  },
+  "author": "jinhui wu",
+  "license": "ISC",
+  "dependencies": {
+    "antd": "^4.16.10",
+    "moment": "^2.29.1",
+    "react": "^16.13.1",
+    "react-dom": "^16.13.1"
+  },
+  "devDependencies": {
+    "@babel/core": "^7.10.5",
+    "@babel/preset-env": "^7.10.4",
+    "@babel/preset-react": "^7.10.4",
+    "@pmmmwh/react-refresh-webpack-plugin": "^0.4.1",
+    "babel-loader": "^8.1.0",
+    "html-webpack-plugin": "^4.3.0",
+    "react-refresh": "^0.8.3",
+    "speed-measure-webpack-plugin": "^1.5.0",
+    "webpack": "^5.48.0",
+    "webpack-cli": "^4.7.2",
+    "webpack-dev-server": "^3.11.2",
+    "webpack-merge": "^5.8.0",
+    "yargs": "^17.1.0"
+  }
+}

@@ -2,19 +2,22 @@
  * @Description: 应用文件
  * @Author: 吴锦辉
  * @Date: 2021-07-20 13:53:24
- * @LastEditTime: 2021-07-30 11:26:27
+ * @LastEditTime: 2021-08-06 12:12:44
  */
 
-import React, { Component, useState, useCallback, useEffect } from 'react';
+import React, { Component, useCallback } from 'react';
 import { createContextFactory } from './utils/context.js';
 import { addCount, reduceCount } from './actions/index.js';
 import { countReducer } from './reducers/index.js';
+import { LinkageDatePicker, ReactFromModule } from 'components';
 
 const { WrapContainer, useDispatch, useSelecor, connet } = createContextFactory(
   {
-    age: 123,
+    theme: 'yellow',
   }
 );
+
+console.log(ReactFromModule === React);
 
 function App() {
   return (
@@ -25,6 +28,7 @@ function App() {
       <AddCounter2 />
       <ReduceCounter2 />
       <Count2 />
+      {/* <LinkageDatePicker /> */}
     </>
   );
 }
