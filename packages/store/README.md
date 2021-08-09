@@ -1,14 +1,14 @@
-# description
+## description
 
 基于 useContext 和 useReducer 实现的状态管理
 
-# 使用说明
+## 使用说明
 
 createContextFactory 创建上下文工厂，返回一个对象，对象里面有 WrapContainer, useDispatch, useSelecor, connet 这个属性。具体使用参照范例。
 
 Store 是一个状态存储的类，创建 store 对象需要 reducer 参数，reducer 支持单个和多个，多个参数格式是 object 对象
 
-# 范例
+## 范例
 
 import React, { Component, useCallback } from 'react';
 import { createContextFactory, Store } from 'wjh-store';
