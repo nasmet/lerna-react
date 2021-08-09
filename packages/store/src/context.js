@@ -12,7 +12,7 @@ import React, { createContext, useReducer, useContext, useMemo } from 'react';
  * @param {object} initValue // context的静态初始数据
  * @return {*}
  */
-export function createContextFactory(initValue = {}) {
+export default function createContextFactory(initValue = {}) {
   const Context = createContext();
 
   function WrapContainer(WrapComponent, store) {

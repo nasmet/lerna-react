@@ -2,22 +2,18 @@
  * @Description: 应用文件
  * @Author: 吴锦辉
  * @Date: 2021-07-20 13:53:24
- * @LastEditTime: 2021-08-06 12:12:44
+ * @LastEditTime: 2021-08-09 11:05:23
  */
 
 import React, { Component, useCallback } from 'react';
-import { createContextFactory } from './utils/context.js';
-import { addCount, reduceCount } from './actions/index.js';
-import { countReducer } from './reducers/index.js';
-import { LinkageDatePicker, ReactFromModule } from 'components';
+// import { createContextFactory } from './utils/context.js';
+// import Store from './utils/store.js';
+import { createContextFactory, Store } from 'store';
+import reducers from './reducers/index.js';
+import { addCount, reduceCount, asyncReduceAction } from './actions/counter.js';
 
-const { WrapContainer, useDispatch, useSelecor, connet } = createContextFactory(
-  {
-    theme: 'yellow',
-  }
-);
-
-console.log(ReactFromModule === React);
+// const { WrapContainer, useDispatch, useSelecor, connet } =
+//   createContextFactory();
 
 function App() {
   return (
@@ -28,7 +24,6 @@ function App() {
       <AddCounter2 />
       <ReduceCounter2 />
       <Count2 />
-      {/* <LinkageDatePicker /> */}
     </>
   );
 }
@@ -53,7 +48,7 @@ function ReduceCounter() {
   const dispatch = useDispatch();
 
   const onReduce = useCallback(() => {
-    dispatch(reduceCount(1));
+    asyncReduceAction(dispatch)(1);
   }, [dispatch]);
 
   return (
@@ -66,9 +61,9 @@ function ReduceCounter() {
 }
 
 function Count() {
-  const count = useSelecor((state) => state.count);
+  const counter = useSelecor((state) => state.counter);
 
-  return <div>计数器：{count}</div>;
+  return <div>计数器：{counter.count}</div>;
 }
 
 class AddCounter1 extends Component {
@@ -120,15 +115,24 @@ const ReduceCounter2 = connet(null, (dispatch) => ({
 
 class Count1 extends Component {
   render() {
-    return <div>计数器：{this.props.count}</div>;
+    return <div>计数器：{this.props.counter.count}</div>;
   }
 }
 
 const Count2 = connet(
-  ({ count }) => ({
-    count,
+  ({ counter }) => ({
+    counter,
   }),
   null
 )(Count1);
 
-export default WrapContainer(App, countReducer);
+const store = new Store(reducers);
+
+const observer = (state, action) => {
+  console.log('执行的action: ', action);
+  console.log('改变后的state: ', state);
+};
+
+store.subscribe(observer);
+
+export default WrapContainer(App, store);
