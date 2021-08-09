@@ -6,14 +6,12 @@
  */
 
 import React, { Component, useCallback } from 'react';
-// import { createContextFactory } from './utils/context.js';
-// import Store from './utils/store.js';
-import { createContextFactory, Store } from 'store';
+import { createContextFactory, Store } from 'wjh-store';
 import reducers from './reducers/index.js';
 import { addCount, reduceCount, asyncReduceAction } from './actions/counter.js';
 
-// const { WrapContainer, useDispatch, useSelecor, connet } =
-//   createContextFactory();
+const { WrapContainer, useDispatch, useSelecor, connet } =
+  createContextFactory();
 
 function App() {
   return (

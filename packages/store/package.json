@@ -1,14 +1,14 @@
 {
-  "name": "store",
-  "version": "1.0.0",
+  "name": "wjh-store",
+  "version": "1.0.2",
   "description": "基于useContext和useReducer实现的状态管理",
   "main": "./build/index.js",
   "scripts": {
     "build": "webpack"
   },
   "peerDependencies": {
-    "react": ">=16.9.1",
-    "react-dom": ">=16.9.1"
+    "react": ">=16.8.0",
+    "react-dom": ">=16.8.0"
   },
   "devDependencies": {
     "@babel/core": "^7.10.5",
@@ -19,5 +19,6 @@
     "webpack-cli": "^4.7.2"
   },
   "author": "jinhui wu",
-  "license": "ISC"
+  "license": "ISC",
+  "dependencies": {}
 }

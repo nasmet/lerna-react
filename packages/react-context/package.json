@@ -13,7 +13,8 @@
   },
   "dependencies": {
     "react": "^16.13.1",
-    "react-dom": "^16.13.1"
+    "react-dom": "^16.13.1",
+    "wjh-store": "^1.0.1"
   },
   "devDependencies": {
     "@babel/core": "^7.10.5",

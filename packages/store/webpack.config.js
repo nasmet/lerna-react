@@ -2,14 +2,13 @@
  * @Description: webpack配置
  * @Author: 吴锦辉
  * @Date: 2021-08-09 10:38:45
- * @LastEditTime: 2021-08-09 11:13:20
+ * @LastEditTime: 2021-08-09 17:10:19
  */
 
 const path = require('path');
-const webpack = require('webpack');
 
 module.exports = {
-  entry: './src/index.js',
+  entry: './build/index.js',
   output: {
     path: path.resolve(__dirname, 'build'),
     filename: 'index.js',
@@ -18,6 +17,7 @@ module.exports = {
       type: 'umd',
     },
   },
+  mode: 'production',
   module: {
     rules: [
       {
@@ -33,7 +33,6 @@ module.exports = {
   resolve: {
     mainFiles: ['index.jsx', 'index.js'],
   },
-  mode: 'production',
   externals: {
     react: {
       commonjs: 'react',
@@ -48,4 +47,5 @@ module.exports = {
       root: 'ReactDOM',
     },
   },
+  externalsType: 'umd',
 };
