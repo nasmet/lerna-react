@@ -2,7 +2,7 @@
  * @Description: webpack生产配置文件
  * @Author: 吴锦辉
  * @Date: 2021-08-05 14:49:04
- * @LastEditTime: 2021-08-06 14:03:44
+ * @LastEditTime: 2021-08-10 10:27:59
  */
 
 const path = require('path');
@@ -30,6 +30,18 @@ module.exports = {
       commonjs2: 'react-dom',
       amd: 'react-dom',
       root: 'ReactDOM',
+    },
+    antd: {
+      commonjs: 'antd',
+      commonjs2: 'antd',
+      amd: 'antd',
+      root: 'antd',
+    },
+    moment: {
+      commonjs: 'moment',
+      commonjs2: 'moment',
+      amd: 'moment',
+      root: 'moment',
     },
   },
 };

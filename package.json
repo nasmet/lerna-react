@@ -8,7 +8,7 @@
   },
   "scripts": {
     "bootstrap": "lerna clean && lerna bootstrap",
-    "start": "node ./scripts/inquirer.js --dev"
+    "start": "node ./scripts/inquirer.js"
   },
   "dependencies": {}
 }

@@ -1,7 +1,7 @@
 {
-  "name": "components",
+  "name": "wjh-components",
   "version": "1.0.0",
-  "description": "通用组件",
+  "description": "基于antDesign封装的通用组件",
   "main": "./build/index.js",
   "scripts": {
     "start": "webpack serve --env=development",
@@ -9,13 +9,17 @@
   },
   "author": "jinhui wu",
   "license": "ISC",
-  "dependencies": {
-    "antd": "^4.16.10",
-    "moment": "^2.29.1",
-    "react": "^16.13.1",
-    "react-dom": "^16.13.1"
+  "peerDependencies": {
+    "react": ">=16.8.0",
+    "react-dom": ">=16.8.0",
+    "antd": ">=4.16.10",
+    "moment": ">=2.29.1"
   },
   "devDependencies": {
+    "react": "^16.13.1",
+    "react-dom": "^16.13.1",
+    "antd": "^4.16.10",
+    "moment": "^2.29.1",
     "@babel/core": "^7.10.5",
     "@babel/preset-env": "^7.10.4",
     "@babel/preset-react": "^7.10.4",

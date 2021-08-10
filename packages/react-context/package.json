@@ -1,32 +1,34 @@
 {
-  "name": "react-context",
-  "version": "1.0.1",
-  "description": "使用useContext和useReducer实现类似react-redux功能",
-  "main": "index.js",
-  "keywords": [
-    "react-context"
-  ],
-  "author": "jinhuiwu",
-  "license": "ISC",
-  "scripts": {
-    "start": "webpack-dev-server --hot"
-  },
-  "dependencies": {
-    "react": "^16.13.1",
-    "react-dom": "^16.13.1",
-    "wjh-store": "^1.0.5"
-  },
-  "devDependencies": {
-    "@babel/core": "^7.10.5",
-    "@babel/preset-env": "^7.10.4",
-    "@babel/preset-react": "^7.10.4",
-    "@pmmmwh/react-refresh-webpack-plugin": "^0.4.1",
-    "babel-loader": "^8.1.0",
-    "html-webpack-plugin": "^4.3.0",
-    "react-refresh": "^0.8.3",
-    "webpack": "^4.44.0",
-    "webpack-cli": "^3.3.12",
-    "webpack-dev-server": "^3.11.0"
-  },
-  "gitHead": "4265a352a67cf6fba1f9ae6f45f0fc1722a70b9d"
+	"name": "react-context",
+	"version": "1.0.1",
+	"description": "使用useContext和useReducer实现类似react-redux功能",
+	"main": "index.js",
+	"keywords": [
+		"react-context"
+	],
+	"author": "jinhuiwu",
+	"license": "ISC",
+	"scripts": {
+		"start": "webpack server --hot"
+	},
+	"dependencies": {
+		"react": "^16.13.1",
+		"react-dom": "^16.13.1",
+		"antd": "^4.16.10",
+		"moment": "^2.29.1",
+		"wjh-store": "^1.0.5",
+		"wjh-components": "^1.0.0"
+	},
+	"devDependencies": {
+		"@babel/core": "^7.10.5",
+		"@babel/preset-env": "^7.10.4",
+		"@babel/preset-react": "^7.10.4",
+		"@pmmmwh/react-refresh-webpack-plugin": "^0.4.1",
+		"babel-loader": "^8.1.0",
+		"html-webpack-plugin": "^4.3.0",
+		"react-refresh": "^0.8.3",
+		"webpack": "^5.48.0",
+		"webpack-cli": "^4.7.2",
+		"webpack-dev-server": "^3.11.2"
+	}
 }

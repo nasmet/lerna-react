@@ -2,13 +2,12 @@
  * @Description: 用户与命令行交互的工具学习
  * @Author: 吴锦辉
  * @Date: 2021-07-20 14:27:20
- * @LastEditTime: 2021-08-04 11:31:14
+ * @LastEditTime: 2021-08-10 09:37:28
  */
 
 const inquirer = require('inquirer');
 const shelljs = require('shelljs');
 const { getAllPackageJsonInfo } = require('./package-operator');
-const devEnv = process.argv.includes('--dev');
 
 function init() {
   getAllPackageJsonInfo().then((res) => {

@@ -2,7 +2,7 @@
  * @Description: webpack配置
  * @Author: 吴锦辉
  * @Date: 2021-08-09 10:38:45
- * @LastEditTime: 2021-08-09 17:26:31
+ * @LastEditTime: 2021-08-10 09:46:47
  */
 
 const path = require('path');
