@@ -2,7 +2,7 @@
  * @Description: 应用文件
  * @Author: 吴锦辉
  * @Date: 2021-07-20 13:53:24
- * @LastEditTime: 2021-08-10 15:05:13
+ * @LastEditTime: 2021-08-10 16:23:25
  */
 
 import React, { Component, useCallback } from 'react';
@@ -17,8 +17,6 @@ const { WrapContainer, useDispatch, useSelecor, connet } = createContextFactory(
 function App() {
   const [form] = Form.useForm();
 
-  console.log(form);
-
   return (
     <>
       <AddCounter />
@@ -27,7 +25,7 @@ function App() {
       <AddCounter2 />
       <ReduceCounter2 />
       <Count2 />
-      <Form>
+      <Form form={form}>
         <LinkageDatePicker form={form} />
       </Form>
     </>

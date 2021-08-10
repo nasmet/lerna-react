@@ -1,6 +1,5 @@
 lib/
 dist/
-build/
 .temp/
 .rn_temp/
 node_modules/
