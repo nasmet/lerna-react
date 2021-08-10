@@ -2,18 +2,23 @@
  * @Description: 应用文件
  * @Author: 吴锦辉
  * @Date: 2021-07-20 13:53:24
- * @LastEditTime: 2021-08-09 11:05:23
+ * @LastEditTime: 2021-08-10 15:05:13
  */
 
 import React, { Component, useCallback } from 'react';
 import { createContextFactory, Store } from 'wjh-store';
+import { LinkageDatePicker } from 'wjh-components';
+import { Form } from 'antd';
 import reducers from './reducers/index.js';
 import { addCount, reduceCount, asyncReduceAction } from './actions/counter.js';
 
-const { WrapContainer, useDispatch, useSelecor, connet } =
-  createContextFactory();
+const { WrapContainer, useDispatch, useSelecor, connet } = createContextFactory();
 
 function App() {
+  const [form] = Form.useForm();
+
+  console.log(form);
+
   return (
     <>
       <AddCounter />
@@ -22,6 +27,9 @@ function App() {
       <AddCounter2 />
       <ReduceCounter2 />
       <Count2 />
+      <Form>
+        <LinkageDatePicker form={form} />
+      </Form>
     </>
   );
 }
@@ -59,7 +67,7 @@ function ReduceCounter() {
 }
 
 function Count() {
-  const counter = useSelecor((state) => state.counter);
+  const counter = useSelecor(state => state.counter);
 
   return <div>计数器：{counter.count}</div>;
 }
@@ -80,7 +88,7 @@ class AddCounter1 extends Component {
   }
 }
 
-const AddCounter2 = connet(null, (dispatch) => ({
+const AddCounter2 = connet(null, dispatch => ({
   addCount(value) {
     dispatch(addCount(value));
   },
@@ -94,10 +102,7 @@ class ReduceCounter1 extends Component {
   render() {
     return (
       <>
-        <button
-          onClick={this.onReduce}
-          style={{ width: '100px', height: '60px' }}
-        >
+        <button onClick={this.onReduce} style={{ width: '100px', height: '60px' }}>
           -
         </button>
       </>
@@ -105,7 +110,7 @@ class ReduceCounter1 extends Component {
   }
 }
 
-const ReduceCounter2 = connet(null, (dispatch) => ({
+const ReduceCounter2 = connet(null, dispatch => ({
   reduceCount(value) {
     dispatch(reduceCount(value));
   },

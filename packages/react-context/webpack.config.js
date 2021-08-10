@@ -2,7 +2,7 @@
  * @Description: webpack配置文件
  * @Author: 吴锦辉
  * @Date: 2021-07-20 13:55:02
- * @LastEditTime: 2021-08-10 09:45:47
+ * @LastEditTime: 2021-08-10 14:48:42
  */
 
 const ReactRefreshPlugin = require('@pmmmwh/react-refresh-webpack-plugin');
@@ -21,6 +21,10 @@ module.exports = {
           presets: ['@babel/env', '@babel/preset-react'],
           plugins: [require.resolve('react-refresh/babel')], // 为 react-refresh 添加
         },
+      },
+      {
+        test: /\.css$/,
+        use: ['style-loader', 'css-loader'],
       },
     ],
   },

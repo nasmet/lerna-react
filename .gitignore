@@ -1,3 +1,15 @@
-# dependencies
-/node_modules/
-/*/**/node_modules/
+lib/
+dist/
+build/
+.temp/
+.rn_temp/
+node_modules/
+.DS_Store
+logs
+var
+.csscomb.json
+npm-debug.log*
+.eslintcache
+.idea
+.vscode
+config.json

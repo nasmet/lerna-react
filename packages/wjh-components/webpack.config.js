@@ -2,7 +2,7 @@
  * @Description: webpack配置文件
  * @Author: 吴锦辉
  * @Date: 2021-08-05 14:13:37
- * @LastEditTime: 2021-08-05 17:07:12
+ * @LastEditTime: 2021-08-10 14:48:24
  */
 
 const path = require('path');
@@ -12,7 +12,7 @@ const webpack = require('webpack');
 const devConfig = require('./webpack.dev.js');
 const proConfig = require('./webpack.pro.js');
 
-const env = argv.env;
+const { env } = argv;
 const baseConfig = {
   module: {
     rules: [
@@ -24,6 +24,10 @@ const baseConfig = {
           presets: ['@babel/env', '@babel/preset-react'],
           plugins: [require.resolve('react-refresh/babel')], // 为 react-refresh 添加
         },
+      },
+      {
+        test: /\.css$/,
+        use: ['style-loader', 'css-loader'],
       },
     ],
   },
