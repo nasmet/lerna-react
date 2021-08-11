@@ -2,7 +2,7 @@
  * @Description: 用户与命令行交互的工具学习
  * @Author: 吴锦辉
  * @Date: 2021-07-20 14:27:20
- * @LastEditTime: 2021-08-10 09:37:28
+ * @LastEditTime: 2021-08-11 13:36:23
  */
 
 const inquirer = require('inquirer');
@@ -10,7 +10,7 @@ const shelljs = require('shelljs');
 const { getAllPackageJsonInfo } = require('./package-operator');
 
 function init() {
-  getAllPackageJsonInfo().then((res) => {
+  getAllPackageJsonInfo().then(res => {
     const packageInfos = res;
 
     const projects = res.map((v, index) => ({
@@ -25,10 +25,10 @@ function init() {
         type: 'list',
         choices: projects,
       })
-      .then((res) => {
+      .then(res => {
         const { name: packageName, scripts } = packageInfos[res.project];
 
-        const commands = Object.keys(scripts).map((v) => ({
+        const commands = Object.keys(scripts).map(v => ({
           name: v,
           value: v,
         }));
@@ -40,10 +40,8 @@ function init() {
             type: 'list',
             choices: commands,
           })
-          .then((res) => {
-            shelljs.exec(
-              `cd ./packages/${packageName} &&  npm run ${res.command}`
-            );
+          .then(res => {
+            shelljs.exec(`cd ./packages/${packageName} &&  npm run ${res.command}`);
           });
       });
   });

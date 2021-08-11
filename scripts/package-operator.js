@@ -2,7 +2,7 @@
  * @Description: 包操作相关
  * @Author: 吴锦辉
  * @Date: 2021-08-04 10:45:36
- * @LastEditTime: 2021-08-04 11:14:27
+ * @LastEditTime: 2021-08-11 13:36:13
  */
 
 const fs = require('fs');
@@ -13,7 +13,7 @@ const packagesPath = path.join(__dirname, '../packages');
 function getAllPackageJsonPath(filePath = packagesPath) {
   let fileList = fs.readdirSync(filePath);
 
-  fileList = fileList.map((v) => path.join(filePath, `./${v}/package.json`));
+  fileList = fileList.map(v => path.join(filePath, `./${v}/package.json`));
 
   return fileList;
 }
@@ -47,10 +47,10 @@ function getPackageJsonInfo(filePath) {
 
 function getAllPackageJsonInfo() {
   return new Promise((resolve, reject) => {
-    const list = getAllPackageJsonPath().map((v) => getPackageJsonInfo(v));
+    const list = getAllPackageJsonPath().map(v => getPackageJsonInfo(v));
 
     Promise.all(list)
-      .then((res) => {
+      .then(res => {
         resolve(res);
       })
       .catch(() => {
