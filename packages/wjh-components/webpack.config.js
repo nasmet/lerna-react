@@ -2,7 +2,7 @@
  * @Description: webpack配置文件
  * @Author: 吴锦辉
  * @Date: 2021-08-05 14:13:37
- * @LastEditTime: 2021-08-10 14:48:24
+ * @LastEditTime: 2021-08-11 11:13:11
  */
 
 const path = require('path');
@@ -28,6 +28,10 @@ const baseConfig = {
       {
         test: /\.css$/,
         use: ['style-loader', 'css-loader'],
+      },
+      {
+        test: /\.scss$/,
+        use: ['style-loader', 'css-loader', 'sass-loader'],
       },
     ],
   },

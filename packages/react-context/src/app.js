@@ -2,13 +2,13 @@
  * @Description: 应用文件
  * @Author: 吴锦辉
  * @Date: 2021-07-20 13:53:24
- * @LastEditTime: 2021-08-10 16:23:25
+ * @LastEditTime: 2021-08-11 11:33:38
  */
 
 import React, { Component, useCallback } from 'react';
 import { createContextFactory, Store } from 'wjh-store';
-import { LinkageDatePicker } from 'wjh-components';
-import { Form } from 'antd';
+import { LinkageDatePicker, NumberInput, UploadWrap, CreateQRCode } from 'wjh-components';
+import { Form, Button } from 'antd';
 import reducers from './reducers/index.js';
 import { addCount, reduceCount, asyncReduceAction } from './actions/counter.js';
 
@@ -27,7 +27,12 @@ function App() {
       <Count2 />
       <Form form={form}>
         <LinkageDatePicker form={form} />
+        <NumberInput />
       </Form>
+      <UploadWrap accept=".xls,.xlsx">
+        <Button type="primary">上传文件</Button>
+      </UploadWrap>
+      <CreateQRCode />
     </>
   );
 }
