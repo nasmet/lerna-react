@@ -73,6 +73,6 @@
       {
           "varsIgnorePattern": "^[A-Z]"
       }
-  ],
+    ]
   }
 }
