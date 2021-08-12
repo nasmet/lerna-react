@@ -2,7 +2,7 @@
  * @Description: 路由配置文件
  * @Author: 吴锦辉
  * @Date: 2021-08-11 17:00:36
- * @LastEditTime: 2021-08-12 13:59:22
+ * @LastEditTime: 2021-08-12 13:54:06
  */
 
 import React, { lazy } from 'react';

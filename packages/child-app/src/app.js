@@ -2,7 +2,7 @@
  * @Description: app应用
  * @Author: 吴锦辉
  * @Date: 2021-08-11 14:32:08
- * @LastEditTime: 2021-08-12 13:36:58
+ * @LastEditTime: 2021-08-12 13:53:21
  */
 
 import React, { Suspense } from 'react';
@@ -94,7 +94,7 @@ function fn(route) {
 
 export default function App() {
   return (
-    <BrowserRouter>
+    <BrowserRouter basename={window.__POWERED_BY_QIANKUN__ ? '/child-app' : ''}>
       <Suspense fallback={fallback}>
         <Switch>{routers.map(fn)}</Switch>
       </Suspense>

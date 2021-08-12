@@ -54,7 +54,7 @@
     "react-hooks/rules-of-hooks": "error",
     "react-hooks/exhaustive-deps": "error",
     "react/jsx-wrap-multilines": "off",
-    "react/jsx-filename-extension": "off",
+    "react/jsx-filename-extension": [1, { "extensions": [".js", ".jsx"] }],
     "react/jsx-props-no-spreading": "off",
     "react/destructuring-assignment": "off",
     "react/react-in-jsx-scope": "off",
@@ -65,6 +65,14 @@
     "react/sort-comp": "off",
     "max-classes-per-file":"off",
     "react/button-has-type":"off",
-    "react/prefer-stateless-function": "off"
+    "react/prefer-stateless-function": "off",
+    "react/jsx-uses-react": "error",
+    "react/jsx-uses-vars": "error",
+    "no-unused-vars": [
+      "error",
+      {
+          "varsIgnorePattern": "^[A-Z]"
+      }
+  ],
   }
 }
