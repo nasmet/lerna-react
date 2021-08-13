@@ -1,0 +1,17 @@
+{
+  "name": "wjh-cli",
+  "version": "1.0.0",
+  "description": "快速创建react项目的脚手架",
+  "main": "index.js",
+  "keywords": [
+    "wjh-cli"
+  ],
+  "bin": {
+    "wjh-cli": "./scripts/init.js"
+  },
+  "author": "jinhuiwu",
+  "license": "ISC",
+  "scripts": {
+    "init": "node ./scripts/init.js"
+  }
+}
