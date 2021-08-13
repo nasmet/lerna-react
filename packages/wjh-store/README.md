@@ -6,131 +6,161 @@
 
 createContextFactory 创建上下文工厂，返回一个对象，对象里面有 WrapContainer, useDispatch, useSelecor, connet 这个属性。具体使用参照范例。
 
-Store 是一个状态存储的类，创建 store 对象需要 reducer 参数，reducer 支持单个和多个，多个参数格式是 object 对象
+Store 是一个状态存储的类，创建 store 对象需要 reducer 参数，reducer 支持单个和多个，多个以对象的方式传递
 
 ## 范例
 
+```javascript
 import React, { Component, useCallback } from 'react';
 import { createContextFactory, Store } from 'wjh-store';
-import reducers from './reducers/index.js';
-import { addCount, reduceCount, asyncReduceAction } from './actions/counter.js';
 
-const { WrapContainer, useDispatch, useSelecor, connet } =
-createContextFactory();
+/** action编写 */
+function updateUser(payload) {
+  return {
+    type: 'updateUser',
+    payload,
+  };
+}
+
+function addCount(value) {
+  return {
+    type: 'add',
+    payload: {
+      count: value,
+    },
+  };
+}
+
+/** 异步action范例 */
+export function asyncAddCount(dispatch) {
+  return value => {
+    setTimeout(() => {
+      dispatch({
+        type: 'reduce',
+        payload: {
+          count: value,
+        },
+      });
+    }, 1000);
+  };
+}
+
+/** reducer编写 */
+const initCountState = {
+  count: 0,
+};
+
+function counter(state = initCountState, action = {}) {
+  switch (action.type) {
+    case 'add':
+      const count = state.count + action.payload.count || 0;
+
+      return { ...state, count };
+    case 'reduce':
+      const count1 = state.count - action.payload.count || 0;
+
+      return { ...state, count: count1 };
+    default:
+      return state;
+  }
+}
+
+const initUserState = {
+  id: 1,
+  name: 'jack',
+};
+
+function user(state = initUserState, action = {}) {
+  switch (action.type) {
+    case 'updateUser':
+      return { ...state, ...action.payload };
+    default:
+      return state;
+  }
+}
+
+const { WrapContainer, useDispatch, useSelecor, connet } = createContextFactory();
 
 function App() {
-return (
-<>
-<AddCounter />
-<ReduceCounter />
-<Count />
-<AddCounter2 />
-<ReduceCounter2 />
-<Count2 />
-</>
-);
+  return (
+    <>
+      <AddCounter />
+      <Count />
+      <AddCounter2 />
+      <Count2 />
+    </>
+  );
 }
 
 function AddCounter() {
-const dispatch = useDispatch();
+  const dispatch = useDispatch();
 
-const onAdd = useCallback(() => {
-dispatch(addCount(1));
-}, [dispatch]);
+  const onAdd = useCallback(() => {
+    dispatch(addCount(1));
+  }, [dispatch]);
 
-return (
-<>
-<button onClick={onAdd} style={{ width: '100px', height: '60px' }}> +
-</button>
-</>
-);
-}
-
-function ReduceCounter() {
-const dispatch = useDispatch();
-
-const onReduce = useCallback(() => {
-asyncReduceAction(dispatch)(1);
-}, [dispatch]);
-
-return (
-<>
-<button onClick={onReduce} style={{ width: '100px', height: '60px' }}> -
-</button>
-</>
-);
+  return (
+    <>
+      <button onClick={onAdd} style={{ width: '100px', height: '60px' }}>
+        {' '}
+        +
+      </button>
+    </>
+  );
 }
 
 function Count() {
-const counter = useSelecor((state) => state.counter);
+  const counter = useSelecor(state => state.counter);
 
-return <div>计数器：{counter.count}</div>;
+  return <div>计数器：{counter.count}</div>;
 }
 
 class AddCounter1 extends Component {
-onAdd = () => {
-this.props.addCount(1);
-};
+  onAdd = () => {
+    this.props.addCount(1);
+  };
 
-render() {
-return (
-<>
-<button onClick={this.onAdd} style={{ width: '100px', height: '60px' }}> +
-</button>
-</>
-);
-}
+  render() {
+    return (
+      <>
+        <button onClick={this.onAdd} style={{ width: '100px', height: '60px' }}>
+          {' '}
+          +
+        </button>
+      </>
+    );
+  }
 }
 
-const AddCounter2 = connet(null, (dispatch) => ({
-addCount(value) {
-dispatch(addCount(value));
-},
+const AddCounter2 = connet(null, dispatch => ({
+  addCount(value) {
+    dispatch(addCount(value));
+  },
 }))(AddCounter1);
 
-class ReduceCounter1 extends Component {
-onReduce = () => {
-this.props.reduceCount(1);
-};
-
-render() {
-return (
-<>
-<button
-onClick={this.onReduce}
-style={{ width: '100px', height: '60px' }} > -
-</button>
-</>
-);
-}
-}
-
-const ReduceCounter2 = connet(null, (dispatch) => ({
-reduceCount(value) {
-dispatch(reduceCount(value));
-},
-}))(ReduceCounter1);
-
 class Count1 extends Component {
-render() {
-return <div>计数器：{this.props.counter.count}</div>;
-}
+  render() {
+    return <div>计数器：{this.props.counter.count}</div>;
+  }
 }
 
 const Count2 = connet(
-({ counter }) => ({
-counter,
-}),
-null
+  ({ counter }) => ({
+    counter,
+  }),
+  null
 )(Count1);
+
+const reducer = { user, counter };
 
 const store = new Store(reducers);
 
 const observer = (state, action) => {
-console.log('执行的 action: ', action);
-console.log('改变后的 state: ', state);
+  console.log('执行的 action: ', action);
+  console.log('改变后的 state: ', state);
 };
 
 store.subscribe(observer);
 
 export default WrapContainer(App, store);
+```

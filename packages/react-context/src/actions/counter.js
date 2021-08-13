@@ -2,7 +2,7 @@
  * @Description: 计数器actions
  * @Author: 吴锦辉
  * @Date: 2021-07-29 17:19:00
- * @LastEditTime: 2021-08-09 09:43:13
+ * @LastEditTime: 2021-08-13 09:12:42
  */
 
 export function addCount(value) {
@@ -25,7 +25,7 @@ export function reduceCount(value) {
 
 /** 异步action范例 */
 export function asyncReduceAction(dispatch) {
-  return function (value) {
+  return value => {
     setTimeout(() => {
       dispatch({
         type: 'reduce',
