@@ -3,26 +3,37 @@
  * @Description: 生成react项目模板
  * @Author: 吴锦辉
  * @Date: 2021-08-13 10:41:36
- * @LastEditTime: 2021-08-13 13:03:42
+ * @LastEditTime: 2021-08-13 14:01:47
  */
 
 const fs = require('fs');
 const path = require('path');
+const { exec } = require('child_process');
 
-const sourcePath = process.cwd();
+const destPath = process.cwd();
 
 const templatePath = path.resolve(__dirname, '../template/react-project');
-
-console.log(sourcePath, templatePath);
 
 function displayPath(filePath) {
   fs.stat(filePath, (err, stat) => {
     if (err) {
       console.error(err);
     } else if (stat.isFile()) {
-      fs.copyFileSync(filePath, filePath.replace(__dirname, sourcePath));
+      const source = filePath;
+      const dest = source.replace(path.resolve(__dirname, '../template'), destPath);
+
+      fs.copyFile(source, dest, err => {
+        if (err) {
+          console.error(err);
+        }
+      });
     } else if (stat.isDirectory()) {
-      fs.mkdirSync(filePath.replace(path.resolve(__dirname, 'template'), sourcePath));
+      const source = filePath;
+      const dest = source.replace(path.resolve(__dirname, '../template'), destPath);
+
+      if (!fs.existsSync(dest)) {
+        fs.mkdirSync(dest);
+      }
 
       fs.readdir(filePath, (err, files) => {
         if (err) {
@@ -41,8 +52,16 @@ console.log('项目创建中');
 
 displayPath(templatePath);
 
-console.log('项目创建完成');
+const projectPath = path.resolve(destPath, 'react-project');
 
-console.log('执行模块安装');
+setTimeout(() => {
+  exec(`cd ${projectPath} && git init`, error => {
+    if (error) {
+      console.error(error);
 
-console.log('模块安装完成');
+      return;
+    }
+
+    console.log('项目创建完成');
+  });
+}, 2000);
