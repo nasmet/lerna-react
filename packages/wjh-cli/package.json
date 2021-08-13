@@ -13,5 +13,8 @@
   "license": "ISC",
   "scripts": {
     "init": "node ./scripts/init.js"
+  },
+  "devDependencies": {
+    "inquirer": "^8.1.2"
   }
 }

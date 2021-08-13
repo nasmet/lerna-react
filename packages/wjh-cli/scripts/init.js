@@ -3,17 +3,21 @@
  * @Description: 生成react项目模板
  * @Author: 吴锦辉
  * @Date: 2021-08-13 10:41:36
- * @LastEditTime: 2021-08-13 14:19:19
+ * @LastEditTime: 2021-08-13 14:38:02
  */
 
 const fs = require('fs');
 const path = require('path');
 const { exec } = require('child_process');
+const inquirer = require('inquirer');
 
 const destPath = process.cwd();
-const projectName = 'react-project';
-const templatePath = path.resolve(__dirname, `../template/${projectName}`);
-const projectPath = path.resolve(destPath, projectName);
+
+function getTemplateList() {
+  const templatePath = path.resolve(__dirname, '../template');
+
+  return fs.readdirSync(templatePath);
+}
 
 function displayPath(filePath) {
   fs.stat(filePath, (err, stat) => {
@@ -49,20 +53,35 @@ function displayPath(filePath) {
   });
 }
 
-function createProject(templatePath) {
-  console.log('项目创建中');
-  displayPath(templatePath);
-  setTimeout(() => {
-    exec(`cd ${projectPath} && git init`, error => {
-      if (error) {
-        console.error(error);
+function createProjectByTemplate() {
+  const templates = getTemplateList();
 
-        return;
-      }
+  inquirer
+    .prompt({
+      name: 'template',
+      message: '请选择项目',
+      type: 'list',
+      choices: templates,
+    })
+    .then(res => {
+      const templateName = res.template;
+      const sourceTemplatePath = path.resolve(__dirname, `../template/${templateName}`);
+      const destTemplatePath = path.resolve(destPath, templateName);
 
-      console.log('项目创建完成');
+      console.log('项目创建中');
+      displayPath(sourceTemplatePath);
+      setTimeout(() => {
+        exec(`cd ${destTemplatePath} && git init`, error => {
+          if (error) {
+            console.error(error);
+
+            return;
+          }
+
+          console.log('项目创建完成');
+        });
+      }, 2000);
     });
-  }, 2000);
 }
 
-createProject(templatePath);
+createProjectByTemplate();
