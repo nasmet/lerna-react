@@ -3,7 +3,7 @@
  * @Description: 生成react项目模板
  * @Author: 吴锦辉
  * @Date: 2021-08-13 10:41:36
- * @LastEditTime: 2021-08-13 14:01:47
+ * @LastEditTime: 2021-08-13 14:19:19
  */
 
 const fs = require('fs');
@@ -11,8 +11,9 @@ const path = require('path');
 const { exec } = require('child_process');
 
 const destPath = process.cwd();
-
-const templatePath = path.resolve(__dirname, '../template/react-project');
+const projectName = 'react-project';
+const templatePath = path.resolve(__dirname, `../template/${projectName}`);
+const projectPath = path.resolve(destPath, projectName);
 
 function displayPath(filePath) {
   fs.stat(filePath, (err, stat) => {
@@ -48,20 +49,20 @@ function displayPath(filePath) {
   });
 }
 
-console.log('项目创建中');
+function createProject(templatePath) {
+  console.log('项目创建中');
+  displayPath(templatePath);
+  setTimeout(() => {
+    exec(`cd ${projectPath} && git init`, error => {
+      if (error) {
+        console.error(error);
 
-displayPath(templatePath);
+        return;
+      }
 
-const projectPath = path.resolve(destPath, 'react-project');
+      console.log('项目创建完成');
+    });
+  }, 2000);
+}
 
-setTimeout(() => {
-  exec(`cd ${projectPath} && git init`, error => {
-    if (error) {
-      console.error(error);
-
-      return;
-    }
-
-    console.log('项目创建完成');
-  });
-}, 2000);
+createProject(templatePath);
