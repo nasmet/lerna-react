@@ -2,7 +2,7 @@
  * @Description: context相关方法
  * @Author: 吴锦辉
  * @Date: 2021-07-30 11:07:00
- * @LastEditTime: 2021-08-09 09:38:15
+ * @LastEditTime: 2021-08-12 18:07:40
  */
 
 import React, { createContext, useReducer, useContext, useMemo } from 'react';
@@ -17,10 +17,9 @@ export default function createContextFactory(initValue = {}) {
 
   function WrapContainer(WrapComponent, store) {
     return function Provider(props) {
-      const [state, dispatch] = useReducer(
-        store.getReducer(),
-        store.getState()
-      );
+      const [state, dispatch] = useReducer(store.getReducer(), store.getState());
+
+      store.setDispatch(dispatch);
 
       return (
         <Context.Provider value={{ ...initValue, state, dispatch }}>
@@ -44,6 +43,7 @@ export default function createContextFactory(initValue = {}) {
   function useSelecor(fn) {
     const { state } = useContext(Context);
 
+    // eslint-disable-next-line react-hooks/exhaustive-deps
     const value = useMemo(() => fn(state), [state]);
 
     return value;
@@ -56,7 +56,7 @@ export default function createContextFactory(initValue = {}) {
    * @return {function}
    */
   function connet(stateParam, actionParam) {
-    return function (WrapperComponent) {
+    return WrapperComponent => {
       return function Container(props) {
         const { state, dispatch } = useContext(Context);
         let states = {};

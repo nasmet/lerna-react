@@ -2,7 +2,7 @@
  * @Description: store
  * @Author: 吴锦辉
  * @Date: 2021-08-06 17:54:08
- * @LastEditTime: 2021-08-09 10:06:33
+ * @LastEditTime: 2021-08-12 18:05:23
  */
 
 class Store {
@@ -10,6 +10,7 @@ class Store {
     this._reducer = null;
     this._state = {};
     this._observers = [];
+    this._dispatch = null;
 
     this._init(reducer);
   }
@@ -56,7 +57,7 @@ class Store {
    * @return {object}
    */
   mergeReducer(reducers) {
-    Object.keys(reducers).forEach((key) => {
+    Object.keys(reducers).forEach(key => {
       Object.assign(this._state, {
         [key]: reducers[key](),
       });
@@ -65,7 +66,7 @@ class Store {
     return (state, action) => {
       this._state = { ...state };
 
-      Object.keys(reducers).forEach((key) => {
+      Object.keys(reducers).forEach(key => {
         Object.assign(this._state, {
           [key]: reducers[key](this._state[key], action),
         });
@@ -82,7 +83,7 @@ class Store {
       return;
     }
 
-    this._observers.forEach((cb) => {
+    this._observers.forEach(cb => {
       cb(state, action);
     });
   }
@@ -105,16 +106,26 @@ class Store {
     const observers = this._observers;
 
     if (fn && typeof fn === 'function') {
-      for (let i = 0, len = observers.length; i < len; i++) {
+      for (let i = 0, len = observers.length; i < len; i += 1) {
         if (fn === observers[i]) {
           observers.splice(i, 1);
 
-          i--;
-          len--;
+          i -= 1;
+
+          len -= 1;
+
           break;
         }
       }
     }
+  }
+
+  setDispatch(dispatch) {
+    this._dispatch = dispatch;
+  }
+
+  get dispatch() {
+    return this._dispatch;
   }
 }
 
