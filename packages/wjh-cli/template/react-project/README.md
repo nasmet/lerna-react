@@ -18,3 +18,7 @@ npm run start
 ## pages
 
 存放页面路由组件
+
+## 注意事项
+
+项目集成了 node-sass，由于 node-sass 不同版本对应不同 node 版本，当前项目的 node-sass 版本是 4.14.0 对应 Node14,如不是该 node 版本可能导致 node-sass 依赖会安装失败
