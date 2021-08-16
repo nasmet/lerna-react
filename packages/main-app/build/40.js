@@ -1,1 +1,0 @@
-"use strict";(self.webpackChunkmain_app=self.webpackChunkmain_app||[]).push([[40],{9040:(e,a,n)=>{n.r(a),n.d(a,{default:()=>t});var u=n(2784);function t(){return u.createElement("div",null,"主应用下的子路由:about")}}}]);

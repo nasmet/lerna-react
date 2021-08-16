@@ -1,1 +1,0 @@
-"use strict";(window.webpackChunkwebpackJsonp_child_app=window.webpackChunkwebpackJsonp_child_app||[]).push([[789],{7789:(e,n,a)=>{a.r(n),a.d(n,{default:()=>c});var p=a(2784);const t=a.p+"img/1.jpg";function c(){return p.createElement("div",null,p.createElement("img",{src:t,alt:""}),p.createElement("span",null," 子应用下的子路由:about"))}}}]);

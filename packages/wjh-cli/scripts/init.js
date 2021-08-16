@@ -3,7 +3,7 @@
  * @Description: 生成react项目模板
  * @Author: 吴锦辉
  * @Date: 2021-08-13 10:41:36
- * @LastEditTime: 2021-08-13 14:38:02
+ * @LastEditTime: 2021-08-16 09:44:01
  */
 
 const fs = require('fs');
@@ -16,7 +16,7 @@ const destPath = process.cwd();
 function getTemplateList() {
   const templatePath = path.resolve(__dirname, '../template');
 
-  return fs.readdirSync(templatePath);
+  return fs.readdirSync(templatePath).filter(v => !/^\..+/.test(v));
 }
 
 function displayPath(filePath) {
