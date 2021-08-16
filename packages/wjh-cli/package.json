@@ -9,7 +9,7 @@
   "bin": {
     "wjh-cli": "./scripts/init.js"
   },
-  "author": "jinhuiwu",
+  "author": "jinhui wu",
   "license": "ISC",
   "scripts": {
     "init": "node ./scripts/init.js"
