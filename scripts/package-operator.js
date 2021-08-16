@@ -2,7 +2,7 @@
  * @Description: 包操作相关
  * @Author: 吴锦辉
  * @Date: 2021-08-04 10:45:36
- * @LastEditTime: 2021-08-11 13:36:13
+ * @LastEditTime: 2021-08-16 10:23:21
  */
 
 const fs = require('fs');
@@ -11,7 +11,7 @@ const path = require('path');
 const packagesPath = path.join(__dirname, '../packages');
 
 function getAllPackageJsonPath(filePath = packagesPath) {
-  let fileList = fs.readdirSync(filePath);
+  let fileList = fs.readdirSync(filePath).filter(v => !/^\..+/.test(v));
 
   fileList = fileList.map(v => path.join(filePath, `./${v}/package.json`));
 

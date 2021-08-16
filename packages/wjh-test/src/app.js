@@ -2,23 +2,25 @@
  * @Description: 应用文件
  * @Author: 吴锦辉
  * @Date: 2021-07-20 13:53:24
- * @LastEditTime: 2021-08-11 11:33:38
+ * @LastEditTime: 2021-08-16 10:43:18
  */
 
 import React, { Component, useCallback } from 'react';
+import { BrowserRouter } from 'react-router-dom';
 import { createContextFactory, Store } from 'wjh-store';
 import { LinkageDatePicker, NumberInput, UploadWrap, CreateQRCode } from 'wjh-components';
+import RenderRouters from 'wjh-routers';
 import { Form, Button } from 'antd';
 import reducers from './reducers/index.js';
 import { addCount, reduceCount, asyncReduceAction } from './actions/counter.js';
 
 const { WrapContainer, useDispatch, useSelecor, connet } = createContextFactory();
 
-function App() {
+function Layout(props) {
   const [form] = Form.useForm();
 
   return (
-    <>
+    <div>
       <AddCounter />
       <ReduceCounter />
       <Count />
@@ -33,10 +35,36 @@ function App() {
         <Button type="primary">上传文件</Button>
       </UploadWrap>
       <CreateQRCode />
-    </>
+      {props.children}
+    </div>
   );
 }
 
+/**
+ * 路由包装，对路由做一些拦截
+ * @param  {ReactNode} options.children 子节点
+ * @return {ReactNode}
+ */
+const WrapperComponent = ({ children }) => {
+  return children;
+};
+
+const routerConfig = [
+  // 分组路由，children 里的路由会将父节点的 Component 作为布局组件
+  {
+    path: '/',
+    Component: Layout,
+    children: [],
+  },
+];
+
+function App() {
+  return (
+    <BrowserRouter>
+      <RenderRouters routerConfig={routerConfig} />
+    </BrowserRouter>
+  );
+}
 function AddCounter() {
   const dispatch = useDispatch();
 
