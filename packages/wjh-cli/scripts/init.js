@@ -3,7 +3,7 @@
  * @Description: 生成react项目模板
  * @Author: 吴锦辉
  * @Date: 2021-08-13 10:41:36
- * @LastEditTime: 2021-08-16 09:44:01
+ * @LastEditTime: 2021-08-24 16:00:39
  */
 
 const fs = require('fs');
@@ -59,7 +59,7 @@ function createProjectByTemplate() {
   inquirer
     .prompt({
       name: 'template',
-      message: '请选择项目',
+      message: '请选择模版',
       type: 'list',
       choices: templates,
     })

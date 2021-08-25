@@ -2,7 +2,7 @@
  * @Description: 应用文件
  * @Author: 吴锦辉
  * @Date: 2021-07-20 13:53:24
- * @LastEditTime: 2021-08-16 15:07:28
+ * @LastEditTime: 2021-08-25 17:26:08
  */
 
 import React, { Component, useCallback, useEffect } from 'react';
@@ -47,6 +47,7 @@ function Layout(props) {
         <Button type="primary">上传文件</Button>
       </UploadWrap>
       <CreateQRCode />
+      <div style={{ fontSize: '0.28rem' }}>移动端html font-size动态计算设置</div>
       {props.children}
     </div>
   );

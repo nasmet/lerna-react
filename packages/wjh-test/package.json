@@ -17,7 +17,8 @@
     "wjh-store": "^1.0.5",
     "wjh-components": "^1.0.0",
     "wjh-routers": "^1.0.0",
-    "wjh-request": "^1.0.0"
+    "wjh-request": "^1.0.0",
+    "wjh-utils": "^1.0.0"
   },
   "devDependencies": {
     "@babel/core": "^7.10.5",
