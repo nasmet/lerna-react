@@ -1,0 +1,39 @@
+.errorPage {
+  width: 100vw;
+  height: 100vh;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  word-break: break-all;
+
+  .logo {
+    width: 409 * $px;
+    height: 199 * $px;
+    margin-bottom: 68 * $px;
+  }
+
+  .tip {
+    margin-bottom: 58 * $px;
+    display: inline-block;
+    font-size: 32 * $px;
+    font-family: PingFangSC-Regular, PingFang SC;
+    font-weight: 400;
+    color: #a5a5a5;
+    line-height: 32 * $px;
+  }
+
+  .btn {
+    width: 237 * $px;
+    height: 83 * $px;
+    background: linear-gradient(90deg, #d048a1 0%, #b92a87 100%);
+    border-radius: 49 * $px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-size: 32 * $px;
+    font-family: PingFangSC-Regular, PingFang SC;
+    font-weight: 400;
+    color: #fff;
+  }
+}

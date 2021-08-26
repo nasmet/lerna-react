@@ -2,12 +2,13 @@
  * @Description: webpack配置文件
  * @Author: 吴锦辉
  * @Date: 2021-07-20 13:55:02
- * @LastEditTime: 2021-08-16 15:27:48
+ * @LastEditTime: 2021-08-26 11:27:29
  */
 
 const ReactRefreshPlugin = require('@pmmmwh/react-refresh-webpack-plugin');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
 const webpack = require('webpack');
+const path = require('path');
 
 module.exports = {
   entry: './src/index.js',
@@ -29,7 +30,18 @@ module.exports = {
       },
       {
         test: /\.scss$/,
-        use: ['style-loader', 'css-loader', 'sass-loader'],
+        use: [
+          'style-loader',
+          'css-loader',
+          'sass-loader',
+          {
+            loader: 'sass-resources-loader',
+            options: {
+              sourceMap: true,
+              resources: [path.resolve(__dirname, './src/global.scss')], // 一定是path.resolve的绝对路径
+            },
+          },
+        ],
       },
     ],
   },

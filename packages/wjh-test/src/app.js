@@ -2,7 +2,7 @@
  * @Description: 应用文件
  * @Author: 吴锦辉
  * @Date: 2021-07-20 13:53:24
- * @LastEditTime: 2021-08-25 17:26:08
+ * @LastEditTime: 2021-08-26 11:08:22
  */
 
 import React, { Component, useCallback, useEffect } from 'react';
@@ -14,6 +14,7 @@ import HttpUtils from 'wjh-request';
 import { Form, Button } from 'antd';
 import reducers from './reducers/index.js';
 import { addCount, asyncReduceAction } from './actions/counter.js';
+import styles from './app.module.scss';
 
 const httpUtils = new HttpUtils({ baseURL: 'https://www.ituring.com.cn' });
 
@@ -47,7 +48,7 @@ function Layout(props) {
         <Button type="primary">上传文件</Button>
       </UploadWrap>
       <CreateQRCode />
-      <div style={{ fontSize: '0.28rem' }}>移动端html font-size动态计算设置</div>
+      <div className={styles.word}>移动端html font-size动态计算设置</div>
       {props.children}
     </div>
   );
