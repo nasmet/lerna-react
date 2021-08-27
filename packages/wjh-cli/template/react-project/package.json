@@ -3,8 +3,14 @@
   "version": "1.0.0",
   "description": "基于webpack打包react项目",
   "scripts": {
-    "start": "webpack serve --env=development",
-    "build": "webpack --env=production"
+    "start": "webpack serve --env=development --domain=dev",
+    "test": "webpack serve --env=development --domain=test",
+    "prf": "webpack serve --env=development --domain=prf",
+    "prod": "webpack --env=development --domain=prod",
+    "build-start": "webpack serve --env=production --domain=dev",
+    "build-test": "webpack serve --env=production --domain=test",
+    "build-prf": "webpack serve --env=production --domain=prf",
+    "build-prod": "webpack --env=production --domain=prod"
   },
   "author": "jinhui wu",
   "license": "ISC",
@@ -12,7 +18,8 @@
     "react": "^16.13.1",
     "react-dom": "^16.13.1",
     "react-router-dom": "^5.2.0",
-    "wjh-routers": "^1.0.0"
+    "wjh-routers": "^1.0.0",
+    "wjh-utils": "^1.0.0"
   },
   "devDependencies": {
     "@babel/core": "^7.10.5",

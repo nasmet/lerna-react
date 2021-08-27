@@ -2,17 +2,18 @@
  * @Description: webpack配置文件
  * @Author: 吴锦辉
  * @Date: 2021-08-13 10:51:23
- * @LastEditTime: 2021-08-26 11:29:19
+ * @LastEditTime: 2021-08-27 09:43:00
  */
 
 const path = require('path');
 const { argv } = require('yargs');
 const { merge } = require('webpack-merge');
+const webpack = require('webpack');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
 const devConfig = require('./webpack.dev.js');
 const proConfig = require('./webpack.pro.js');
 
-const { env } = argv;
+const { env, domain = '' } = argv;
 process.env.NODE_ENV = env;
 
 const baseConfig = {
@@ -66,6 +67,9 @@ const baseConfig = {
   plugins: [
     new HtmlWebpackPlugin({
       template: './public/index.html',
+    }),
+    new webpack.DefinePlugin({
+      Domain: JSON.stringify(domain),
     }),
   ],
   resolve: {

@@ -1,1 +1,46 @@
 $px: 0.01rem;
+
+/** 以下是默认样式清除 */
+* {
+  box-sizing: border-box;
+}
+
+*::after {
+  box-sizing: border-box;
+}
+
+*::before {
+  box-sizing: border-box;
+}
+
+button {
+  margin: 0px;
+  padding: 0px;
+  /*自定义边框*/
+  border: none;
+  /*消除默认点击蓝色边框效果*/
+  outline: none;
+}
+
+button::before {
+  border: none;
+}
+
+button::after {
+  border: none;
+}
+
+a {
+  text-decoration: none;
+}
+
+a:hover {
+  text-decoration: underline;
+}
+
+ul,
+ol {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}

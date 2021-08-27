@@ -2,7 +2,7 @@
  * @Description: 加载文件
  * @Author: 吴锦辉
  * @Date: 2021-08-12 09:17:01
- * @LastEditTime: 2021-08-26 10:25:20
+ * @LastEditTime: 2021-08-27 10:57:31
 -->
 <!DOCTYPE html>
 <html lang="en">
@@ -25,6 +25,7 @@
             srcElement.src.indexOf('umi') !== -1
           ) {
             console.error('script资源文件加载失败: ', srcElement.src);
+            alert('script资源文件加载失败: ' + srcElement.src);
 
             return;
           }

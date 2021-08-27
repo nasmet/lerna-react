@@ -2,7 +2,7 @@
  * @Description: webpack配置文件
  * @Author: 吴锦辉
  * @Date: 2021-08-16 09:19:32
- * @LastEditTime: 2021-08-16 09:19:47
+ * @LastEditTime: 2021-08-27 10:49:56
  */
 
 const path = require('path');
@@ -36,7 +36,30 @@ const baseConfig = {
       },
       {
         test: /\.scss$/,
-        use: ['style-loader', 'css-loader', 'sass-loader'],
+        use: [
+          'style-loader',
+          'css-loader',
+          'sass-loader',
+          {
+            loader: 'sass-resources-loader',
+            options: {
+              sourceMap: true,
+              resources: [path.resolve(__dirname, './src/global.scss')], // 一定是path.resolve的绝对路径
+            },
+          },
+        ],
+      },
+      {
+        test: /\.(png|jpe?g|gif|webp|woff2?|eot|ttf|otf)$/i,
+        use: [
+          {
+            loader: 'url-loader',
+            options: {
+              limit: false,
+              name: 'img/[name].[ext]',
+            },
+          },
+        ],
       },
     ],
   },
