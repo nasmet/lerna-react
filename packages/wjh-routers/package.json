@@ -1,6 +1,6 @@
 {
   "name": "wjh-routers",
-  "version": "1.0.3",
+  "version": "1.0.7",
   "description": "react路由分组渲染",
   "main": "./build/index.js",
   "scripts": {
