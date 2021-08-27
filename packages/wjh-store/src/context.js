@@ -2,7 +2,7 @@
  * @Description: context相关方法
  * @Author: 吴锦辉
  * @Date: 2021-07-30 11:07:00
- * @LastEditTime: 2021-08-12 18:07:40
+ * @LastEditTime: 2021-08-27 14:26:22
  */
 
 import React, { createContext, useReducer, useContext, useMemo } from 'react';
@@ -23,7 +23,7 @@ export default function createContextFactory(initValue = {}) {
 
       return (
         <Context.Provider value={{ ...initValue, state, dispatch }}>
-          <WrapComponent {...props} />
+          <WrapComponent {...props} {...state} dispatch={dispatch} />
         </Context.Provider>
       );
     };
