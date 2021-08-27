@@ -1,8 +1,0 @@
-{
-  "name": "wjh-utils",
-  "version": "1.0.0",
-  "description": "常用方法库",
-  "author": "jinhuiwu",
-  "license": "ISC",
-  "main": "./src/index.js"
-}

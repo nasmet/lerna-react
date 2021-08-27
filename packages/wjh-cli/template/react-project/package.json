@@ -19,7 +19,7 @@
     "react-dom": "^16.13.1",
     "react-router-dom": "^5.2.0",
     "wjh-routers": "^1.0.0",
-    "wjh-utils": "^1.0.0"
+    "wjh-util": "^1.0.0"
   },
   "devDependencies": {
     "@babel/core": "^7.10.5",
