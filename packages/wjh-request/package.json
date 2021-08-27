@@ -1,6 +1,6 @@
 {
   "name": "wjh-request",
-  "version": "1.0.2",
+  "version": "1.0.3",
   "description": "基于axios二次封装的网络请求库",
   "author": "jinhui wu",
   "license": "ISC",
