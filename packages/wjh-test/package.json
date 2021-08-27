@@ -1,6 +1,6 @@
 {
   "name": "wjh-test",
-  "version": "1.0.0",
+  "version": "1.0.2",
   "description": "react相关模块测试",
   "author": "jinhuiwu",
   "license": "ISC",
@@ -8,17 +8,17 @@
     "start": "webpack server --hot"
   },
   "dependencies": {
-    "axios": "^0.19.0",
-    "react": "^16.13.1",
-    "react-dom": "^16.13.1",
     "antd": "^4.16.10",
+    "axios": "^0.19.0",
     "moment": "^2.29.1",
     "qrcode": "^1.4.4",
-    "wjh-store": "^1.0.5",
-    "wjh-components": "^1.0.0",
-    "wjh-routers": "^1.0.0",
-    "wjh-request": "^1.0.0",
-    "wjh-util": "^1.0.0"
+    "react": "^16.13.1",
+    "react-dom": "^16.13.1",
+    "wjh-components": "^1.0.2",
+    "wjh-request": "^1.0.2",
+    "wjh-routers": "^1.0.2",
+    "wjh-store": "^1.0.2",
+    "wjh-util": "^1.0.2"
   },
   "devDependencies": {
     "@babel/core": "^7.10.5",

@@ -1,6 +1,6 @@
 {
   "name": "wjh-components",
-  "version": "1.0.0",
+  "version": "1.0.2",
   "description": "基于antDesign封装的通用组件",
   "main": "./src/index.js",
   "scripts": {
@@ -10,11 +10,11 @@
   "author": "jinhui wu",
   "license": "ISC",
   "peerDependencies": {
-    "react": ">=16.8.0",
-    "react-dom": ">=16.8.0",
     "antd": ">=4.16.10",
     "moment": ">=2.29.1",
-    "qrcode": ">=1.4.4"
+    "qrcode": ">=1.4.4",
+    "react": ">=16.8.0",
+    "react-dom": ">=16.8.0"
   },
   "devDependencies": {
     "@babel/core": "^7.10.5",

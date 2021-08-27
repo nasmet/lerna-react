@@ -1,6 +1,6 @@
 {
   "name": "wjh-routers",
-  "version": "1.0.0",
+  "version": "1.0.2",
   "description": "react路由分组渲染",
   "main": "./build/index.js",
   "scripts": {
@@ -19,6 +19,5 @@
     "webpack-cli": "^4.7.2"
   },
   "author": "jinhui wu",
-  "license": "ISC",
-  "dependencies": {}
+  "license": "ISC"
 }
