@@ -25,5 +25,6 @@
     "shelljs": "^0.8.4",
     "tinify": "^1.6.0-beta.2",
     "yargs": "^17.1.0"
-  }
+  },
+  "gitHead": "2c42dcf5a611d5b9ade5a5bf3dbc906e81d76cb7"
 }

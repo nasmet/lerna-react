@@ -19,5 +19,6 @@
     "webpack-cli": "^4.7.2"
   },
   "author": "jinhui wu",
-  "license": "ISC"
+  "license": "ISC",
+  "gitHead": "2c42dcf5a611d5b9ade5a5bf3dbc906e81d76cb7"
 }
