@@ -2,7 +2,7 @@
  * @Description: 基于配置的表单组件
  * @Author: 吴锦辉
  * @Date: 2021-08-05 13:53:09
- * @LastEditTime: 2021-08-30 14:35:13
+ * @LastEditTime: 2021-08-30 14:51:21
  */
 
 import React, { useCallback, useMemo } from 'react';
@@ -32,6 +32,12 @@ export default function ConfigForm({
     }
 
     list = list.map((v, index) => {
+      const { show = true } = v;
+
+      if (!show) {
+        return null;
+      }
+
       const { cmpType, wrapProps = {}, cmpProps = {}, cmp } = v;
 
       let temp;
@@ -61,6 +67,7 @@ export default function ConfigForm({
         default:
           temp = null;
       }
+
       if (!temp) {
         return null;
       }
