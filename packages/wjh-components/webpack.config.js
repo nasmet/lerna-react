@@ -2,18 +2,22 @@
  * @Description: webpack配置文件
  * @Author: 吴锦辉
  * @Date: 2021-08-05 14:13:37
- * @LastEditTime: 2021-08-11 11:13:11
+ * @LastEditTime: 2021-08-30 11:21:56
  */
 
 const path = require('path');
-const { argv } = require('yargs');
-const { merge } = require('webpack-merge');
 const webpack = require('webpack');
-const devConfig = require('./webpack.dev.js');
-const proConfig = require('./webpack.pro.js');
+const SpeedMeasurePlugin = require('speed-measure-webpack-plugin');
 
-const { env } = argv;
-const baseConfig = {
+module.exports = {
+  entry: './src/index.js',
+  output: {
+    path: path.resolve(__dirname, 'build'),
+    filename: 'index.js',
+    library: 'components',
+    libraryTarget: 'umd',
+  },
+  mode: 'production',
   module: {
     rules: [
       {
@@ -22,7 +26,6 @@ const baseConfig = {
         loader: 'babel-loader',
         options: {
           presets: ['@babel/env', '@babel/preset-react'],
-          plugins: [require.resolve('react-refresh/babel')], // 为 react-refresh 添加
         },
       },
       {
@@ -35,28 +38,37 @@ const baseConfig = {
       },
     ],
   },
-  plugins: [new webpack.IgnorePlugin(/\.\/locale/, /moment/)],
+  plugins: [new webpack.IgnorePlugin(/\.\/locale/, /moment/), new SpeedMeasurePlugin()],
   resolve: {
     alias: {
       '@src': path.resolve(__dirname, 'src/'),
     },
     mainFiles: ['index.jsx', 'index.js'],
   },
+  externals: {
+    react: {
+      commonjs: 'react',
+      commonjs2: 'react',
+      amd: 'react',
+      root: 'React',
+    },
+    'react-dom': {
+      commonjs: 'react-dom',
+      commonjs2: 'react-dom',
+      amd: 'react-dom',
+      root: 'ReactDOM',
+    },
+    antd: {
+      commonjs: 'antd',
+      commonjs2: 'antd',
+      amd: 'antd',
+      root: 'antd',
+    },
+    moment: {
+      commonjs: 'moment',
+      commonjs2: 'moment',
+      amd: 'moment',
+      root: 'moment',
+    },
+  },
 };
-
-let buildConfig;
-
-switch (env) {
-  case 'production':
-    buildConfig = proConfig;
-
-    break;
-  case 'development':
-    buildConfig = devConfig;
-
-    break;
-  default:
-    throw new Error('不存在该环境的运行');
-}
-
-module.exports = merge(baseConfig, buildConfig);
