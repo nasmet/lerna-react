@@ -13,6 +13,6 @@ import App from './app';
 
 wjhUtils.size.adapteMobileFontSize();
 
-console.log(123);
+console.log(13);
 
 render(<App />, document.getElementById('app'));
