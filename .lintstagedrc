@@ -1,4 +1,4 @@
 {
-  "*.{css, scss}": ["stylelint --fix"],
-  "*.{js,jsx,ts,tsx}": ["eslint", "git add", "prettier --write"],
+  "src/**/*.{css, scss}": "stylelint --fix",
+  "src/**/*.{js,jsx,ts,tsx}": "eslint",
 }
