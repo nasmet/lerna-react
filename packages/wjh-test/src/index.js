@@ -2,7 +2,7 @@
  * @Description: 入口文件
  * @Author: 吴锦辉
  * @Date: 2021-07-20 13:51:17
- * @LastEditTime: 2021-08-31 11:22:00
+ * @LastEditTime: 2021-08-31 11:23:07
  */
 
 import React from 'react';
@@ -13,6 +13,6 @@ import App from './app';
 
 wjhUtils.size.adapteMobileFontSize();
 
-console.log(12222);
+console.log(122);
 
 render(<App />, document.getElementById('app'));
