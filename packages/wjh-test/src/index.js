@@ -11,6 +11,6 @@ import 'antd/dist/antd.css';
 import * as wjhUtils from 'wjh-util';
 import App from './app';
 
-wjhUtils.size.adapteMobileFontSize;
+wjhUtils.size.adapteMobileFontSiz;
 
 render(<App />, document.getElementById('app'));
