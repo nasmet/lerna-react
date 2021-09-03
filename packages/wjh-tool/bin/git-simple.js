@@ -4,7 +4,7 @@
  * @Description: 简化git命令
  * @Author: 吴锦辉
  * @Date: 2021-04-25 15:35:56
- * @LastEditTime: 2021-05-08 15:11:40
+ * @LastEditTime: 2021-09-03 11:01:25
  * reference: https://www.runoob.com/git/git-tutorial.html
  */
 
@@ -175,7 +175,7 @@ function ur(url) {
  * @return {void}
  */
 function ac(remark) {
-  exec(`git add -A && git commit -m ${remark}`);
+  exec(`git add -A && git commit -m '${remark}'`);
 }
 
 /**

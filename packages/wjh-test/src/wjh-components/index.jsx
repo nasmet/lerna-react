@@ -2,12 +2,13 @@
  * @Description: 应用文件
  * @Author: 吴锦辉
  * @Date: 2021-07-20 13:53:24
- * @LastEditTime: 2021-08-30 15:46:05
+ * @LastEditTime: 2021-09-03 10:50:05
  */
 
 import React, { useState, useCallback } from 'react';
-import { ConfigForm, UploadWrap, CreateQRCode } from 'wjh-components';
+import { ConfigForm, UploadWrap, CreateQRCode, Toast } from 'wjh-components';
 import { Button } from 'antd';
+import styles from './index.module.scss';
 
 export default function WjhComponents() {
   const [showConfig, setShowConfig] = useState(() => ({
@@ -135,13 +136,45 @@ export default function WjhComponents() {
     [showConfig]
   );
 
+  const onShowToast = useCallback(() => {
+    Toast.showToast({ title: '失败的toast显示，2s后隐藏', icon: 'fail' });
+  }, []);
+
+  const onShowModal = useCallback(() => {
+    Toast.showModal({ content: 'Modal显示Modal显示Modal显示Modal显示' });
+  }, []);
+
+  const onShowLoading = useCallback(() => {
+    Toast.showLoading({
+      isMask: false,
+    });
+  }, []);
+
+  const onHideLoading = useCallback(() => {
+    Toast.hideLoading();
+  }, []);
+
   return (
-    <div>
+    <div style={{ overflow: 'hidden' }}>
       <UploadWrap accept=".xls,.xlsx">
         <Button type="primary">上传文件</Button>
       </UploadWrap>
       <CreateQRCode />
       <ConfigForm configs={configs} col={3} gutter={[32, 8]} />
+      <div className={styles.btnWrap}>
+        <Button type="primary" className={styles.btn} onClick={onShowToast}>
+          显示Toast
+        </Button>
+        <Button type="primary" className={styles.btn} onClick={onShowModal}>
+          显示Modal
+        </Button>
+        <Button type="primary" className={styles.btn} onClick={onShowLoading}>
+          显示Loading
+        </Button>
+        <Button type="primary" className={styles.btn} onClick={onHideLoading}>
+          隐藏Loading
+        </Button>
+      </div>
     </div>
   );
 }

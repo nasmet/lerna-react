@@ -1,0 +1,11 @@
+.btnWrap {
+  margin-top: 40 * $px;
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+
+  .btn {
+    margin-right: 30 * $px;
+    margin-bottom: 30 * $px;
+  }
+}
