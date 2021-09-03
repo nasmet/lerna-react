@@ -2,11 +2,11 @@
  * @Description: 应用文件
  * @Author: 吴锦辉
  * @Date: 2021-07-20 13:53:24
- * @LastEditTime: 2021-09-03 10:50:05
+ * @LastEditTime: 2021-09-03 13:46:55
  */
 
 import React, { useState, useCallback } from 'react';
-import { ConfigForm, UploadWrap, CreateQRCode, Toast } from 'wjh-components';
+import { ConfigForm, UploadWrap, CreateQRCode, Toast, List } from 'wjh-components';
 import { Button } from 'antd';
 import styles from './index.module.scss';
 
@@ -156,11 +156,11 @@ export default function WjhComponents() {
 
   return (
     <div style={{ overflow: 'hidden' }}>
-      <UploadWrap accept=".xls,.xlsx">
+      {/* <UploadWrap accept=".xls,.xlsx">
         <Button type="primary">上传文件</Button>
       </UploadWrap>
       <CreateQRCode />
-      <ConfigForm configs={configs} col={3} gutter={[32, 8]} />
+      <ConfigForm configs={configs} col={3} gutter={[32, 8]} /> */}
       <div className={styles.btnWrap}>
         <Button type="primary" className={styles.btn} onClick={onShowToast}>
           显示Toast
@@ -175,6 +175,7 @@ export default function WjhComponents() {
           隐藏Loading
         </Button>
       </div>
+      <List />
     </div>
   );
 }

@@ -1,0 +1,14 @@
+.wrap {
+  height: 600 * $px;
+  overflow: auto;
+}
+
+.content {
+  height: auto;
+}
+
+.item {
+  height: 80 * $px;
+  background-color: yellowgreen;
+  border-bottom: 2 * $px solid #eee;
+}
