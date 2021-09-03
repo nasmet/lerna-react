@@ -175,7 +175,8 @@ function ur(url) {
  * @return {void}
  */
 function ac(remark) {
-  exec(`git add -A && git commit -m '${remark}'`);
+  console.log('remark: ', remark);
+  exec(`git add -A && git commit -m "${remark}"`);
 }
 
 /**
