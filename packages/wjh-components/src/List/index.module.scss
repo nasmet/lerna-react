@@ -12,3 +12,26 @@
   background-color: yellowgreen;
   border-bottom: 2 * $px solid #eee;
 }
+
+.upDropTip {
+  height: 0;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+
+  &.active {
+    height: 80 * $px;
+  }
+
+  &.hide {
+    height: 0;
+    transition: all 0.5s;
+  }
+}
+
+.tip {
+  height: 80 * $px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}

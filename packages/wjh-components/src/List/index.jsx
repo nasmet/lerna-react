@@ -1,4 +1,5 @@
-import React, { useState, useCallback, useRef, useEffect } from 'react';
+import React, { useState, useCallback, useRef } from 'react';
+import classNames from 'classnames';
 import styles from './index.module.scss';
 
 /** 加载状态映射 */
@@ -40,21 +41,37 @@ export default function List() {
     maxOffset: 60,
   });
 
-  useEffect(() => {
-    setData(new Array(10).fill(1));
-  }, []);
+  const onScroll = useCallback(
+    e => {
+      const { scrollTop, clientHeight } = e.target;
 
-  const onScroll = useCallback(e => {
-    const { scrollTop, clientHeight } = e.target;
+      if (scrollTop + clientHeight >= contentNode.current.clientHeight) {
+        if (data.length >= 100) {
+          setStatus(loadStatusMap.noMore);
+        } else {
+          if (status !== loadStatusMap.none) {
+            return;
+          }
 
-    if (scrollTop + clientHeight >= contentNode.current.clientHeight) {
-      setStatus(loadStatusMap.noMore);
-    }
-  }, []);
+          setStatus(loadStatusMap.downDropLoading);
+
+          setTimeout(() => {
+            setStatus(loadStatusMap.none);
+            setData(pre => pre.concat(new Array(10).fill(1)));
+          }, 500);
+        }
+      }
+    },
+    [data, status]
+  );
 
   const onTouchStart = useCallback(
     e => {
-      if (status !== loadStatusMap.none) {
+      if (status !== loadStatusMap.none && status !== loadStatusMap.noMore) {
+        return;
+      }
+
+      if (e.currentTarget.scrollTop > 0) {
         return;
       }
 
@@ -67,6 +84,10 @@ export default function List() {
 
   const onTouchMove = useCallback(
     e => {
+      if (!touchStatus) {
+        return;
+      }
+
       if (status === loadStatusMap.upDropLoading || status === loadStatusMap.upDropEnd) {
         return;
       }
@@ -84,26 +105,26 @@ export default function List() {
         setStatus(loadStatusMap.none);
       }
     },
-    [status]
+    [status, touchStatus]
   );
 
   const onTouchEnd = useCallback(() => {
+    if (!touchStatus) {
+      return;
+    }
+
     setTouchStatus(false);
 
     const offset = touchRef.current.end - touchRef.current.start;
 
     if (offset >= touchRef.current.offset) {
       setStatus(loadStatusMap.upDropLoading);
-      setOffsetY(touchRef.current.offset);
+      setOffsetY(0);
 
       setTimeout(() => {
-        setStatus(loadStatusMap.upDropEnd);
-
-        setTimeout(() => {
-          setOffsetY(0);
-          setStatus(loadStatusMap.none);
-        }, 2000);
-      }, 2000);
+        setData(new Array(10).fill(1));
+        setStatus(loadStatusMap.none);
+      }, 500);
     } else {
       setOffsetY(0);
       setStatus(loadStatusMap.none);
@@ -111,7 +132,7 @@ export default function List() {
 
     touchRef.current.start = 0;
     touchRef.current.end = 0;
-  }, []);
+  }, [touchStatus]);
 
   return (
     <div
@@ -121,27 +142,41 @@ export default function List() {
       onTouchMove={onTouchMove}
       onTouchEnd={onTouchEnd}
     >
-      {status === loadStatusMap.upDropStart ||
-      status === loadStatusMap.upDropLoading ||
-      status === loadStatusMap.upDropEnd ? (
-        <div>{tipsMap[status]}</div>
-      ) : null}
       <div
-        className={styles.content}
-        ref={contentNode}
-        style={{
-          transform: `translateY(${offsetY}px)`,
-          transition: !touchStatus ? 'all 0.5s' : 'none',
-        }}
+        className={classNames(styles.upDropTip, {
+          [styles.active]:
+            status === loadStatusMap.upDropStart ||
+            status === loadStatusMap.upDropLoading ||
+            status === loadStatusMap.upDropEnd,
+          [styles.hide]: status === loadStatusMap.none,
+        })}
       >
-        {data.map((_, index) => (
-          // eslint-disable-next-line react/no-array-index-key
-          <div key={index} className={styles.item}>
-            {index}
-          </div>
-        ))}
-        {status === loadStatusMap.noMore ? <div>{tipsMap[status]}</div> : null}
+        {tipsMap[status]}
       </div>
+      {data.length > 0 ? (
+        <div
+          className={styles.content}
+          ref={contentNode}
+          style={{
+            transform: `translateY(${offsetY}px)`,
+            transition: !touchStatus ? 'all 0.5s' : 'none',
+          }}
+        >
+          {data.map((_, index) => (
+            // eslint-disable-next-line react/no-array-index-key
+            <div key={index} className={styles.item}>
+              {index}
+            </div>
+          ))}
+          {status === loadStatusMap.noMore ||
+          status === loadStatusMap.downDropLoading ||
+          status === loadStatusMap.downDropEnd ? (
+            <div className={styles.tip}>{tipsMap[status]}</div>
+          ) : null}
+        </div>
+      ) : (
+        <div className={styles.tip}>暂无数据</div>
+      )}
     </div>
   );
 }
