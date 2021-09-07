@@ -2,7 +2,7 @@
  * @Description: 应用文件
  * @Author: 吴锦辉
  * @Date: 2021-07-20 13:53:24
- * @LastEditTime: 2021-09-07 10:25:43
+ * @LastEditTime: 2021-09-07 14:10:25
  */
 
 import React, { useState, useCallback } from 'react';
@@ -206,7 +206,7 @@ export default function WjhComponents() {
           <Button type="primary">上传文件</Button>
         </UploadWrap>
         <CreateQRCode />
-        <ConfigForm configs={configs} col={3} gutter={[32, 8]} />
+        <ConfigForm configs={configs} col={2} gutter={[32, 8]} />
         <div className={styles.btnWrap}>
           <Button type="primary" className={styles.btn} onClick={onShowToast}>
             显示Toast
