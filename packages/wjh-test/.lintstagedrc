@@ -1,4 +1,0 @@
-{
-  "src/**/*.{css, scss}": "stylelint",
-  "src/**/*.{js,jsx,ts,tsx}": ["eslint", "git add"],
-}
