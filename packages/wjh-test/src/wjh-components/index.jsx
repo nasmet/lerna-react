@@ -2,7 +2,7 @@
  * @Description: 应用文件
  * @Author: 吴锦辉
  * @Date: 2021-07-20 13:53:24
- * @LastEditTime: 2021-09-03 13:46:55
+ * @LastEditTime: 2021-09-07 10:25:43
  */
 
 import React, { useState, useCallback } from 'react';
@@ -14,6 +14,8 @@ export default function WjhComponents() {
   const [showConfig, setShowConfig] = useState(() => ({
     favorite: false,
   }));
+
+  const [data, setData] = useState([]);
 
   const configs = useCallback(
     form => {
@@ -154,28 +156,80 @@ export default function WjhComponents() {
     Toast.hideLoading();
   }, []);
 
-  return (
-    <div style={{ overflow: 'hidden' }}>
-      {/* <UploadWrap accept=".xls,.xlsx">
-        <Button type="primary">上传文件</Button>
-      </UploadWrap>
-      <CreateQRCode />
-      <ConfigForm configs={configs} col={3} gutter={[32, 8]} /> */}
-      <div className={styles.btnWrap}>
-        <Button type="primary" className={styles.btn} onClick={onShowToast}>
-          显示Toast
-        </Button>
-        <Button type="primary" className={styles.btn} onClick={onShowModal}>
-          显示Modal
-        </Button>
-        <Button type="primary" className={styles.btn} onClick={onShowLoading}>
-          显示Loading
-        </Button>
-        <Button type="primary" className={styles.btn} onClick={onHideLoading}>
-          隐藏Loading
-        </Button>
+  const renderItem = useCallback((v, index) => {
+    return (
+      <div key={index} className={styles.item}>
+        {index}
       </div>
-      <List />
-    </div>
+    );
+  }, []);
+
+  const upDropEnd = useCallback(cb => {
+    setTimeout(() => {
+      setData(new Array(10).fill(1));
+
+      cb();
+    }, 1000);
+  }, []);
+
+  const downDropEnd = useCallback(
+    (cb, noMoreCb) => {
+      if (data.length >= 50) {
+        noMoreCb();
+
+        return;
+      }
+
+      setTimeout(() => {
+        setData(pre => pre.concat(new Array(10).fill(1)));
+
+        cb();
+      }, 1000);
+    },
+    [data]
+  );
+
+  const BodyCmp = useCallback(props => {
+    return <div className={styles.body}>{props.children}</div>;
+  }, []);
+
+  const upDropEndList = useCallback(cb => {
+    setTimeout(() => {
+      cb();
+    }, 1000);
+  }, []);
+
+  return (
+    <List.Pull upDropEnd={upDropEndList}>
+      <div style={{ overflow: 'hidden' }}>
+        <UploadWrap accept=".xls,.xlsx">
+          <Button type="primary">上传文件</Button>
+        </UploadWrap>
+        <CreateQRCode />
+        <ConfigForm configs={configs} col={3} gutter={[32, 8]} />
+        <div className={styles.btnWrap}>
+          <Button type="primary" className={styles.btn} onClick={onShowToast}>
+            显示Toast
+          </Button>
+          <Button type="primary" className={styles.btn} onClick={onShowModal}>
+            显示Modal
+          </Button>
+          <Button type="primary" className={styles.btn} onClick={onShowLoading}>
+            显示Loading
+          </Button>
+          <Button type="primary" className={styles.btn} onClick={onHideLoading}>
+            隐藏Loading
+          </Button>
+        </div>
+        <List
+          wrapStyle={{ height: '4rem' }}
+          data={data}
+          BodyCmp={BodyCmp}
+          renderItem={renderItem}
+          upDropEnd={upDropEnd}
+          downDropEnd={downDropEnd}
+        />
+      </div>
+    </List.Pull>
   );
 }

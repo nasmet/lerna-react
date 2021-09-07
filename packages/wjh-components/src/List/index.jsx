@@ -1,4 +1,4 @@
-import React, { useState, useCallback, useRef } from 'react';
+import React, { useState, useCallback, useRef, useMemo } from 'react';
 import classNames from 'classnames';
 import styles from './index.module.scss';
 
@@ -27,9 +27,16 @@ export const tipsMap = {
   [loadStatusMap.noMore]: '没有更多啦～',
 };
 
-export default function List() {
-  const [status, setStatus] = useState(loadStatusMap.none);
-  const [data, setData] = useState([]);
+export default function List({
+  wrapStyle = {},
+  BodyCmp,
+  renderItem,
+  data = [],
+  upDropEnd,
+  downDropEnd,
+}) {
+  const [upDropStatus, setUpDropStatus] = useState(loadStatusMap.none);
+  const [downDropStatus, setDownDropStatus] = useState(loadStatusMap.none);
   const [offsetY, setOffsetY] = useState(0);
   const [touchStatus, setTouchStatus] = useState(false);
 
@@ -46,28 +53,24 @@ export default function List() {
       const { scrollTop, clientHeight } = e.target;
 
       if (scrollTop + clientHeight >= contentNode.current.clientHeight) {
-        if (data.length >= 100) {
-          setStatus(loadStatusMap.noMore);
-        } else {
-          if (status !== loadStatusMap.none) {
-            return;
-          }
-
-          setStatus(loadStatusMap.downDropLoading);
-
-          setTimeout(() => {
-            setStatus(loadStatusMap.none);
-            setData(pre => pre.concat(new Array(10).fill(1)));
-          }, 500);
+        if (downDropStatus !== loadStatusMap.none && downDropStatus !== loadStatusMap.noMore) {
+          return;
         }
+
+        setDownDropStatus(loadStatusMap.downDropLoading);
+        downDropEnd &&
+          downDropEnd(
+            () => setDownDropStatus(loadStatusMap.none),
+            () => setDownDropStatus(loadStatusMap.noMore)
+          );
       }
     },
-    [data, status]
+    [downDropStatus, downDropEnd]
   );
 
   const onTouchStart = useCallback(
     e => {
-      if (status !== loadStatusMap.none && status !== loadStatusMap.noMore) {
+      if (upDropStatus !== loadStatusMap.none) {
         return;
       }
 
@@ -79,7 +82,7 @@ export default function List() {
 
       touchRef.current.start = e.touches[0].clientY;
     },
-    [status]
+    [upDropStatus]
   );
 
   const onTouchMove = useCallback(
@@ -88,24 +91,32 @@ export default function List() {
         return;
       }
 
-      if (status === loadStatusMap.upDropLoading || status === loadStatusMap.upDropEnd) {
+      if (
+        upDropStatus === loadStatusMap.upDropLoading ||
+        upDropStatus === loadStatusMap.upDropEnd
+      ) {
         return;
       }
 
       touchRef.current.end = e.touches[0].clientY;
 
       let offset = touchRef.current.end - touchRef.current.start;
+
+      if (offset <= 0) {
+        return;
+      }
+
       offset = offset >= touchRef.current.maxOffset ? touchRef.current.maxOffset : offset;
 
       setOffsetY(offset);
 
       if (offset >= touchRef.current.offset) {
-        setStatus(loadStatusMap.upDropStart);
+        setUpDropStatus(loadStatusMap.upDropStart);
       } else {
-        setStatus(loadStatusMap.none);
+        setUpDropStatus(loadStatusMap.none);
       }
     },
-    [status, touchStatus]
+    [upDropStatus, touchStatus]
   );
 
   const onTouchEnd = useCallback(() => {
@@ -118,25 +129,27 @@ export default function List() {
     const offset = touchRef.current.end - touchRef.current.start;
 
     if (offset >= touchRef.current.offset) {
-      setStatus(loadStatusMap.upDropLoading);
+      setUpDropStatus(loadStatusMap.upDropLoading);
       setOffsetY(0);
 
-      setTimeout(() => {
-        setData(new Array(10).fill(1));
-        setStatus(loadStatusMap.none);
-      }, 500);
+      upDropEnd && upDropEnd(() => setUpDropStatus(loadStatusMap.none));
     } else {
       setOffsetY(0);
-      setStatus(loadStatusMap.none);
+      setUpDropStatus(loadStatusMap.none);
     }
 
     touchRef.current.start = 0;
     touchRef.current.end = 0;
-  }, [touchStatus]);
+  }, [touchStatus, upDropEnd]);
+
+  const renderCmp = useMemo(() => {
+    return data.map((v, index) => renderItem && renderItem(v, index));
+  }, [data, renderItem]);
 
   return (
     <div
       className={styles.wrap}
+      style={wrapStyle}
       onScroll={onScroll}
       onTouchStart={onTouchStart}
       onTouchMove={onTouchMove}
@@ -145,38 +158,145 @@ export default function List() {
       <div
         className={classNames(styles.upDropTip, {
           [styles.active]:
-            status === loadStatusMap.upDropStart ||
-            status === loadStatusMap.upDropLoading ||
-            status === loadStatusMap.upDropEnd,
-          [styles.hide]: status === loadStatusMap.none,
+            upDropStatus === loadStatusMap.upDropStart ||
+            upDropStatus === loadStatusMap.upDropLoading ||
+            upDropStatus === loadStatusMap.upDropEnd,
+          [styles.hide]: upDropStatus === loadStatusMap.none,
         })}
       >
-        {tipsMap[status]}
+        {tipsMap[upDropStatus]}
       </div>
-      {data.length > 0 ? (
-        <div
-          className={styles.content}
-          ref={contentNode}
-          style={{
-            transform: `translateY(${offsetY}px)`,
-            transition: !touchStatus ? 'all 0.5s' : 'none',
-          }}
-        >
-          {data.map((_, index) => (
-            // eslint-disable-next-line react/no-array-index-key
-            <div key={index} className={styles.item}>
-              {index}
-            </div>
-          ))}
-          {status === loadStatusMap.noMore ||
-          status === loadStatusMap.downDropLoading ||
-          status === loadStatusMap.downDropEnd ? (
-            <div className={styles.tip}>{tipsMap[status]}</div>
-          ) : null}
-        </div>
-      ) : (
-        <div className={styles.tip}>暂无数据</div>
-      )}
+      <div
+        className={styles.content}
+        ref={contentNode}
+        style={{
+          transform: `translateY(${offsetY}px)`,
+          transition: !touchStatus ? 'all 0.5s' : 'none',
+        }}
+      >
+        {data.length > 0 ? BodyCmp ? <BodyCmp>{renderCmp}</BodyCmp> : renderCmp : null}
+        {downDropStatus === loadStatusMap.noMore ||
+        downDropStatus === loadStatusMap.downDropLoading ||
+        downDropStatus === loadStatusMap.downDropEnd ? (
+          <div className={styles.tip}>{tipsMap[downDropStatus]}</div>
+        ) : null}
+
+        {downDropStatus === loadStatusMap.none ? <div className={styles.tip}>暂无数据</div> : null}
+      </div>
     </div>
   );
 }
+
+List.Pull = function Pull({ upDropEnd, children }) {
+  const [upDropStatus, setUpDropStatus] = useState(loadStatusMap.none);
+  const [offsetY, setOffsetY] = useState(0);
+  const [touchStatus, setTouchStatus] = useState(false);
+
+  const contentNode = useRef(null);
+  const touchRef = useRef({
+    start: 0,
+    end: 0,
+    offset: 30,
+    maxOffset: 60,
+  });
+
+  const onTouchStart = useCallback(
+    e => {
+      if (upDropStatus !== loadStatusMap.none) {
+        return;
+      }
+
+      if (e.currentTarget.scrollTop > 0) {
+        return;
+      }
+
+      setTouchStatus(true);
+
+      touchRef.current.start = e.touches[0].clientY;
+    },
+    [upDropStatus]
+  );
+
+  const onTouchMove = useCallback(
+    e => {
+      if (!touchStatus) {
+        return;
+      }
+
+      if (
+        upDropStatus === loadStatusMap.upDropLoading ||
+        upDropStatus === loadStatusMap.upDropEnd
+      ) {
+        return;
+      }
+
+      touchRef.current.end = e.touches[0].clientY;
+
+      let offset = touchRef.current.end - touchRef.current.start;
+
+      if (offset <= 0) {
+        return;
+      }
+
+      offset = offset >= touchRef.current.maxOffset ? touchRef.current.maxOffset : offset;
+
+      setOffsetY(offset);
+
+      if (offset >= touchRef.current.offset) {
+        setUpDropStatus(loadStatusMap.upDropStart);
+      } else {
+        setUpDropStatus(loadStatusMap.none);
+      }
+    },
+    [upDropStatus, touchStatus]
+  );
+
+  const onTouchEnd = useCallback(() => {
+    if (!touchStatus) {
+      return;
+    }
+
+    setTouchStatus(false);
+
+    const offset = touchRef.current.end - touchRef.current.start;
+
+    if (offset >= touchRef.current.offset) {
+      setUpDropStatus(loadStatusMap.upDropLoading);
+      setOffsetY(0);
+
+      upDropEnd && upDropEnd(() => setUpDropStatus(loadStatusMap.none));
+    } else {
+      setOffsetY(0);
+      setUpDropStatus(loadStatusMap.none);
+    }
+
+    touchRef.current.start = 0;
+    touchRef.current.end = 0;
+  }, [touchStatus, upDropEnd]);
+
+  return (
+    <div onTouchStart={onTouchStart} onTouchMove={onTouchMove} onTouchEnd={onTouchEnd}>
+      <div
+        className={classNames(styles.upDropTip, {
+          [styles.active]:
+            upDropStatus === loadStatusMap.upDropStart ||
+            upDropStatus === loadStatusMap.upDropLoading ||
+            upDropStatus === loadStatusMap.upDropEnd,
+          [styles.hide]: upDropStatus === loadStatusMap.none,
+        })}
+      >
+        {tipsMap[upDropStatus]}
+      </div>
+      <div
+        className={styles.content}
+        ref={contentNode}
+        style={{
+          transform: `translateY(${offsetY}px)`,
+          transition: !touchStatus ? 'all 0.5s' : 'none',
+        }}
+      >
+        {children}
+      </div>
+    </div>
+  );
+};
