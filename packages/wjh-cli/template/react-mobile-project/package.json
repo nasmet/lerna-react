@@ -22,6 +22,8 @@
     "react-dom": "^16.13.1",
     "react-router-dom": "^5.2.0",
     "wjh-cmps-mobile": "^1.0.0",
+    "wjh-hooks": "^1.0.0",
+    "wjh-request": "^1.0.0",
     "wjh-routers": "^1.0.0",
     "wjh-store": "^1.0.0",
     "wjh-util": "^1.0.0"
