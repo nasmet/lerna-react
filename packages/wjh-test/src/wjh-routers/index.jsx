@@ -2,18 +2,20 @@ import React from 'react';
 import { BrowserRouter } from 'react-router-dom';
 import RenderRouters from 'wjh-routers';
 import styles from './index.module.scss';
+import WjhRequest from '../wjh-request';
 import { WrapContainer, WjhStore, store } from '../wjh-store';
 import WjhComponents from '../wjh-components';
-import WjhRequest from '../wjh-request';
+import WjhCmpsMobile from '../wjh-cmps-mobile';
 
 function Layout(props) {
   return (
     <div>
       {props.children}
-      {/* <div className={styles.word}>移动端html font-size动态计算设置</div> */}
-      {/* <WjhRequest /> */}
-      {/* <WjhStore /> */}
+      <div className={styles.word}>移动端html font-size动态计算设置</div>
+      <WjhRequest />
+      <WjhStore />
       <WjhComponents />
+      <WjhCmpsMobile />
     </div>
   );
 }

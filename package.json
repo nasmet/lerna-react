@@ -27,7 +27,7 @@
     "stylelint-order": "^4.0.0"
   },
   "scripts": {
-    "bootstrap": "lerna clean && lerna bootstrap",
+    "init": "lerna clean && lerna bootstrap",
     "start": "node ./scripts/inquirer.js"
   }
 }

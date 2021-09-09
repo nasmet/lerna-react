@@ -1,3 +1,10 @@
+/*
+ * @Description: 列表滚动组件，支持上拉和下拉加载
+ * @Author: 吴锦辉
+ * @Date: 2021-09-09 09:05:34
+ * @LastEditTime: 2021-09-09 09:05:56
+ */
+
 import React, { useState, useCallback, useRef, useMemo } from 'react';
 import classNames from 'classnames';
 import styles from './index.module.scss';

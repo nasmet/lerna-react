@@ -1,7 +1,7 @@
 {
-  "name": "react-project",
+  "name": "react-mobile-project",
   "version": "1.0.0",
-  "description": "适用于PC的react项目",
+  "description": "适用于手机端的react项目",
   "scripts": {
     "start": "webpack serve --env=development --domain=dev",
     "test": "webpack serve --env=development --domain=test",
@@ -15,14 +15,13 @@
   "author": "jinhui wu",
   "license": "ISC",
   "dependencies": {
-    "antd": "^4.16.10",
     "axios": "^0.19.0",
     "classnames": ">=2.2.6",
-    "moment": "^2.29.1",
+    "dayjs": "1.8.35",
     "react": "^16.13.1",
     "react-dom": "^16.13.1",
     "react-router-dom": "^5.2.0",
-    "wjh-components": "^1.0.0",
+    "wjh-cmps-mobile": "^1.0.0",
     "wjh-routers": "^1.0.0",
     "wjh-store": "^1.0.0",
     "wjh-util": "^1.0.0"

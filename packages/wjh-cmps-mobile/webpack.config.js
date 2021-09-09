@@ -1,12 +1,11 @@
 /*
  * @Description: webpack配置文件
  * @Author: 吴锦辉
- * @Date: 2021-08-05 14:13:37
- * @LastEditTime: 2021-09-09 09:03:33
+ * @Date: 2021-09-09 09:02:31
+ * @LastEditTime: 2021-09-09 09:47:44
  */
 
 const path = require('path');
-const webpack = require('webpack');
 const SpeedMeasurePlugin = require('speed-measure-webpack-plugin');
 
 module.exports = {
@@ -14,7 +13,7 @@ module.exports = {
   output: {
     path: path.resolve(__dirname, 'build'),
     filename: 'index.js',
-    library: 'wjh-components',
+    library: 'wjh-cmps-mobile',
     libraryTarget: 'umd',
   },
   mode: 'production',
@@ -34,11 +33,22 @@ module.exports = {
       },
       {
         test: /\.scss$/,
-        use: ['style-loader', 'css-loader', 'sass-loader'],
+        use: [
+          'style-loader',
+          'css-loader',
+          'sass-loader',
+          {
+            loader: 'sass-resources-loader',
+            options: {
+              sourceMap: true,
+              resources: [path.resolve(__dirname, './src/global.scss')], // 一定是path.resolve的绝对路径
+            },
+          },
+        ],
       },
     ],
   },
-  plugins: [new webpack.IgnorePlugin(/\.\/locale/, /moment/), new SpeedMeasurePlugin()],
+  plugins: [new SpeedMeasurePlugin()],
   resolve: {
     alias: {
       '@src': path.resolve(__dirname, 'src/'),
@@ -57,18 +67,6 @@ module.exports = {
       commonjs2: 'react-dom',
       amd: 'react-dom',
       root: 'ReactDOM',
-    },
-    antd: {
-      commonjs: 'antd',
-      commonjs2: 'antd',
-      amd: 'antd',
-      root: 'antd',
-    },
-    moment: {
-      commonjs: 'moment',
-      commonjs2: 'moment',
-      amd: 'moment',
-      root: 'moment',
     },
   },
 };

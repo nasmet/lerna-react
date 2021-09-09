@@ -1,7 +1,7 @@
 {
-  "name": "wjh-components",
+  "name": "wjh-cmps-mobile",
   "version": "1.0.7",
-  "description": "适用于PC端react通用组件",
+  "description": "适用于手机端的react通用组件",
   "main": "./src/index.js",
   "scripts": {
     "build": "webpack"
@@ -9,9 +9,6 @@
   "author": "jinhui wu",
   "license": "ISC",
   "peerDependencies": {
-    "antd": ">=4.16.10",
-    "moment": ">=2.29.1",
-    "qrcode": ">=1.4.4",
     "react": ">=16.8.0",
     "react-dom": ">=16.8.0",
     "classnames": ">=2.2.6"
@@ -23,10 +20,10 @@
     "babel-loader": "^8.1.0",
     "css-loader": "^6.2.0",
     "sass-loader": "^12.1.0",
+    "sass-resources-loader": "^2.2.4",
     "speed-measure-webpack-plugin": "^1.5.0",
     "style-loader": "^3.2.1",
     "webpack": "^5.48.0",
     "webpack-cli": "^4.7.2"
-  },
-  "gitHead": "9637b5a7ad72591fe09bfd8403907d2b44d2968f"
+  }
 }

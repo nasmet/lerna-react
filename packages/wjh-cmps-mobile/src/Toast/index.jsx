@@ -1,3 +1,10 @@
+/*
+ * @Description: 弹层相关封装
+ * @Author: 吴锦辉
+ * @Date: 2021-09-09 09:06:53
+ * @LastEditTime: 2021-09-09 09:07:11
+ */
+
 import React, { useCallback, useEffect } from 'react';
 import ReactDOM from 'react-dom';
 import styles from './index.module.scss';

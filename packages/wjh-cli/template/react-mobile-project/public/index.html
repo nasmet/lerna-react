@@ -1,0 +1,47 @@
+<!--
+ * @Description: 加载文件
+ * @Author: 吴锦辉
+ * @Date: 2021-08-12 09:17:01
+ * @LastEditTime: 2021-08-27 10:57:31
+-->
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>react-project</title>
+    <script>
+      window.addEventListener(
+        'error',
+        e => {
+          e.stopImmediatePropagation();
+          const srcElement = e.srcElement;
+
+          /* script标签加载失败 */
+          if (
+            srcElement &&
+            srcElement.tagName &&
+            srcElement.tagName.toLocaleLowerCase() === 'script' &&
+            srcElement.src.indexOf('umi') !== -1
+          ) {
+            console.error('script资源文件加载失败: ', srcElement.src);
+            alert('script资源文件加载失败: ' + srcElement.src);
+
+            return;
+          }
+
+          /* 全局错误 */
+          if (srcElement === window) {
+            console.error('全局错误: ', e.message);
+
+            return;
+          }
+        },
+        true
+      );
+    </script>
+  </head>
+  <body>
+    <div id="app"></div>
+  </body>
+</html>
