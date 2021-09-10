@@ -1,0 +1,8 @@
+$primary: var(--primary);
+
+.wrap {
+  margin: 40 * $px;
+  padding: 80 * $px;
+  border: 2 * $px solid $primary;
+  color: $primary;
+}

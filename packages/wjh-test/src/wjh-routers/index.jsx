@@ -1,11 +1,19 @@
 import React from 'react';
 import { BrowserRouter } from 'react-router-dom';
 import RenderRouters from 'wjh-routers';
+import * as wjhUtils from 'wjh-util';
 import styles from './index.module.scss';
 import WjhRequest from '../wjh-request';
 import { WrapContainer, WjhStore, store } from '../wjh-store';
 import WjhComponents from '../wjh-components';
 import WjhCmpsMobile from '../wjh-cmps-mobile';
+import WjhUtil from '../wjh-util';
+
+wjhUtils.size.adapteMobileFontSize();
+
+wjhUtils.theme.changeTheme({
+  primary: '#fff',
+});
 
 function Layout(props) {
   return (
@@ -16,6 +24,7 @@ function Layout(props) {
       <WjhStore />
       <WjhComponents />
       <WjhCmpsMobile />
+      <WjhUtil />
     </div>
   );
 }
