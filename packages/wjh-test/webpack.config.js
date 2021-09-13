@@ -2,7 +2,7 @@
  * @Description: webpack配置文件
  * @Author: 吴锦辉
  * @Date: 2021-07-20 13:55:02
- * @LastEditTime: 2021-09-07 10:26:26
+ * @LastEditTime: 2021-09-13 10:26:36
  */
 
 const ReactRefreshPlugin = require('@pmmmwh/react-refresh-webpack-plugin');
@@ -55,6 +55,7 @@ module.exports = {
   devServer: {
     open: true,
     port: 8080,
+    historyApiFallback: true,
   },
   resolve: {
     mainFiles: ['index.jsx', 'index.js'],

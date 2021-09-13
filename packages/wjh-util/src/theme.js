@@ -2,7 +2,7 @@
  * @Description: 动态设置css全局变量
  * @Author: 吴锦辉
  * @Date: 2021-09-10 09:27:28
- * @LastEditTime: 2021-09-10 09:33:40
+ * @LastEditTime: 2021-09-13 15:36:46
  */
 
 /**
@@ -22,6 +22,6 @@ export function changeTheme(data = {}) {
   const root = document.querySelector(':root');
 
   Object.keys(data).forEach(key => {
-    root.setAttribute('style', `--${key}: ${data[key]}`);
+    root.style.setProperty(`--${key}`, `${data[key]}`);
   });
 }

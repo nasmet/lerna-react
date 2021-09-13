@@ -2,13 +2,13 @@
  * @Description: webpack配置
  * @Author: 吴锦辉
  * @Date: 2021-08-17 09:10:46
- * @LastEditTime: 2021-08-17 09:11:33
+ * @LastEditTime: 2021-09-13 14:49:57
  */
 
 const path = require('path');
 
 module.exports = {
-  entry: './src/index.js',
+  entry: './build/index.js',
   output: {
     path: path.resolve(__dirname, 'build'),
     filename: 'index.js',

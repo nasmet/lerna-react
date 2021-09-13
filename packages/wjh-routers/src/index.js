@@ -2,11 +2,12 @@
  * @Description: 路由分组渲染方法
  * @Author: 吴锦辉
  * @Date: 2021-08-16 09:55:58
- * @LastEditTime: 2021-08-16 10:10:32
+ * @LastEditTime: 2021-09-13 10:31:55
  */
 
 import React, { Suspense } from 'react';
 import { Switch, Route, Redirect } from 'react-router-dom';
+import KeepAlive from 'wjh-keepalive';
 
 /**
  * 路由组件
@@ -14,29 +15,45 @@ import { Switch, Route, Redirect } from 'react-router-dom';
  * @return {ReactNode}
  */
 const RouteItem = route => {
-  const { redirect, path, Component, WrapperComponent } = route;
+  const { redirect, path, Component, WrapperComponent, keepAlive } = route;
 
   if (redirect) {
     return <Redirect key={path} exact from={path} to={redirect} />;
   }
 
-  return (
-    <Route
-      key={path}
-      path={path}
-      render={props => {
-        if (!WrapperComponent) {
-          return <Component {...props} />;
-        }
+  const obj = {};
 
+  obj[`${keepAlive ? 'children' : 'render'}`] = props => {
+    if (!WrapperComponent) {
+      if (keepAlive) {
         return (
-          <WrapperComponent {...props}>
+          <KeepAlive {...props}>
+            <Component {...props} />
+          </KeepAlive>
+        );
+      }
+
+      return <Component {...props} />;
+    }
+
+    if (keepAlive) {
+      return (
+        <KeepAlive {...props}>
+          <WrapperComponent>
             <Component {...props} />
           </WrapperComponent>
-        );
-      }}
-    />
-  );
+        </KeepAlive>
+      );
+    }
+
+    return (
+      <WrapperComponent>
+        <Component {...props} />
+      </WrapperComponent>
+    );
+  };
+
+  return <Route key={path} path={path} {...obj} />;
 };
 
 // 资源预加载Loading样式
@@ -48,44 +65,46 @@ const fallback = <div>loading......</div>;
  * @return {Function}       [description]
  */
 function fn(route) {
-  const { Component, children, path, WrapperComponent } = route;
+  const { Component, children, path, WrapperComponent, keepAlive } = route;
 
   if (children && children.length > 0) {
-    return (
-      <Route
-        key={path}
-        path={path}
-        render={props => {
-          if (!WrapperComponent) {
-            return (
-              <Component {...props}>
-                <Suspense fallback={fallback}>
-                  <Switch>
-                    {children.map(routeChild => {
-                      return fn(routeChild);
-                    })}
-                  </Switch>
-                </Suspense>
-              </Component>
-            );
-          }
+    const render = props => {
+      return (
+        <Component {...props}>
+          <Suspense fallback={fallback}>
+            {/* <Switch> */}
+            {children.map(routeChild => {
+              return fn(routeChild);
+            })}
+            {/* </Switch> */}
+          </Suspense>
+        </Component>
+      );
+    };
 
-          return (
-            <WrapperComponent>
-              <Component {...props}>
-                <Suspense fallback={fallback}>
-                  <Switch>
-                    {children.map(routeChild => {
-                      return fn(routeChild);
-                    })}
-                  </Switch>
-                </Suspense>
-              </Component>
-            </WrapperComponent>
-          );
-        }}
-      />
-    );
+    const obj = {};
+
+    obj[`${keepAlive ? 'children' : 'render'}`] = props => {
+      if (!WrapperComponent) {
+        if (keepAlive) {
+          return <KeepAlive {...props}>{render(props)}</KeepAlive>;
+        }
+
+        return render(props);
+      }
+
+      if (keepAlive) {
+        return (
+          <KeepAlive {...props}>
+            <WrapperComponent>{render(props)}</WrapperComponent>
+          </KeepAlive>
+        );
+      }
+
+      return <WrapperComponent>{render(props)}</WrapperComponent>;
+    };
+
+    return <Route key={path} path={path} {...obj} />;
   }
 
   return RouteItem(route);

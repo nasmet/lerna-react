@@ -2,7 +2,7 @@
  * @Description: webpack配置
  * @Author: 吴锦辉
  * @Date: 2021-08-09 10:38:45
- * @LastEditTime: 2021-08-10 09:46:47
+ * @LastEditTime: 2021-09-13 09:38:19
  */
 
 const path = require('path');
@@ -13,7 +13,7 @@ module.exports = {
     path: path.resolve(__dirname, 'build'),
     filename: 'index.js',
     library: {
-      name: 'store',
+      name: 'wjh-store',
       type: 'umd',
     },
   },

@@ -17,6 +17,7 @@
     "react-dom": "^16.13.1",
     "wjh-cmps-mobile": "^1.0.7",
     "wjh-components": "^1.0.7",
+    "wjh-keepalive": "^1.0.7",
     "wjh-request": "^1.0.7",
     "wjh-routers": "^1.0.7",
     "wjh-store": "^1.0.7",

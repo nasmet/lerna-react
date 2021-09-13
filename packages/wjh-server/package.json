@@ -1,0 +1,13 @@
+{
+  "name": "wjh-server",
+  "version": "1.0.7",
+  "description": "node服务端",
+  "main": "./src/index.js",
+  "scripts": {
+    "start": ""
+  },
+  "author": "jinhui wu",
+  "license": "ISC",
+  "dependencies": {},
+  "devDependencies": {}
+}
