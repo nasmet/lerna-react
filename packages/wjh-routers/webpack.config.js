@@ -2,7 +2,7 @@
  * @Description: webpack配置
  * @Author: 吴锦辉
  * @Date: 2021-08-16 09:55:46
- * @LastEditTime: 2021-09-13 15:47:57
+ * @LastEditTime: 2021-09-13 17:31:29
  */
 
 const path = require('path');
@@ -34,12 +34,6 @@ module.exports = {
     mainFiles: ['index.jsx', 'index.js'],
   },
   externals: {
-    'wjh-keepalive': {
-      commonjs: 'wjh-keepalive',
-      commonjs2: 'wjh-keepalive',
-      amd: 'wjh-keepalive',
-      root: 'WjhKeepalive',
-    },
     react: {
       commonjs: 'react',
       commonjs2: 'react',

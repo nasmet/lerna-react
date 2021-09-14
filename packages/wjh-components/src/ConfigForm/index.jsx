@@ -2,7 +2,7 @@
  * @Description: 基于配置的表单组件
  * @Author: 吴锦辉
  * @Date: 2021-08-05 13:53:09
- * @LastEditTime: 2021-08-30 14:51:21
+ * @LastEditTime: 2021-09-14 16:39:35
  */
 
 import React, { useCallback, useMemo } from 'react';
@@ -19,6 +19,8 @@ export default function ConfigForm({
   showBtn = true,
   okText = '确认',
   cancelText = '取消',
+  showOkBtn = true,
+  showCancelBtn = true,
   ok,
   cancel,
 }) {
@@ -89,7 +91,6 @@ export default function ConfigForm({
     form
       .validateFields()
       .then(values => {
-        console.log('values:', values);
         ok && ok(values);
       })
       .catch(errorInfo => {
@@ -112,10 +113,12 @@ export default function ConfigForm({
         {values}
         {showBtn ? (
           <Col span={24} style={{ textAlign: 'center' }}>
-            <Button style={{ marginRight: '16px' }} type="primary" onClick={onSubmit}>
-              {okText}
-            </Button>
-            <Button onClick={onCancel}>{cancelText}</Button>
+            {showOkBtn ? (
+              <Button style={{ marginRight: '16px' }} type="primary" onClick={onSubmit}>
+                {okText}
+              </Button>
+            ) : null}
+            {showCancelBtn ? <Button onClick={onCancel}>{cancelText}</Button> : null}
           </Col>
         ) : null}
       </Row>

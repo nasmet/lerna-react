@@ -2,7 +2,7 @@
  * @Description: 基于axios二次封装的网络请求库
  * @Author: 吴锦辉
  * @Date: 2021-08-16 14:15:35
- * @LastEditTime: 2021-08-16 15:02:45
+ * @LastEditTime: 2021-09-14 16:38:10
  */
 
 import axios from 'axios';
@@ -15,8 +15,9 @@ class HttpUtils {
     const { timeout, baseURL } = config;
     let { requestIntercept, responseIntercept } = config;
 
-    axios.defaults.timeout = timeout;
-    axios.defaults.baseURL = baseURL;
+    this.instancse = axios.create();
+    this.instancse.defaults.timeout = timeout;
+    this.instancse.defaults.baseURL = baseURL;
     this.cancelRequestTaskQueue = [];
     this.taskId = 1;
 
@@ -38,20 +39,20 @@ class HttpUtils {
       responseIntercept ||
       (res => {
         switch (res.data.code) {
-          case 200:
+          case 0:
             return res.data.data;
           default:
-            return Promise.reject(res.data.msg);
+            return Promise.reject(res.data.message);
         }
       });
 
     // 请求拦截器（所有发送的请求都要从这儿过一次)
-    axios.interceptors.request.use(requestIntercept, e => {
+    this.instancse.interceptors.request.use(requestIntercept, e => {
       return Promise.reject(e);
     });
 
     // 响应拦截器（所有接收到的请求都要从这儿过一次）
-    axios.interceptors.response.use(responseIntercept, error => {
+    this.instancse.interceptors.response.use(responseIntercept, error => {
       return Promise.reject(error.message);
     });
   }
@@ -63,7 +64,7 @@ class HttpUtils {
       cancelRequestTask = c;
     });
 
-    if (fn === axios.get || fn === axios.delete) {
+    if (fn === this.instancse.get || fn === this.instancse.delete) {
       arg = [
         {
           params,
@@ -113,19 +114,19 @@ class HttpUtils {
   }
 
   get(url, params = {}) {
-    return this._request(axios.get, url, params);
+    return this._request(this.instancse.get, url, params);
   }
 
   del(url, params = {}) {
-    return this._request(axios.delete, url, params);
+    return this._request(this.instancse.delete, url, params);
   }
 
   post(url, params = {}) {
-    return this._request(axios.post, url, params);
+    return this._request(this.instancse.post, url, params);
   }
 
   put(url, params = {}) {
-    return this._request(axios.put, url, params);
+    return this._request(this.instancse.put, url, params);
   }
 
   cancelRequestById(taskId) {

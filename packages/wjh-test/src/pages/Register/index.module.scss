@@ -1,0 +1,22 @@
+.wrap {
+  position: relative;
+  width: 100vw;
+  height: 100vh;
+  background-color: #f6f6f6;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  overflow: hidden;
+}
+
+.content {
+  width: 500 * $px;
+  padding: 40 * $px;
+  background-color: #fff;
+
+  .title {
+    margin-bottom: 30 * $px;
+    font-size: 32 * $px;
+  }
+}

@@ -2,7 +2,7 @@
  * @Description: webpack配置文件
  * @Author: 吴锦辉
  * @Date: 2021-07-20 13:55:02
- * @LastEditTime: 2021-09-13 10:26:36
+ * @LastEditTime: 2021-09-14 14:53:28
  */
 
 const ReactRefreshPlugin = require('@pmmmwh/react-refresh-webpack-plugin');
@@ -56,8 +56,18 @@ module.exports = {
     open: true,
     port: 8080,
     historyApiFallback: true,
+    proxy: {
+      '/api': {
+        target: 'http://localhost:3000',
+        secure: false,
+        pathRewrite: { '^/api': '' },
+      },
+    },
   },
   resolve: {
     mainFiles: ['index.jsx', 'index.js'],
+    alias: {
+      '@pages': path.resolve(__dirname, 'src/pages'),
+    },
   },
 };

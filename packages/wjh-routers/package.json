@@ -2,14 +2,16 @@
   "name": "wjh-routers",
   "version": "1.0.7",
   "description": "react路由分组渲染",
-  "main": "./src/index.js",
+  "main": "./build/index.js",
   "scripts": {
     "build": "webpack"
   },
+  "dependencies": {
+    "wjh-keepalive": "^1.0.7"
+  },
   "peerDependencies": {
     "react": ">=16.8.0",
-    "react-router-dom": ">=5.0.0",
-    "wjh-keepalive": "^1.0.7"
+    "react-router-dom": ">=5.0.0"
   },
   "devDependencies": {
     "@babel/core": "^7.10.5",

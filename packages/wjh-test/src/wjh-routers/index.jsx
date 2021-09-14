@@ -3,14 +3,14 @@ import { BrowserRouter, Link } from 'react-router-dom';
 import RenderRouters from 'wjh-routers';
 import * as wjhUtils from 'wjh-util';
 import { useShow, useHide, active, destory } from 'wjh-keepalive';
+import Login from '@pages/Login';
+import Register from '@pages/Register';
 import styles from './index.module.scss';
 import WjhRequest from '../wjh-request';
 import { WrapContainer, WjhStore, store } from '../wjh-store';
 import WjhComponents from '../wjh-components';
 import WjhCmpsMobile from '../wjh-cmps-mobile';
 import WjhUtil from '../wjh-util';
-
-console.log(useShow, useHide);
 
 wjhUtils.size.adapteMobileFontSize();
 
@@ -23,11 +23,12 @@ function Layout(props) {
   return (
     <div>
       {props.children}
+      <Link to="/user/login">切换路由到login</Link>
       <Link to="/user">切换路由到user</Link>
       <Link to="/home">切换路由到home</Link>
       <Link to="/destory">切换路由到销毁</Link>
       <div className={styles.word}>移动端html font-size动态计算设置</div>
-      <WjhRequest />
+      {/* <WjhRequest /> */}
       <WjhStore />
       <WjhComponents />
       <WjhCmpsMobile />
@@ -78,8 +79,19 @@ function Destory() {
 const routerConfig = [
   // 分组路由，children 里的路由会将父节点的 Component 作为布局组件
   {
+    path: '/user/login',
+    Component: Login,
+    exact: true,
+  },
+  {
+    path: '/user/register',
+    Component: Register,
+    exact: true,
+  },
+  {
     path: '/',
     Component: Layout,
+    exact: true,
     children: [
       {
         path: '/user',
