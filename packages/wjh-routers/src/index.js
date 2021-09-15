@@ -2,7 +2,7 @@
  * @Description: 路由分组渲染方法
  * @Author: 吴锦辉
  * @Date: 2021-08-16 09:55:58
- * @LastEditTime: 2021-09-13 10:31:55
+ * @LastEditTime: 2021-09-15 11:33:48
  */
 
 import React, { Suspense } from 'react';
@@ -15,10 +15,10 @@ import KeepAlive from 'wjh-keepalive';
  * @return {ReactNode}
  */
 const RouteItem = route => {
-  const { redirect, path, Component, WrapperComponent, keepAlive } = route;
+  const { redirect, from, to, path, Component, WrapperComponent, keepAlive } = route;
 
   if (redirect) {
-    return <Redirect key={path} exact from={path} to={redirect} />;
+    return <Redirect key={from + to} from={from} to={to} />;
   }
 
   const obj = {};

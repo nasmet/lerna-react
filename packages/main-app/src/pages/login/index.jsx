@@ -1,13 +1,12 @@
 import React, { useCallback } from 'react';
 import { Link } from 'react-router-dom';
 import { ConfigForm } from 'wjh-components';
-import HttpUtils from 'wjh-request';
 import { message } from 'antd';
+import apiCtrl from '@api';
+import cacheCtrl from '@cache';
 import styles from './index.module.scss';
 
-const httpUtils = new HttpUtils({ baseURL: '/api' });
-
-export default function Login() {
+export default function Login(props) {
   const configs = useCallback(() => {
     const rules = [{ required: true }];
 
@@ -34,17 +33,26 @@ export default function Login() {
     ];
   }, []);
 
-  const onLogin = useCallback(values => {
-    const [, execute] = httpUtils.post('/user/login', values);
+  const onLogin = useCallback(
+    values => {
+      const [, execute] = apiCtrl.post('/user/login', values);
 
-    execute
-      .then(() => {
-        message.info('登录成功');
-      })
-      .catch(err => {
-        message.error(err);
-      });
-  }, []);
+      execute
+        .then(res => {
+          const { token } = res || {};
+
+          cacheCtrl.set('token', token);
+
+          props.history.replace('/main');
+
+          message.info('登录成功');
+        })
+        .catch(err => {
+          message.error(err);
+        });
+    },
+    [props]
+  );
 
   return (
     <div className={styles.wrap}>

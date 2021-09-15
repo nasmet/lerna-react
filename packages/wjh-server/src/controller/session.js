@@ -2,11 +2,12 @@
  * @Description: 会话控制层
  * @Author: 吴锦辉
  * @Date: 2021-09-14 09:35:58
- * @LastEditTime: 2021-09-14 10:21:49
+ * @LastEditTime: 2021-09-15 15:19:05
  */
 
 class SessionController {
-  constructor() {
+  constructor(mainCtrl) {
+    this._mainCtrl = mainCtrl;
     this.sessionMap = new Map();
   }
 
@@ -34,6 +35,4 @@ class SessionController {
   }
 }
 
-const sessionController = new SessionController();
-
-module.exports = sessionController;
+module.exports = SessionController;

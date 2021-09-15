@@ -2,12 +2,16 @@
  * @Description: 用户控制器
  * @Author: 吴锦辉
  * @Date: 2021-09-14 13:59:45
- * @LastEditTime: 2021-09-14 17:06:44
+ * @LastEditTime: 2021-09-15 15:18:50
  */
 
 const { createUser, selectUser, selectAccount } = require('../model/user');
 
 class UserController {
+  constructor(mainCtrl) {
+    this._mainCtrl = mainCtrl;
+  }
+
   createUser(data = {}) {
     return new Promise((resolve, reject) => {
       createUser(data)
@@ -45,6 +49,4 @@ class UserController {
   }
 }
 
-const userController = new UserController();
-
-module.exports = userController;
+module.exports = UserController;

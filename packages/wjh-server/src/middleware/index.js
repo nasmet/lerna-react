@@ -2,13 +2,15 @@
  * @Description: 中间件
  * @Author: 吴锦辉
  * @Date: 2021-09-14 09:20:06
- * @LastEditTime: 2021-09-14 18:13:25
+ * @LastEditTime: 2021-09-15 18:01:06
  */
 
-const sessionController = require('../controller/session');
-const { codeMap, codeNameMap } = require('../error-code/index');
+const mainCtrl = require('../controller/main');
+const { codeMap, codeNameMap } = require('../code/index');
 
 function errorHandler(err, req, res) {
+  console.log('err.message: 1234');
+
   res.status(200).json({
     code: err.message,
     message: codeNameMap[err.message],
@@ -35,16 +37,19 @@ function serverHandle(req, res, next) {
 }
 
 function checkSession(req, res, next) {
-  const authorization = req.headers['Authorization'];
+  const { authorization } = req.headers;
 
   try {
     // 获取token
     const token = authorization.replace('Bearer ', '');
 
-    if (!sessionController.hasSession(token)) {
+    const sessionCtrl = mainCtrl.getSessionCtrl();
+
+    if (!sessionCtrl.hasSession(token)) {
       next(new Error(codeMap.InvalidToken));
     } else {
-      req.userId = sessionController.getSession(token).userId;
+      res.userId = sessionCtrl.getSession(token).userId;
+      res.token = token;
     }
 
     next();

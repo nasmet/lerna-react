@@ -1,12 +1,10 @@
 import React, { useCallback } from 'react';
 import { ConfigForm } from 'wjh-components';
-import HttpUtils from 'wjh-request';
 import { message } from 'antd';
+import apiCtrl from '@api';
 import styles from './index.module.scss';
 
-const httpUtils = new HttpUtils({ baseURL: '/api' });
-
-export default function Register() {
+export default function Register(props) {
   const configs = useCallback(() => {
     const rules = [{ required: true }];
 
@@ -44,28 +42,33 @@ export default function Register() {
     ];
   }, []);
 
-  const onRegister = useCallback(values => {
-    const { account, password, confirmPassword } = values;
+  const onRegister = useCallback(
+    values => {
+      const { account, password, confirmPassword } = values;
 
-    if (password !== confirmPassword) {
-      message.info('两次输入的密码不一致！');
+      if (password !== confirmPassword) {
+        message.info('两次输入的密码不一致！');
 
-      return;
-    }
+        return;
+      }
 
-    const [, execute] = httpUtils.post('/user/register', {
-      account,
-      password,
-    });
-
-    execute
-      .then(() => {
-        message.info('注册成功');
-      })
-      .catch(err => {
-        message.error(err);
+      const [, execute] = apiCtrl.post('/user/register', {
+        account,
+        password,
       });
-  }, []);
+
+      execute
+        .then(() => {
+          message.info('注册成功');
+
+          props.history.push('/user/login');
+        })
+        .catch(err => {
+          message.error(err);
+        });
+    },
+    [props]
+  );
 
   return (
     <div className={styles.wrap}>
