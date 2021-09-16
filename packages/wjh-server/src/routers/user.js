@@ -2,7 +2,7 @@
  * @Description: 用户相关接口请求
  * @Author: 吴锦辉
  * @Date: 2021-09-14 09:15:23
- * @LastEditTime: 2021-09-16 13:52:27
+ * @LastEditTime: 2021-09-16 18:03:02
  */
 
 const express = require('express');
@@ -10,7 +10,7 @@ const { checkSessionHandle, responseHandle } = require('../middleware/index');
 const mainCtrl = require('../controller/main');
 const { codeMap } = require('../code/index');
 const { generateSnowflakeId } = require('../utils/index');
-const { verifyLoginParams } = require('../param-verify/user');
+const { verifyLoginParams, verifyUserListParams } = require('../param-verify/user');
 
 const router = express.Router();
 
@@ -113,4 +113,46 @@ router.post(
   },
   responseHandle
 );
+
+/** 查询用户列表 */
+router.get(
+  '/list',
+  async (req, res, next) => {
+    try {
+      const userCtrl = mainCtrl.getUserCtrl();
+
+      const values = await userCtrl.selectUserCount();
+
+      console.log('total: ', values.length);
+
+      res.body = {
+        total: values.length,
+      };
+
+      next();
+    } catch (err) {
+      next(err);
+    }
+  },
+  verifyUserListParams(),
+  async (req, res, next) => {
+    try {
+      const userCtrl = mainCtrl.getUserCtrl();
+
+      const data = await userCtrl.selectUserByPage(req.query);
+
+      console.log('data: ', data);
+
+      res.code = codeMap.Success;
+
+      res.body.data = data;
+
+      next();
+    } catch (err) {
+      next(err);
+    }
+  },
+  responseHandle
+);
+
 module.exports = router;

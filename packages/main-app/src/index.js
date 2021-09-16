@@ -2,7 +2,7 @@
  * @Description: 渲染入口文件
  * @Author: 吴锦辉
  * @Date: 2021-08-16 08:56:03
- * @LastEditTime: 2021-08-16 08:56:11
+ * @LastEditTime: 2021-09-16 15:26:01
  */
 
 import React from 'react';
@@ -13,10 +13,10 @@ import App from './app';
 
 registerMicroApps([
   {
-    name: 'child-app',
+    name: 'child-app-operation',
     entry: '//localhost:8081',
-    container: '#child-app',
-    activeRule: '/child-app',
+    container: '#child-app-operation',
+    activeRule: '/main/operation',
   },
 ]);
 

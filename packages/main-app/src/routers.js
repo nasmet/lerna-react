@@ -2,7 +2,7 @@
  * @Description: 路由配置文件
  * @Author: 吴锦辉
  * @Date: 2021-08-16 08:57:07
- * @LastEditTime: 2021-09-16 13:56:59
+ * @LastEditTime: 2021-09-16 15:25:33
  */
 
 import React, { lazy } from 'react';
@@ -35,6 +35,7 @@ export default [
   {
     path: '/',
     Component: BaseLayout,
+    isSwitch: true,
     children: [
       {
         path: '/admin',
@@ -59,6 +60,11 @@ export default [
         exact: true,
         children: [],
         WrapperComponent,
+      },
+      {
+        redirect: true,
+        from: '/',
+        to: '/admin/login',
       },
     ],
   },

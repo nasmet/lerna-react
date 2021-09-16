@@ -2,7 +2,7 @@
  * @Description: 路由分组渲染方法
  * @Author: 吴锦辉
  * @Date: 2021-08-16 09:55:58
- * @LastEditTime: 2021-09-16 11:53:40
+ * @LastEditTime: 2021-09-16 14:43:57
  */
 
 import React, { Suspense } from 'react';
@@ -65,18 +65,24 @@ const fallback = <div>loading......</div>;
  * @return {Function}       [description]
  */
 function fn(route) {
-  const { Component, children, path, WrapperComponent, keepAlive } = route;
+  const { Component, children, path, WrapperComponent, keepAlive, isSwitch } = route;
 
   if (children && children.length > 0) {
     const render = props => {
       return (
         <Component {...props}>
           <Suspense fallback={fallback}>
-            {/* <Switch> */}
-            {children.map(routeChild => {
-              return fn(routeChild);
-            })}
-            {/* </Switch> */}
+            {isSwitch ? (
+              <Switch>
+                {children.map(routeChild => {
+                  return fn(routeChild);
+                })}
+              </Switch>
+            ) : (
+              children.map(routeChild => {
+                return fn(routeChild);
+              })
+            )}
           </Suspense>
         </Component>
       );

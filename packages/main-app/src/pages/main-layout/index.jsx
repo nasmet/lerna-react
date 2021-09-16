@@ -1,4 +1,5 @@
 import React, { useMemo, useCallback } from 'react';
+import { Link } from 'react-router-dom';
 import { Menu, Dropdown, message } from 'antd';
 import { MailOutlined, AppstoreOutlined, SettingOutlined, DownOutlined } from '@ant-design/icons';
 import apiCtrl from '@api';
@@ -17,7 +18,10 @@ export default function Layout(props) {
         <div className={styles.header}>
           <Header {...props} />
         </div>
-        <div className={styles.main}>{props.children}</div>
+        <div className={styles.main}>
+          {props.children}
+          <div id="child-app-operation" />
+        </div>
       </div>
     </div>
   );
@@ -25,16 +29,22 @@ export default function Layout(props) {
 
 function Header(props) {
   const onLoginOut = useCallback(() => {
-    const [, execute] = apiCtrl.post('/user/loginout');
+    // const [, execute] = apiCtrl.post('/user/loginout');
 
-    execute.then(() => {
-      cacheCtrl.remove('token');
+    // execute.then(() => {
+    //   cacheCtrl.remove('token');
 
-      props.history.replace('/admin/login');
+    //   props.history.replace('/admin/login');
 
-      message.info('登出成功');
+    //   message.info('登出成功');
+    // });
+
+    const [, execute] = apiCtrl.get('/user/list', { page: 1, pageSize: 10 });
+
+    execute.then(res => {
+      console.log('res: ', res);
     });
-  }, [props]);
+  }, []);
 
   const menu = useMemo(
     () => (
@@ -62,7 +72,9 @@ function Aside() {
   return (
     <Menu mode="vertical">
       <SubMenu key="sub1" icon={<MailOutlined />} title="运营模块">
-        <Menu.Item key="1">用户管理</Menu.Item>
+        <Menu.Item key="1">
+          <Link to="/main/operation/user/list">用户管理</Link>
+        </Menu.Item>
         <Menu.Item key="2">Option 2</Menu.Item>
         <Menu.ItemGroup title="Item 2">
           <Menu.Item key="3">Option 3</Menu.Item>

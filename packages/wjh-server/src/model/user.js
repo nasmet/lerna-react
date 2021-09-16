@@ -2,7 +2,7 @@
  * @Description: 用户属性数据库查询
  * @Author: 吴锦辉
  * @Date: 2021-09-14 11:47:48
- * @LastEditTime: 2021-09-14 18:01:31
+ * @LastEditTime: 2021-09-16 17:42:35
  */
 
 const { query } = require('../mysql/index');
@@ -48,8 +48,39 @@ function selectAccount(data = {}) {
   });
 }
 
+function selectUserByPage(data = {}) {
+  const { page, pageSize } = data || {};
+
+  const from = (page - 1) * pageSize;
+  const to = page * pageSize;
+
+  return new Promise((resolve, reject) => {
+    query({ sql: `select * from table limit ${from},${to}` })
+      .then(res => {
+        resolve(res);
+      })
+      .catch(err => {
+        reject(err);
+      });
+  });
+}
+
+function selectUserCount() {
+  return new Promise((resolve, reject) => {
+    query({ sql: 'SELECT COUNT(*) FROM user' })
+      .then(res => {
+        resolve(res);
+      })
+      .catch(err => {
+        reject(err);
+      });
+  });
+}
+
 module.exports = {
   createUser,
   selectUser,
   selectAccount,
+  selectUserByPage,
+  selectUserCount,
 };

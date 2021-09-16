@@ -1,0 +1,39 @@
+{
+  "name": "child-app-operation",
+  "version": "1.0.0",
+  "description": "基于qiankun搭建的子应用",
+  "main": "index.js",
+  "scripts": {
+    "start": "webpack serve --env=development",
+    "build": "webpack --env=production"
+  },
+  "author": "jinhui wu",
+  "license": "ISC",
+  "dependencies": {
+    "antd": "^4.16.10",
+    "react": "^16.13.1",
+    "react-dom": "^16.13.1",
+    "react-router-dom": "^5.2.0",
+    "wjh-routers": "^1.0.0",
+    "wjh-components": "^1.0.7"
+  },
+  "devDependencies": {
+    "@babel/core": "^7.10.5",
+    "@babel/preset-env": "^7.10.4",
+    "@babel/preset-react": "^7.10.4",
+    "babel-loader": "^8.1.0",
+    "css-loader": "^6.2.0",
+    "file-loader": "^6.2.0",
+    "glob": "^7.1.6",
+    "html-webpack-plugin": "^4.3.0",
+    "node-sass": "^4.14.0",
+    "sass-loader": "^12.1.0",
+    "sass-resources-loader": "^2.2.4",
+    "speed-measure-webpack-plugin": "^1.5.0",
+    "style-loader": "^3.2.1",
+    "url-loader": "^4.1.1",
+    "webpack": "^5.48.0",
+    "webpack-cli": "^4.7.2",
+    "webpack-dev-server": "^3.11.2"
+  }
+}

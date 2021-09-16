@@ -2,10 +2,16 @@
  * @Description: 用户控制器
  * @Author: 吴锦辉
  * @Date: 2021-09-14 13:59:45
- * @LastEditTime: 2021-09-15 15:18:50
+ * @LastEditTime: 2021-09-16 17:39:40
  */
 
-const { createUser, selectUser, selectAccount } = require('../model/user');
+const {
+  createUser,
+  selectUser,
+  selectAccount,
+  selectUserByPage,
+  selectUserCount,
+} = require('../model/user');
 
 class UserController {
   constructor(mainCtrl) {
@@ -39,6 +45,30 @@ class UserController {
   selectAccount(data = {}) {
     return new Promise((resolve, reject) => {
       selectAccount(data)
+        .then(res => {
+          resolve(res);
+        })
+        .catch(err => {
+          reject(err);
+        });
+    });
+  }
+
+  selectUserByPage(data = {}) {
+    return new Promise((resolve, reject) => {
+      selectUserByPage(data)
+        .then(res => {
+          resolve(res);
+        })
+        .catch(err => {
+          reject(err);
+        });
+    });
+  }
+
+  selectUserCount() {
+    return new Promise((resolve, reject) => {
+      selectUserCount()
         .then(res => {
           resolve(res);
         })
