@@ -37,37 +37,31 @@ export default function Login(props) {
     values => {
       const [, execute] = apiCtrl.post('/user/login', values);
 
-      execute
-        .then(res => {
-          const { token } = res || {};
+      execute.then(res => {
+        const { token } = res || {};
 
-          cacheCtrl.set('token', token);
+        cacheCtrl.set('token', token);
 
-          props.history.replace('/main');
+        props.history.replace('/main');
 
-          message.info('登录成功');
-        })
-        .catch(err => {
-          message.error(err);
-        });
+        message.info('登录成功');
+      });
     },
     [props]
   );
 
   return (
-    <div className={styles.wrap}>
-      <div className={styles.content}>
-        <div className={styles.title}>登录</div>
-        <ConfigForm
-          configs={configs}
-          col={1}
-          gutter={[32, 8]}
-          okText="登录"
-          showCancelBtn={false}
-          ok={onLogin}
-        />
-        <Link to="/user/register">注册</Link>
-      </div>
+    <div className={styles.content}>
+      <div className={styles.title}>登录</div>
+      <ConfigForm
+        configs={configs}
+        col={1}
+        gutter={[32, 8]}
+        okText="登录"
+        showCancelBtn={false}
+        ok={onLogin}
+      />
+      <Link to="/admin/register">注册</Link>
     </div>
   );
 }

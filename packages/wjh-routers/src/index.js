@@ -2,7 +2,7 @@
  * @Description: 路由分组渲染方法
  * @Author: 吴锦辉
  * @Date: 2021-08-16 09:55:58
- * @LastEditTime: 2021-09-15 11:33:48
+ * @LastEditTime: 2021-09-16 11:53:40
  */
 
 import React, { Suspense } from 'react';
@@ -39,7 +39,7 @@ const RouteItem = route => {
     if (keepAlive) {
       return (
         <KeepAlive {...props}>
-          <WrapperComponent>
+          <WrapperComponent {...props}>
             <Component {...props} />
           </WrapperComponent>
         </KeepAlive>
@@ -47,7 +47,7 @@ const RouteItem = route => {
     }
 
     return (
-      <WrapperComponent>
+      <WrapperComponent {...props}>
         <Component {...props} />
       </WrapperComponent>
     );
@@ -96,12 +96,12 @@ function fn(route) {
       if (keepAlive) {
         return (
           <KeepAlive {...props}>
-            <WrapperComponent>{render(props)}</WrapperComponent>
+            <WrapperComponent {...props}>{render(props)}</WrapperComponent>
           </KeepAlive>
         );
       }
 
-      return <WrapperComponent>{render(props)}</WrapperComponent>;
+      return <WrapperComponent {...props}>{render(props)}</WrapperComponent>;
     };
 
     return <Route key={path} path={path} {...obj} />;

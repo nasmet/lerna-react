@@ -2,7 +2,7 @@
  * @Description: 基于axios二次封装的网络请求库
  * @Author: 吴锦辉
  * @Date: 2021-08-16 14:15:35
- * @LastEditTime: 2021-09-14 16:38:10
+ * @LastEditTime: 2021-09-16 11:19:45
  */
 
 import axios from 'axios';
@@ -12,8 +12,7 @@ class HttpUtils {
   constructor(options = {}) {
     const config = { ...defaultConfig, ...options };
 
-    const { timeout, baseURL } = config;
-    let { requestIntercept, responseIntercept } = config;
+    const { timeout, baseURL, requestIntercept, responseIntercept } = config;
 
     this.instancse = axios.create();
     this.instancse.defaults.timeout = timeout;
@@ -21,34 +20,9 @@ class HttpUtils {
     this.cancelRequestTaskQueue = [];
     this.taskId = 1;
 
-    requestIntercept =
-      requestIntercept ||
-      (configs => {
-        configs.data = JSON.stringify(configs.data || {});
-        configs.headers = {
-          'Content-Type': 'application/json',
-          Accept: 'application/json',
-        };
-
-        configs.headers.Authorization = '';
-
-        return configs;
-      });
-
-    responseIntercept =
-      responseIntercept ||
-      (res => {
-        switch (res.data.code) {
-          case 0:
-            return res.data.data;
-          default:
-            return Promise.reject(res.data.message);
-        }
-      });
-
     // 请求拦截器（所有发送的请求都要从这儿过一次)
-    this.instancse.interceptors.request.use(requestIntercept, e => {
-      return Promise.reject(e);
+    this.instancse.interceptors.request.use(requestIntercept, error => {
+      return Promise.reject(error.message);
     });
 
     // 响应拦截器（所有接收到的请求都要从这儿过一次）
@@ -97,6 +71,8 @@ class HttpUtils {
           })
           .catch(e => {
             if (this._isCancel(e)) {
+              reject();
+
               return;
             }
             reject(e);

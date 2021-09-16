@@ -2,7 +2,7 @@
  * @Description: 请求对象
  * @Author: 吴锦辉
  * @Date: 2021-09-15 11:26:27
- * @LastEditTime: 2021-09-15 17:59:47
+ * @LastEditTime: 2021-09-16 13:48:38
  */
 
 import { message } from 'antd';
@@ -22,13 +22,21 @@ const requestIntercept = configs => {
 };
 
 const responseIntercept = res => {
+  if (!/^2/.test(res.status)) {
+    message.error(res.statusText);
+
+    return Promise.reject(res.statusText);
+  }
+
   switch (res.data.code) {
     case 0:
       return res.data.data;
     case 4000:
       message.info('身份验证失败，请重新登录！');
 
-      return res.data.data;
+      window.history.replaceState(null, null, '/admin/login');
+
+      return Promise.reject(res.data.message);
     default:
       message.error(res.data.message);
 

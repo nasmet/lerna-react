@@ -2,7 +2,7 @@
  * @Description: 基于配置的表单组件
  * @Author: 吴锦辉
  * @Date: 2021-08-05 13:53:09
- * @LastEditTime: 2021-09-14 16:39:35
+ * @LastEditTime: 2021-09-16 14:00:36
  */
 
 import React, { useCallback, useMemo } from 'react';
@@ -40,7 +40,7 @@ export default function ConfigForm({
         return null;
       }
 
-      const { cmpType, wrapProps = {}, cmpProps = {}, cmp } = v;
+      const { cmpType, wrapProps = {}, cmpProps = {}, cmp, tip } = v;
 
       let temp;
 
@@ -80,6 +80,7 @@ export default function ConfigForm({
         // eslint-disable-next-line react/no-array-index-key
         <Col key={index} span={24 / value}>
           <Item {...wrapProps}>{temp}</Item>
+          {tip}
         </Col>
       );
     });

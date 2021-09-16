@@ -27,17 +27,13 @@ function Header(props) {
   const onLoginOut = useCallback(() => {
     const [, execute] = apiCtrl.post('/user/loginout');
 
-    execute
-      .then(() => {
-        cacheCtrl.remove('token');
+    execute.then(() => {
+      cacheCtrl.remove('token');
 
-        props.history.replace('/user/login');
+      props.history.replace('/admin/login');
 
-        message.info('登出成功');
-      })
-      .catch(err => {
-        message.error(err);
-      });
+      message.info('登出成功');
+    });
   }, [props]);
 
   const menu = useMemo(
@@ -46,8 +42,7 @@ function Header(props) {
         <Menu.Item key="1" onClick={onLoginOut}>
           退出登录
         </Menu.Item>
-        <Menu.Item key="2">2nd menu item</Menu.Item>
-        <Menu.Item key="3">3rd menu item</Menu.Item>
+        <Menu.Item key="2">用户信息</Menu.Item>
       </Menu>
     ),
     [onLoginOut]
@@ -66,11 +61,9 @@ function Header(props) {
 function Aside() {
   return (
     <Menu mode="vertical">
-      <SubMenu key="sub1" icon={<MailOutlined />} title="Navigation One">
-        <Menu.ItemGroup title="Item 1">
-          <Menu.Item key="1">Option 1</Menu.Item>
-          <Menu.Item key="2">Option 2</Menu.Item>
-        </Menu.ItemGroup>
+      <SubMenu key="sub1" icon={<MailOutlined />} title="运营模块">
+        <Menu.Item key="1">用户管理</Menu.Item>
+        <Menu.Item key="2">Option 2</Menu.Item>
         <Menu.ItemGroup title="Item 2">
           <Menu.Item key="3">Option 3</Menu.Item>
           <Menu.Item key="4">Option 4</Menu.Item>

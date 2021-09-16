@@ -2,16 +2,18 @@
  * @Description: 路由配置文件
  * @Author: 吴锦辉
  * @Date: 2021-08-16 08:57:07
- * @LastEditTime: 2021-09-15 17:57:14
+ * @LastEditTime: 2021-09-16 13:56:59
  */
 
 import React, { lazy } from 'react';
 import cacheCtrl from '@cache';
 import BaseLayout from '@pages/base-layout';
 
-const Login = lazy(() => import('@pages/login'));
-const Register = lazy(() => import('@pages/register'));
+const AdminLayout = lazy(() => import('@pages/admin-layout'));
 const MainLayout = lazy(() => import('@pages/main-layout'));
+
+const Login = lazy(() => import('@pages/admin/login'));
+const Register = lazy(() => import('@pages/admin/register'));
 
 /**
  * 路由包装，对路由做一些拦截
@@ -35,14 +37,21 @@ export default [
     Component: BaseLayout,
     children: [
       {
-        path: '/user/login',
-        Component: Login,
+        path: '/admin',
+        Component: AdminLayout,
         exact: true,
-      },
-      {
-        path: '/user/register',
-        Component: Register,
-        exact: true,
+        children: [
+          {
+            path: '/admin/login',
+            Component: Login,
+            exact: true,
+          },
+          {
+            path: '/admin/register',
+            Component: Register,
+            exact: true,
+          },
+        ],
       },
       {
         path: '/main',
@@ -50,11 +59,6 @@ export default [
         exact: true,
         children: [],
         WrapperComponent,
-      },
-      {
-        redirect: true,
-        from: '/',
-        to: '/user/login',
       },
     ],
   },

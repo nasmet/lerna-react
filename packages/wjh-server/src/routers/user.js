@@ -2,114 +2,115 @@
  * @Description: 用户相关接口请求
  * @Author: 吴锦辉
  * @Date: 2021-09-14 09:15:23
- * @LastEditTime: 2021-09-15 15:26:57
+ * @LastEditTime: 2021-09-16 13:52:27
  */
 
 const express = require('express');
-const { checkSession } = require('../middleware/index');
+const { checkSessionHandle, responseHandle } = require('../middleware/index');
 const mainCtrl = require('../controller/main');
-const { codeMap, codeNameMap } = require('../code/index');
+const { codeMap } = require('../code/index');
 const { generateSnowflakeId } = require('../utils/index');
+const { verifyLoginParams } = require('../param-verify/user');
 
 const router = express.Router();
 
-router.post('/register', async (req, res) => {
-  try {
-    const userCtrl = mainCtrl.getUserCtrl();
-    let values = await userCtrl.selectAccount(req.body);
+/** 注册 */
+router.post(
+  '/register',
+  verifyLoginParams(),
+  async (req, res, next) => {
+    try {
+      const userCtrl = mainCtrl.getUserCtrl();
 
-    if (values.length > 0) {
-      res.status(200).json({
-        code: codeMap.AccountExist,
-        message: codeNameMap[codeMap.AccountExist],
-      });
+      let values = await userCtrl.selectAccount(req.body);
 
-      return;
+      if (values.length > 0) {
+        res.code = codeMap.AccountExist;
+
+        next();
+
+        return;
+      }
+
+      const id = generateSnowflakeId();
+
+      const { account, password } = req.body;
+
+      values = await userCtrl.createUser({ id, account, password });
+
+      res.code = codeMap.Success;
+
+      next();
+    } catch (err) {
+      next(err);
     }
+  },
+  responseHandle
+);
 
-    const id = generateSnowflakeId();
-    const { account, password } = req.body;
+/** 登录 */
+router.post(
+  '/login',
+  verifyLoginParams(),
+  async (req, res, next) => {
+    try {
+      const userCtrl = mainCtrl.getUserCtrl();
 
-    values = await userCtrl.createUser({ id, account, password });
+      const sessionCtrl = mainCtrl.getSessionCtrl();
 
-    res.status(200).json({
-      code: codeMap.Success,
-      message: codeNameMap[codeMap.Success],
-    });
-  } catch (err) {
-    console.error(err);
+      let values = await userCtrl.selectUser(req.body);
 
-    res.status(200).json({
-      code: codeMap.Unknown,
-      message: codeNameMap[codeMap.Unknown],
-    });
-  }
-});
+      if (values.length > 0) {
+        const { id } = values[0];
 
-router.post('/login', async (req, res) => {
-  try {
-    const userCtrl = mainCtrl.getUserCtrl();
-    const sessionCtrl = mainCtrl.getSessionCtrl();
-    let values = await userCtrl.selectUser(req.body);
+        const token = sessionCtrl.generateSession(id);
 
-    if (values.length > 0) {
-      const { id } = values[0];
-
-      const token = sessionCtrl.generateSession(id);
-
-      res.status(200).json({
-        code: codeMap.Success,
-        message: codeNameMap[codeMap.Success],
-        data: {
+        res.code = codeMap.Success;
+        res.body = {
           token,
-        },
-      });
+        };
 
-      return;
+        next();
+
+        return;
+      }
+
+      values = await userCtrl.selectAccount(req.body);
+
+      let code = codeMap.AccountNotExist;
+
+      if (values.length > 0) {
+        code = codeMap.PasswordError;
+      }
+
+      res.code = code;
+
+      next();
+    } catch (err) {
+      next(err);
     }
+  },
+  responseHandle
+);
 
-    values = await userCtrl.selectAccount(req.body);
+router.use(checkSessionHandle);
 
-    let code = codeMap.AccountNotExist;
+/** 登出 */
+router.post(
+  '/loginout',
+  async (req, res, next) => {
+    try {
+      const sessionCtrl = mainCtrl.getSessionCtrl();
 
-    if (values.length > 0) {
-      code = codeMap.PasswordError;
+      sessionCtrl.removeSession(res.token);
+
+      res.code = codeMap.Success;
+
+      next();
+    } catch (err) {
+      next(err);
     }
-
-    res.status(200).json({
-      code,
-      message: codeNameMap[code],
-    });
-  } catch (err) {
-    console.error('err: ', err);
-
-    res.status(200).json({
-      code: codeMap.Unknown,
-      message: codeNameMap[codeMap.Unknown],
-    });
-  }
-});
-
-router.use(checkSession);
-
-router.post('/loginout', async (req, res) => {
-  try {
-    const sessionCtrl = mainCtrl.getSessionCtrl();
-
-    sessionCtrl.removeSession(res.token);
-
-    res.status(200).json({
-      code: codeMap.Success,
-      message: codeNameMap[codeMap.Success],
-    });
-  } catch (err) {
-    console.error('err: ', err);
-
-    res.status(200).json({
-      code: codeMap.Unknown,
-      message: codeNameMap[codeMap.Unknown],
-    });
-  }
-});
-
+  },
+  responseHandle
+);
 module.exports = router;

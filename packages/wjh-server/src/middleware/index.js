@@ -2,41 +2,26 @@
  * @Description: 中间件
  * @Author: 吴锦辉
  * @Date: 2021-09-14 09:20:06
- * @LastEditTime: 2021-09-15 18:01:06
+ * @LastEditTime: 2021-09-16 14:10:35
  */
 
 const mainCtrl = require('../controller/main');
 const { codeMap, codeNameMap } = require('../code/index');
+const { TypeJudgment } = require('../utils/type');
 
-function errorHandler(err, req, res) {
-  console.log('err.message: 1234');
+function responseHandle(req, res) {
+  res.setHeader('Content-Type', 'application/json');
+
+  const { code, body } = res;
 
   res.status(200).json({
-    code: err.message,
-    message: codeNameMap[err.message],
+    code,
+    message: codeNameMap[code],
+    data: body,
   });
 }
 
-function timeLog(req, res, next) {
-  console.log('请求时间: ', Date.now());
-
-  next();
-}
-
-function reqLog(req, res, next) {
-  console.log('请求对象header: ', req.headers);
-  console.log('请求对象body: ', req.body);
-
-  next();
-}
-
-function serverHandle(req, res, next) {
-  res.setHeader('Content-Type', 'application/json');
-
-  next();
-}
-
-function checkSession(req, res, next) {
+function checkSessionHandle(req, res, next) {
   const { authorization } = req.headers;
 
   try {
@@ -46,24 +31,94 @@ function checkSession(req, res, next) {
     const sessionCtrl = mainCtrl.getSessionCtrl();
 
     if (!sessionCtrl.hasSession(token)) {
-      next(new Error(codeMap.InvalidToken));
+      const code = codeMap.InvalidToken;
+
+      res.status(200).json({
+        code,
+        message: codeNameMap[code],
+      });
     } else {
       res.userId = sessionCtrl.getSession(token).userId;
       res.token = token;
+
+      next();
     }
-
-    next();
   } catch (err) {
-    console.error('err: ', err);
-
-    next(new Error(codeMap.Unknown));
+    next(err);
   }
 }
 
+function verifyParamsHandle(rules) {
+  return (req, res, next) => {
+    const body = req.body || {};
+
+    const keys = Object.keys(rules);
+
+    for (let i = 0, len = keys.length; i < len; i += 1) {
+      const key = keys[i];
+
+      const { required, type, max, min, regex } = rules[key];
+
+      const value = body[key];
+
+      if (required && value === undefined) {
+        res.status(200).json({
+          code: 7000,
+          message: `参数${key} 是必传的`,
+        });
+
+        return;
+      }
+
+      if (value === undefined) {
+        next();
+
+        return;
+      }
+
+      if (type && !TypeJudgment({ arg: value, type })) {
+        res.status(200).json({
+          code: 7000,
+          message: `参数${key} 类型有误`,
+        });
+
+        return;
+      }
+
+      if (min && value.length < min) {
+        res.status(200).json({
+          code: 7000,
+          message: `参数${key} 最小长度${min}`,
+        });
+
+        return;
+      }
+
+      if (max && value.length > max) {
+        res.status(200).json({
+          code: 7000,
+          message: `参数${key} 最大长度${max}`,
+        });
+
+        return;
+      }
+
+      if (regex && !regex.test(value)) {
+        res.status(200).json({
+          code: 7000,
+          message: `参数${key} 格式有误`,
+        });
+
+        return;
+      }
+    }
+
+    next();
+  };
+}
+
 module.exports = {
-  timeLog,
-  reqLog,
-  checkSession,
-  errorHandler,
-  serverHandle,
+  responseHandle,
+  checkSessionHandle,
+  verifyParamsHandle,
 };

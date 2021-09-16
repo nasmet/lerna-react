@@ -2,7 +2,7 @@
  * @Description: webpack开发配置文件
  * @Author: 吴锦辉
  * @Date: 2021-08-16 09:19:56
- * @LastEditTime: 2021-09-15 11:24:08
+ * @LastEditTime: 2021-09-16 11:33:43
  */
 
 const ReactRefreshPlugin = require('@pmmmwh/react-refresh-webpack-plugin');
@@ -21,7 +21,7 @@ module.exports = {
         loader: 'babel-loader',
         options: {
           presets: ['@babel/env', '@babel/preset-react'],
-          plugins: [require.resolve('react-refresh/babel')], // 为 react-refresh 添加
+          // plugins: [require.resolve('react-refresh/babel')], // 为 react-refresh 添加
         },
       },
     ],
@@ -30,7 +30,7 @@ module.exports = {
     new webpack.HotModuleReplacementPlugin({
       // Options...
     }),
-    new ReactRefreshPlugin(), // 为 react-refresh 添加
+    // new ReactRefreshPlugin(), // 为 react-refresh 添加
   ],
   devServer: {
     hot: true,
