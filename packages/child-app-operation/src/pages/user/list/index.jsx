@@ -1,5 +1,6 @@
 import React, { useEffect, useCallback, useMemo, useState } from 'react';
-import { Button } from 'antd';
+import { Button, message, Modal } from 'antd';
+import { ExclamationCircleOutlined } from '@ant-design/icons';
 import { ConfigTable } from 'wjh-components';
 import apiCtrl from '@api';
 
@@ -80,6 +81,25 @@ export default function List(props) {
     ];
   }, []);
 
+  const onDeleteUser = useCallback(id => {
+    Modal.confirm({
+      title: '温馨提示',
+      icon: <ExclamationCircleOutlined />,
+      content: '确认删除?',
+      okText: '确认',
+      cancelText: '取消',
+      onOk: () => {
+        const [, execute] = apiCtrl.post('/user/delete', { id });
+
+        execute.then(() => {
+          message.success('删除成功');
+
+          setReqParams(pre => ({ ...pre }));
+        });
+      },
+    });
+  }, []);
+
   const columns = useMemo(
     () => [
       {
@@ -97,7 +117,7 @@ export default function List(props) {
             <div>
               <Button type="link">编辑</Button>
               <Button type="text">冻结</Button>
-              <Button type="text" danger>
+              <Button type="text" danger onClick={() => onDeleteUser(row.id)}>
                 删除
               </Button>
             </div>
@@ -105,7 +125,7 @@ export default function List(props) {
         },
       },
     ],
-    []
+    [onDeleteUser]
   );
 
   const onSearch = useCallback(values => {

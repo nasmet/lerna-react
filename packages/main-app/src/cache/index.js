@@ -2,7 +2,7 @@
  * @Description: 本地缓存
  * @Author: 吴锦辉
  * @Date: 2021-09-15 16:37:40
- * @LastEditTime: 2021-09-17 11:34:14
+ * @LastEditTime: 2021-09-17 16:17:19
  */
 
 class CacheController {
@@ -42,6 +42,10 @@ class CacheController {
 
   setToken(value) {
     return this.set('token', value);
+  }
+
+  removeToken() {
+    return this.remove('token');
   }
 }
 

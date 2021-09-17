@@ -2,7 +2,7 @@
  * @Description: 用户相关接口请求
  * @Author: 吴锦辉
  * @Date: 2021-09-14 09:15:23
- * @LastEditTime: 2021-09-17 11:27:25
+ * @LastEditTime: 2021-09-17 16:40:10
  */
 
 const express = require('express');
@@ -10,7 +10,11 @@ const { checkSessionHandle, responseHandle } = require('../middleware/index');
 const mainCtrl = require('../controller/main');
 const { codeMap } = require('../code/index');
 const { generateSnowflakeId } = require('../utils/index');
-const { verifyLoginParams, verifyUserListParams } = require('../param-verify/user');
+const {
+  verifyLoginParams,
+  verifyUserListParams,
+  verifyUserDeleteParams,
+} = require('../param-verify/user');
 
 const router = express.Router();
 
@@ -22,7 +26,7 @@ router.post(
     try {
       const userCtrl = mainCtrl.getUserCtrl();
 
-      let values = await userCtrl.selectAccount(req.body);
+      let values = await userCtrl.selectUser(req.body);
 
       if (values.length > 0) {
         res.code = codeMap.AccountExist;
@@ -75,7 +79,7 @@ router.post(
         return;
       }
 
-      values = await userCtrl.selectAccount(req.body);
+      values = await userCtrl.selectUser(req.body);
 
       let code = codeMap.AccountNotExist;
 
@@ -148,6 +152,32 @@ router.post(
       res.code = codeMap.Success;
 
       res.body.list = list;
+
+      next();
+    } catch (err) {
+      next(err);
+    }
+  },
+  responseHandle
+);
+
+/** 删除用户 */
+router.post(
+  '/delete',
+  verifyUserDeleteParams(),
+  async (req, res, next) => {
+    try {
+      const userCtrl = mainCtrl.getUserCtrl();
+
+      const values = await userCtrl.selectUser(req.body);
+
+      if (values.length > 0) {
+        await userCtrl.deleteUser(req.body);
+      }
+
+      console.log('total: ', values);
+
+      res.code = codeMap.Success;
 
       next();
     } catch (err) {

@@ -2,7 +2,7 @@
  * @Description: 用户模块的参数验证
  * @Author: 吴锦辉
  * @Date: 2021-09-16 10:23:43
- * @LastEditTime: 2021-09-16 17:46:59
+ * @LastEditTime: 2021-09-17 16:42:58
  */
 
 const { verifyParamsHandle } = require('../middleware/index');
@@ -57,7 +57,20 @@ function verifyUserListParams() {
   return verifyParamsHandle(verifyRules);
 }
 
+function verifyUserDeleteParams() {
+  const verifyRules = {
+    id: {
+      required: true,
+      type: 3,
+      max: 17,
+    },
+  };
+
+  return verifyParamsHandle(verifyRules);
+}
+
 module.exports = {
   verifyLoginParams,
   verifyUserListParams,
+  verifyUserDeleteParams,
 };

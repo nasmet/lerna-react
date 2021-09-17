@@ -2,7 +2,7 @@
  * @Description: 请求对象
  * @Author: 吴锦辉
  * @Date: 2021-09-15 11:26:27
- * @LastEditTime: 2021-09-17 11:34:56
+ * @LastEditTime: 2021-09-17 16:17:35
  */
 
 import { message } from 'antd';
@@ -33,6 +33,8 @@ const responseIntercept = res => {
       return res.data.data;
     case 4000:
       message.info('身份验证失败，请重新登录！');
+
+      cacheCtrl.removeToken();
 
       window.history.replaceState(null, null, '/admin/login');
 

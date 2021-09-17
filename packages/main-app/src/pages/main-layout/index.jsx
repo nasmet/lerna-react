@@ -12,7 +12,7 @@ registerMicroApps([
     name: 'child-app-operation',
     entry: '//localhost:8081',
     container: '#child-app-operation',
-    activeRule: '/main/operation',
+    activeRule: '/main/:business/operation',
   },
 ]);
 
@@ -75,23 +75,23 @@ function Header(props) {
 function Aside() {
   return (
     <Menu mode="vertical">
-      <SubMenu key="sub1" icon={<MailOutlined />} title="运营模块">
-        <Menu.Item key="1">
-          <Link to="/main/operation/user/list">用户管理</Link>
-        </Menu.Item>
-        <Menu.Item key="2">Option 2</Menu.Item>
-        <Menu.ItemGroup title="Item 2">
-          <Menu.Item key="3">Option 3</Menu.Item>
-          <Menu.Item key="4">Option 4</Menu.Item>
-        </Menu.ItemGroup>
-      </SubMenu>
-      <SubMenu key="sub2" icon={<AppstoreOutlined />} title="Navigation Two">
+      <SubMenu key="sub2" icon={<AppstoreOutlined />} title="业务">
         <Menu.Item key="5">Option 5</Menu.Item>
         <Menu.Item key="6">Option 6</Menu.Item>
         <SubMenu key="sub3" title="Submenu">
           <Menu.Item key="7">Option 7</Menu.Item>
           <Menu.Item key="8">Option 8</Menu.Item>
         </SubMenu>
+      </SubMenu>
+      <SubMenu key="sub1" icon={<MailOutlined />} title="运营模块">
+        <Menu.Item key="1">
+          <Link to="/main/middle/operation/user/list">用户管理</Link>
+        </Menu.Item>
+        <Menu.Item key="2">Option 2</Menu.Item>
+        <Menu.ItemGroup title="Item 2">
+          <Menu.Item key="3">Option 3</Menu.Item>
+          <Menu.Item key="4">Option 4</Menu.Item>
+        </Menu.ItemGroup>
       </SubMenu>
       <SubMenu key="sub4" icon={<SettingOutlined />} title="Navigation Three">
         <Menu.Item key="9">Option 9</Menu.Item>
