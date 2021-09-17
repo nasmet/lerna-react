@@ -2,7 +2,7 @@
  * @Description: webpack配置文件
  * @Author: 吴锦辉
  * @Date: 2021-08-16 09:29:06
- * @LastEditTime: 2021-09-17 11:33:21
+ * @LastEditTime: 2021-09-17 17:45:46
  */
 
 const path = require('path');
@@ -19,6 +19,7 @@ process.env.NODE_ENV = env;
 const baseConfig = {
   entry: './src/index.js',
   output: {
+    publicPath: 'http://localhost:8081/',
     path: path.resolve(__dirname, 'build'),
     /** 微应用配置 */
     library: {
