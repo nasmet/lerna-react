@@ -2,7 +2,7 @@
  * @Description: 基于配置的表单组件
  * @Author: 吴锦辉
  * @Date: 2021-08-05 13:53:09
- * @LastEditTime: 2021-09-16 14:00:36
+ * @LastEditTime: 2021-09-17 13:29:07
  */
 
 import React, { useCallback, useMemo } from 'react';
@@ -19,10 +19,14 @@ export default function ConfigForm({
   showBtn = true,
   okText = '确认',
   cancelText = '取消',
+  resetText = '重置',
   showOkBtn = true,
   showCancelBtn = true,
+  showResetBtn = false,
+  btnFull = true,
   ok,
   cancel,
+  reset,
 }) {
   const [form] = Form.useForm();
 
@@ -88,6 +92,31 @@ export default function ConfigForm({
     return list;
   }, [configs, form, col]);
 
+  const { btnAlign, btnSpan } = useMemo(() => {
+    let btnAlign;
+    let btnSpan;
+
+    if (btnFull) {
+      btnAlign = 'center';
+      btnSpan = 24;
+    } else {
+      let list = configs;
+
+      if (typeof configs === 'function') {
+        list = configs(form);
+      }
+
+      const diff = list.length % col;
+      btnAlign = 'right';
+      btnSpan = diff === 0 ? 24 : (24 / col) * (col - diff);
+    }
+
+    return {
+      btnAlign,
+      btnSpan,
+    };
+  }, [configs, form, col, btnFull]);
+
   const onSubmit = useCallback(() => {
     form
       .validateFields()
@@ -103,6 +132,12 @@ export default function ConfigForm({
     cancel && cancel();
   }, [cancel]);
 
+  const onReset = useCallback(() => {
+    form.resetFields();
+
+    reset && reset();
+  }, [reset, form]);
+
   if (!configs) {
     return null;
   }
@@ -113,13 +148,22 @@ export default function ConfigForm({
       <Row gutter={gutter}>
         {values}
         {showBtn ? (
-          <Col span={24} style={{ textAlign: 'center' }}>
+          <Col span={btnSpan} style={{ textAlign: btnAlign }}>
+            {showResetBtn ? (
+              <Button style={{ marginRight: '16px' }} type="primary" onClick={onReset}>
+                {resetText}
+              </Button>
+            ) : null}
+            {showCancelBtn ? (
+              <Button style={{ marginRight: '16px' }} onClick={onCancel}>
+                {cancelText}
+              </Button>
+            ) : null}
             {showOkBtn ? (
-              <Button style={{ marginRight: '16px' }} type="primary" onClick={onSubmit}>
+              <Button type="primary" onClick={onSubmit}>
                 {okText}
               </Button>
             ) : null}
-            {showCancelBtn ? <Button onClick={onCancel}>{cancelText}</Button> : null}
           </Col>
         ) : null}
       </Row>

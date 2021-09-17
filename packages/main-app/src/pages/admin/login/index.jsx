@@ -40,7 +40,7 @@ export default function Login(props) {
       execute.then(res => {
         const { token } = res || {};
 
-        cacheCtrl.set('token', token);
+        cacheCtrl.setToken(token);
 
         props.history.replace('/main');
 

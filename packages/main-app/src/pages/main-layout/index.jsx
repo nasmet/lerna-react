@@ -2,9 +2,19 @@ import React, { useMemo, useCallback } from 'react';
 import { Link } from 'react-router-dom';
 import { Menu, Dropdown, message } from 'antd';
 import { MailOutlined, AppstoreOutlined, SettingOutlined, DownOutlined } from '@ant-design/icons';
+import { registerMicroApps } from 'qiankun';
 import apiCtrl from '@api';
 import cacheCtrl from '@cache';
 import styles from './index.module.scss';
+
+registerMicroApps([
+  {
+    name: 'child-app-operation',
+    entry: '//localhost:8081',
+    container: '#child-app-operation',
+    activeRule: '/main/operation',
+  },
+]);
 
 const { SubMenu } = Menu;
 
@@ -29,22 +39,16 @@ export default function Layout(props) {
 
 function Header(props) {
   const onLoginOut = useCallback(() => {
-    // const [, execute] = apiCtrl.post('/user/loginout');
+    const [, execute] = apiCtrl.post('/user/loginout');
 
-    // execute.then(() => {
-    //   cacheCtrl.remove('token');
+    execute.then(() => {
+      cacheCtrl.remove('token');
 
-    //   props.history.replace('/admin/login');
+      props.history.replace('/admin/login');
 
-    //   message.info('登出成功');
-    // });
-
-    const [, execute] = apiCtrl.get('/user/list', { page: 1, pageSize: 10 });
-
-    execute.then(res => {
-      console.log('res: ', res);
+      message.info('登出成功');
     });
-  }, []);
+  }, [props]);
 
   const menu = useMemo(
     () => (

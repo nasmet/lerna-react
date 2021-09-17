@@ -2,7 +2,7 @@
  * @Description: webpack配置文件
  * @Author: 吴锦辉
  * @Date: 2021-08-16 09:29:06
- * @LastEditTime: 2021-09-16 14:33:55
+ * @LastEditTime: 2021-09-17 11:33:21
  */
 
 const path = require('path');
@@ -81,6 +81,8 @@ const baseConfig = {
       '@src': path.resolve(__dirname, 'src/'),
       '@img': path.resolve(__dirname, 'src/img'),
       '@pages': path.resolve(__dirname, 'src/pages'),
+      '@api': path.resolve(__dirname, 'src/api'),
+      '@cache': path.resolve(__dirname, 'src/cache'),
     },
     mainFiles: ['index.jsx', 'index.js'],
   },

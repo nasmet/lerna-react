@@ -1,8 +1,8 @@
 /*
  * @Description: 请求对象
  * @Author: 吴锦辉
- * @Date: 2021-09-15 11:26:27
- * @LastEditTime: 2021-09-17 11:34:56
+ * @Date: 2021-09-17 11:32:19
+ * @LastEditTime: 2021-09-17 11:32:21
  */
 
 import { message } from 'antd';
@@ -16,7 +16,7 @@ const requestIntercept = configs => {
     Accept: 'application/json',
   };
 
-  configs.headers.Authorization = `Bearer ${cacheCtrl.getToken() || ''}`;
+  configs.headers.Authorization = `Bearer ${cacheCtrl.get('token') || ''}`;
 
   return configs;
 };

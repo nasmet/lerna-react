@@ -2,7 +2,7 @@
  * @Description: 服务启动入口
  * @Author: 吴锦辉
  * @Date: 2021-09-13 17:16:16
- * @LastEditTime: 2021-09-16 18:00:24
+ * @LastEditTime: 2021-09-17 11:19:56
  */
 
 const express = require('express');
@@ -18,7 +18,6 @@ app.use(bodyParser.json());
 app.use(function logHandler(req, res, next) {
   console.info('请求时间: ', new Date());
   console.info('请求body: ', req.body);
-  console.info('请求query: ', req.query);
 
   next();
 });

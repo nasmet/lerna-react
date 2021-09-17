@@ -2,7 +2,7 @@
  * @Description: 用户相关接口请求
  * @Author: 吴锦辉
  * @Date: 2021-09-14 09:15:23
- * @LastEditTime: 2021-09-16 18:03:02
+ * @LastEditTime: 2021-09-17 11:27:25
  */
 
 const express = require('express');
@@ -115,18 +115,20 @@ router.post(
 );
 
 /** 查询用户列表 */
-router.get(
+router.post(
   '/list',
   async (req, res, next) => {
     try {
       const userCtrl = mainCtrl.getUserCtrl();
 
-      const values = await userCtrl.selectUserCount();
+      let values = await userCtrl.selectUserCount();
 
-      console.log('total: ', values.length);
+      values = JSON.parse(JSON.stringify(values));
+
+      console.log('total: ', values);
 
       res.body = {
-        total: values.length,
+        total: values[0]['COUNT(*)'],
       };
 
       next();
@@ -139,13 +141,13 @@ router.get(
     try {
       const userCtrl = mainCtrl.getUserCtrl();
 
-      const data = await userCtrl.selectUserByPage(req.query);
+      let list = await userCtrl.selectUserByPage(req.body);
 
-      console.log('data: ', data);
+      list = JSON.parse(JSON.stringify(list));
 
       res.code = codeMap.Success;
 
-      res.body.data = data;
+      res.body.list = list;
 
       next();
     } catch (err) {

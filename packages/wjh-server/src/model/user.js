@@ -2,7 +2,7 @@
  * @Description: 用户属性数据库查询
  * @Author: 吴锦辉
  * @Date: 2021-09-14 11:47:48
- * @LastEditTime: 2021-09-16 17:42:35
+ * @LastEditTime: 2021-09-17 11:22:44
  */
 
 const { query } = require('../mysql/index');
@@ -55,7 +55,7 @@ function selectUserByPage(data = {}) {
   const to = page * pageSize;
 
   return new Promise((resolve, reject) => {
-    query({ sql: `select * from table limit ${from},${to}` })
+    query({ sql: `select * from user limit ${from},${to}` })
       .then(res => {
         resolve(res);
       })
