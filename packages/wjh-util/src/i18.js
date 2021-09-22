@@ -2,7 +2,7 @@
  * @Description: 国际化方案
  * @Author: 吴锦辉
  * @Date: 2021-09-10 10:41:31
- * @LastEditTime: 2021-09-10 10:53:37
+ * @LastEditTime: 2021-09-22 15:32:46
  */
 
 /**
@@ -12,18 +12,7 @@
  */
 export default class I18 {
   constructor(configs) {
-    this.languages = configs || {
-      'zh-cn': {
-        themeColorSwitch: '主题色切换',
-        purpleTheme: '紫色主题',
-        blueTheme: '蓝色主题',
-      },
-      en: {
-        themeColorSwitch: 'Theme color switch',
-        purpleTheme: 'Purple Theme',
-        blueTheme: 'Blue Theme',
-      },
-    };
+    this.languages = configs;
   }
 
   getLanguageByKey(key) {
@@ -31,6 +20,7 @@ export default class I18 {
   }
 
   setLanguage(key, data) {
-    this.languages[key] = data || {};
+    const values = this.languages[key] || {};
+    this.languages[key] = { ...values, ...data };
   }
 }

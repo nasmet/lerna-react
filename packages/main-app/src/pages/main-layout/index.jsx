@@ -3,8 +3,11 @@ import { Link } from 'react-router-dom';
 import { Menu, Dropdown, message } from 'antd';
 import { MailOutlined, AppstoreOutlined, SettingOutlined, DownOutlined } from '@ant-design/icons';
 import { registerMicroApps } from 'qiankun';
+import { theme } from 'wjh-util';
 import apiCtrl from '@api';
 import cacheCtrl from '@cache';
+import themeConfig from '@theme';
+import i18Ctrl from '@i18';
 import styles from './index.module.scss';
 
 registerMicroApps([
@@ -54,21 +57,70 @@ function Header(props) {
     () => (
       <Menu>
         <Menu.Item key="1" onClick={onLoginOut}>
-          退出登录
+          {i18Ctrl.formatterMessage('signOut')}
         </Menu.Item>
-        <Menu.Item key="2">用户信息</Menu.Item>
       </Menu>
     ),
     [onLoginOut]
   );
 
+  const onChangeLanguage = useCallback(key => {
+    i18Ctrl.switchLanguage(key);
+  }, []);
+
+  const i18Menu = useMemo(
+    () => (
+      <Menu>
+        <Menu.Item key="1" onClick={() => onChangeLanguage('zh-cn')}>
+          Chinese
+        </Menu.Item>
+        <Menu.Item key="2" onClick={() => onChangeLanguage('en')}>
+          English
+        </Menu.Item>
+      </Menu>
+    ),
+    [onChangeLanguage]
+  );
+
+  const onChangeTheme = useCallback(key => {
+    theme.changeTheme(themeConfig[key]);
+  }, []);
+
+  const themeMenu = useMemo(
+    () => (
+      <Menu>
+        <Menu.Item key="1" onClick={() => onChangeTheme('default')}>
+          默认
+        </Menu.Item>
+        <Menu.Item key="2" onClick={() => onChangeTheme('orange')}>
+          橘黄色
+        </Menu.Item>
+      </Menu>
+    ),
+    [onChangeTheme]
+  );
+
   return (
-    <Dropdown overlay={menu}>
-      <span>
-        nasmet
-        <DownOutlined />
-      </span>
-    </Dropdown>
+    <>
+      <Dropdown overlay={i18Menu}>
+        <span>
+          {i18Ctrl.formatterMessage('globalization')}
+          <DownOutlined />
+        </span>
+      </Dropdown>
+      <Dropdown overlay={themeMenu}>
+        <span style={{ marginLeft: '20px', display: 'inline-block' }}>
+          {i18Ctrl.formatterMessage('themeColor')}
+          <DownOutlined />
+        </span>
+      </Dropdown>
+      <Dropdown overlay={menu}>
+        <span style={{ marginLeft: '20px', display: 'inline-block' }}>
+          nasmet
+          <DownOutlined />
+        </span>
+      </Dropdown>
+    </>
   );
 }
 

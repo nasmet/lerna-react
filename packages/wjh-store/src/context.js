@@ -2,7 +2,7 @@
  * @Description: context相关方法
  * @Author: 吴锦辉
  * @Date: 2021-07-30 11:07:00
- * @LastEditTime: 2021-08-27 14:26:22
+ * @LastEditTime: 2021-09-22 16:06:22
  */
 
 import React, { createContext, useReducer, useContext, useMemo } from 'react';
@@ -12,10 +12,10 @@ import React, { createContext, useReducer, useContext, useMemo } from 'react';
  * @param {object} initValue // context的静态初始数据
  * @return {*}
  */
-export default function createContextFactory(initValue = {}) {
+export default function createContextFactory() {
   const Context = createContext();
 
-  function WrapContainer(WrapComponent, store) {
+  function WrapContainer(WrapComponent, store, initValue = {}) {
     return function Provider(props) {
       const [state, dispatch] = useReducer(store.getReducer(), store.getState());
 
