@@ -2,11 +2,10 @@
  * @Description: 路由配置文件
  * @Author: 吴锦辉
  * @Date: 2021-08-16 08:57:07
- * @LastEditTime: 2021-09-16 15:25:33
+ * @LastEditTime: 2021-09-22 10:45:15
  */
 
 import React, { lazy } from 'react';
-import cacheCtrl from '@cache';
 import BaseLayout from '@pages/base-layout';
 
 const AdminLayout = lazy(() => import('@pages/admin-layout'));
@@ -20,13 +19,7 @@ const Register = lazy(() => import('@pages/admin/register'));
  * @param  {ReactNode} options.children 子节点
  * @return {ReactNode}
  */
-const WrapperComponent = ({ history, children }) => {
-  if (!cacheCtrl.get('token')) {
-    history.replace('/user/login');
-
-    return null;
-  }
-
+const WrapperComponent = ({ children }) => {
   return children;
 };
 

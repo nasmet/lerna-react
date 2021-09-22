@@ -1,5 +1,5 @@
 import React, { useState, useCallback } from 'react';
-import { Table, Pagination } from 'antd';
+import { Table, Pagination, Breadcrumb } from 'antd';
 import ConfigForm from '../ConfigForm';
 
 export default function ConfigTable({
@@ -14,6 +14,8 @@ export default function ConfigTable({
   showPagination = true,
   showSearch = true,
   searchConfigs = [],
+  showBreadcrumb = true,
+  breadcrumbConfigs = [],
   onPageChange,
   onPageSizeChange,
   onSearch,
@@ -41,6 +43,20 @@ export default function ConfigTable({
 
   return (
     <div>
+      {showBreadcrumb && breadcrumbConfigs.length > 0 ? (
+        <div
+          style={{ marginBottom: '20px', paddingBottom: '20px', borderBottom: '1px solid #eee' }}
+        >
+          <Breadcrumb>
+            {breadcrumbConfigs.map((v, index) => (
+              // eslint-disable-next-line react/no-array-index-key
+              <Breadcrumb.Item key={index} href={v.path}>
+                {v.title}
+              </Breadcrumb.Item>
+            ))}
+          </Breadcrumb>
+        </div>
+      ) : null}
       {showSearch ? (
         <div style={{ borderBottom: '1px solid #eee' }}>
           <ConfigForm

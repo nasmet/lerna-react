@@ -2,48 +2,7 @@
  * @Description: 请求对象
  * @Author: 吴锦辉
  * @Date: 2021-09-17 11:32:19
- * @LastEditTime: 2021-09-17 16:16:45
+ * @LastEditTime: 2021-09-22 12:21:39
  */
 
-import { message } from 'antd';
-import HttpUtils from 'wjh-request';
-import cacheCtrl from '@cache';
-
-const requestIntercept = configs => {
-  configs.data = JSON.stringify(configs.data || {});
-  configs.headers = {
-    'Content-Type': 'application/json',
-    Accept: 'application/json',
-  };
-
-  configs.headers.Authorization = `Bearer ${cacheCtrl.get('token') || ''}`;
-
-  return configs;
-};
-
-const responseIntercept = res => {
-  if (!/^2/.test(res.status)) {
-    message.error(res.statusText);
-
-    return Promise.reject(res.statusText);
-  }
-
-  switch (res.data.code) {
-    case 0:
-      return res.data.data;
-    case 4000:
-      message.info('身份验证失败，请重新登录！');
-
-      cacheCtrl.removeToken();
-
-      window.history.replaceState(null, null, '/admin/login');
-
-      return Promise.reject(res.data.message);
-    default:
-      message.error(res.data.message);
-
-      return Promise.reject(res.data.message);
-  }
-};
-
-export default new HttpUtils({ baseURL: '/api', requestIntercept, responseIntercept });
+export default window.httpCtrl;

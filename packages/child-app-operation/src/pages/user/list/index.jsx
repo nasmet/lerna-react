@@ -4,14 +4,16 @@ import { ExclamationCircleOutlined } from '@ant-design/icons';
 import { ConfigTable } from 'wjh-components';
 import apiCtrl from '@api';
 
+const defaultParams = {
+  page: 1,
+  pageSize: 10,
+};
+
 export default function List(props) {
   const [data, setData] = useState([]);
   const [total, setTotal] = useState(0);
   const [loading, setLoading] = useState(false);
-  const [reqParms, setReqParams] = useState(() => ({
-    page: 1,
-    pageSize: 10,
-  }));
+  const [reqParms, setReqParams] = useState(defaultParams);
 
   useEffect(() => {
     setLoading(true);
@@ -128,20 +130,38 @@ export default function List(props) {
     [onDeleteUser]
   );
 
+  const breadcrumbConfigs = useMemo(
+    () => [
+      {
+        title: '用户',
+      },
+      {
+        title: '列表',
+      },
+    ],
+    []
+  );
+
   const onSearch = useCallback(values => {
     console.log(values);
 
     setReqParams(pre => ({ ...pre, ...values }));
   }, []);
 
+  const onReset = useCallback(() => {
+    setReqParams(() => ({ ...defaultParams }));
+  }, []);
+
   return (
     <ConfigTable
+      breadcrumbConfigs={breadcrumbConfigs}
       searchConfigs={configs}
       columns={columns}
       dataSource={data}
       total={total}
       loading={loading}
       onSearch={onSearch}
+      onReset={onReset}
     />
   );
 }

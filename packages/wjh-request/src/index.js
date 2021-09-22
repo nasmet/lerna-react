@@ -2,7 +2,7 @@
  * @Description: 基于axios二次封装的网络请求库
  * @Author: 吴锦辉
  * @Date: 2021-08-16 14:15:35
- * @LastEditTime: 2021-09-16 11:19:45
+ * @LastEditTime: 2021-09-22 09:07:17
  */
 
 import axios from 'axios';
@@ -12,7 +12,7 @@ class HttpUtils {
   constructor(options = {}) {
     const config = { ...defaultConfig, ...options };
 
-    const { timeout, baseURL, requestIntercept, responseIntercept } = config;
+    const { timeout, baseURL, requestIntercept, responseIntercept, responseError } = config;
 
     this.instancse = axios.create();
     this.instancse.defaults.timeout = timeout;
@@ -27,6 +27,7 @@ class HttpUtils {
 
     // 响应拦截器（所有接收到的请求都要从这儿过一次）
     this.instancse.interceptors.response.use(responseIntercept, error => {
+      responseError && responseError(error.message);
       return Promise.reject(error.message);
     });
   }

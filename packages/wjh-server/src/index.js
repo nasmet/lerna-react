@@ -2,7 +2,7 @@
  * @Description: 服务启动入口
  * @Author: 吴锦辉
  * @Date: 2021-09-13 17:16:16
- * @LastEditTime: 2021-09-17 11:19:56
+ * @LastEditTime: 2021-09-22 10:25:16
  */
 
 const express = require('express');
@@ -22,7 +22,7 @@ app.use(function logHandler(req, res, next) {
   next();
 });
 
-app.use('/user', userRouter);
+app.use('/api/user', userRouter);
 
 app.use(function errorHandler(err, req, res, next) {
   console.error('errorHandler: ', err.message);

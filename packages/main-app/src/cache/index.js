@@ -2,7 +2,7 @@
  * @Description: 本地缓存
  * @Author: 吴锦辉
  * @Date: 2021-09-15 16:37:40
- * @LastEditTime: 2021-09-17 16:17:19
+ * @LastEditTime: 2021-09-22 12:19:11
  */
 
 class CacheController {
@@ -49,4 +49,8 @@ class CacheController {
   }
 }
 
-export default new CacheController();
+const cacheCtrl = new CacheController();
+
+window.cacheCtrl = cacheCtrl;
+
+export default cacheCtrl;

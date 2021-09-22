@@ -2,21 +2,50 @@
  * @Description: 请求对象
  * @Author: 吴锦辉
  * @Date: 2021-09-15 11:26:27
- * @LastEditTime: 2021-09-17 16:17:35
+ * @LastEditTime: 2021-09-22 12:21:19
  */
 
 import { message } from 'antd';
 import HttpUtils from 'wjh-request';
+import { ThrottleRequest } from 'wjh-util';
 import cacheCtrl from '@cache';
+import routerJumpCtrl from '@routerjump';
+
+const baseURL = '/api';
+
+const nocheckSession = ['/user/login', '/user/register'];
+
+const throttleRequest = new ThrottleRequest();
 
 const requestIntercept = configs => {
-  configs.data = JSON.stringify(configs.data || {});
+  const { url, data } = configs;
+
+  configs.data = JSON.stringify(data || {});
   configs.headers = {
     'Content-Type': 'application/json',
     Accept: 'application/json',
   };
 
-  configs.headers.Authorization = `Bearer ${cacheCtrl.getToken() || ''}`;
+  const token = cacheCtrl.getToken();
+
+  if (throttleRequest.has(url)) {
+    return Promise.reject(new Error(''));
+  }
+
+  if (!nocheckSession.includes(url) && !token) {
+    const { pathname, query } = window.location;
+
+    routerJumpCtrl.jumpBeforeLogin({
+      targetUrl: pathname,
+      targetOptions: query,
+    });
+
+    window.history.replaceState(null, null, '/admin/login');
+
+    return Promise.reject(new Error('身份验证失败，请重新登录！'));
+  }
+
+  configs.headers.Authorization = `Bearer ${token || ''}`;
 
   return configs;
 };
@@ -34,6 +63,14 @@ const responseIntercept = res => {
     case 4000:
       message.info('身份验证失败，请重新登录！');
 
+      // eslint-disable-next-line no-case-declarations
+      const { pathname, query } = window.location;
+
+      routerJumpCtrl.jumpBeforeLogin({
+        targetUrl: pathname,
+        targetOptions: query,
+      });
+
       cacheCtrl.removeToken();
 
       window.history.replaceState(null, null, '/admin/login');
@@ -46,4 +83,19 @@ const responseIntercept = res => {
   }
 };
 
-export default new HttpUtils({ baseURL: '/api', requestIntercept, responseIntercept });
+const responseError = err => {
+  if (err) {
+    message.error(err);
+  }
+};
+
+const httpCtrl = new HttpUtils({
+  baseURL,
+  requestIntercept,
+  responseIntercept,
+  responseError,
+});
+
+window.httpCtrl = httpCtrl;
+
+export default httpCtrl;

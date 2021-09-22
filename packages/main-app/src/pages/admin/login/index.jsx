@@ -4,6 +4,7 @@ import { ConfigForm } from 'wjh-components';
 import { message } from 'antd';
 import apiCtrl from '@api';
 import cacheCtrl from '@cache';
+import routerJumpCtrl from '@routerjump';
 import styles from './index.module.scss';
 
 export default function Login(props) {
@@ -33,22 +34,19 @@ export default function Login(props) {
     ];
   }, []);
 
-  const onLogin = useCallback(
-    values => {
-      const [, execute] = apiCtrl.post('/user/login', values);
+  const onLogin = useCallback(values => {
+    const [, execute] = apiCtrl.post('/user/login', values);
 
-      execute.then(res => {
-        const { token } = res || {};
+    execute.then(res => {
+      const { token } = res || {};
 
-        cacheCtrl.setToken(token);
+      cacheCtrl.setToken(token);
 
-        props.history.replace('/main');
+      routerJumpCtrl.jumpAfterLogin();
 
-        message.info('登录成功');
-      });
-    },
-    [props]
-  );
+      message.info('登录成功');
+    });
+  }, []);
 
   return (
     <div className={styles.content}>
