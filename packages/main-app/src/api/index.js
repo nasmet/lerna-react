@@ -2,7 +2,7 @@
  * @Description: 请求对象
  * @Author: 吴锦辉
  * @Date: 2021-09-15 11:26:27
- * @LastEditTime: 2021-09-22 12:21:19
+ * @LastEditTime: 2021-09-22 18:01:29
  */
 
 import { message } from 'antd';
@@ -10,6 +10,7 @@ import HttpUtils from 'wjh-request';
 import { ThrottleRequest } from 'wjh-util';
 import cacheCtrl from '@cache';
 import routerJumpCtrl from '@routerjump';
+import i18Ctrl from '@i18';
 
 const baseURL = '/api';
 
@@ -42,7 +43,7 @@ const requestIntercept = configs => {
 
     window.history.replaceState(null, null, '/admin/login');
 
-    return Promise.reject(new Error('身份验证失败，请重新登录！'));
+    return Promise.reject(new Error(i18Ctrl.formatterMessage('tokenInvalid')));
   }
 
   configs.headers.Authorization = `Bearer ${token || ''}`;
@@ -61,7 +62,7 @@ const responseIntercept = res => {
     case 0:
       return res.data.data;
     case 4000:
-      message.info('身份验证失败，请重新登录！');
+      message.info(i18Ctrl.formatterMessage('tokenInvalid'));
 
       // eslint-disable-next-line no-case-declarations
       const { pathname, query } = window.location;

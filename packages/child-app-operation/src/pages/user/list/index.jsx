@@ -3,6 +3,7 @@ import { Button, message, Modal } from 'antd';
 import { ExclamationCircleOutlined } from '@ant-design/icons';
 import { ConfigTable } from 'wjh-components';
 import apiCtrl from '@api';
+import { formatterMessage } from '@i18';
 
 const defaultParams = {
   page: 1,
@@ -40,7 +41,7 @@ export default function List(props) {
         cmpType: 'input',
         wrapProps: {
           name: 'account',
-          label: '账号',
+          label: formatterMessage('account'),
           rules,
         },
       },
@@ -48,7 +49,7 @@ export default function List(props) {
         cmpType: 'input',
         wrapProps: {
           name: 'username',
-          label: '用户名',
+          label: formatterMessage('username'),
           rules,
         },
       },
@@ -56,17 +57,17 @@ export default function List(props) {
         cmpType: 'select',
         wrapProps: {
           name: 'gender',
-          label: '性别',
+          label: formatterMessage('gender'),
           rules,
         },
         cmpProps: {
           options: [
             {
-              label: '男',
+              label: formatterMessage('man'),
               value: 1,
             },
             {
-              label: '女',
+              label: formatterMessage('woman'),
               value: 2,
             },
           ],
@@ -76,7 +77,7 @@ export default function List(props) {
         cmpType: 'datepicker',
         wrapProps: {
           name: 'date',
-          label: '出生日期',
+          label: formatterMessage('birthday'),
           rules,
         },
       },
@@ -85,16 +86,16 @@ export default function List(props) {
 
   const onDeleteUser = useCallback(id => {
     Modal.confirm({
-      title: '温馨提示',
+      title: formatterMessage('tips'),
       icon: <ExclamationCircleOutlined />,
-      content: '确认删除?',
-      okText: '确认',
-      cancelText: '取消',
+      content: formatterMessage('confirmDeletion'),
+      okText: formatterMessage('confirm'),
+      cancelText: formatterMessage('cancel'),
       onOk: () => {
         const [, execute] = apiCtrl.post('/user/delete', { id });
 
         execute.then(() => {
-          message.success('删除成功');
+          message.success(formatterMessage('successfullyDeleted'));
 
           setReqParams(pre => ({ ...pre }));
         });
@@ -105,22 +106,17 @@ export default function List(props) {
   const columns = useMemo(
     () => [
       {
-        title: '账号',
+        title: formatterMessage('account'),
         dataIndex: 'account',
       },
       {
-        title: '年龄',
-        dataIndex: 'age',
-      },
-      {
-        title: '操作',
+        title: formatterMessage('operate'),
         render: (text, row, index) => {
           return (
             <div>
-              <Button type="link">编辑</Button>
-              <Button type="text">冻结</Button>
+              <Button type="link">{formatterMessage('edit')}</Button>
               <Button type="text" danger onClick={() => onDeleteUser(row.id)}>
-                删除
+                {formatterMessage('delete')}
               </Button>
             </div>
           );
@@ -133,10 +129,10 @@ export default function List(props) {
   const breadcrumbConfigs = useMemo(
     () => [
       {
-        title: '用户',
+        title: formatterMessage('user'),
       },
       {
-        title: '列表',
+        title: formatterMessage('list'),
       },
     ],
     []

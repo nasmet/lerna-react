@@ -49,7 +49,7 @@ function Header(props) {
 
       props.history.replace('/admin/login');
 
-      message.info('登出成功');
+      message.info(i18Ctrl.formatterMessage('signOutSuccess'));
     });
   }, [props]);
 
@@ -86,18 +86,15 @@ function Header(props) {
     theme.changeTheme(themeConfig[key]);
   }, []);
 
-  const themeMenu = useMemo(
-    () => (
-      <Menu>
-        <Menu.Item key="1" onClick={() => onChangeTheme('default')}>
-          默认
-        </Menu.Item>
-        <Menu.Item key="2" onClick={() => onChangeTheme('orange')}>
-          橘黄色
-        </Menu.Item>
-      </Menu>
-    ),
-    [onChangeTheme]
+  const themeMenu = (
+    <Menu>
+      <Menu.Item key="1" onClick={() => onChangeTheme('default')}>
+        {i18Ctrl.formatterMessage('default')}
+      </Menu.Item>
+      <Menu.Item key="2" onClick={() => onChangeTheme('orange')}>
+        {i18Ctrl.formatterMessage('orange')}
+      </Menu.Item>
+    </Menu>
   );
 
   return (
@@ -127,19 +124,27 @@ function Header(props) {
 function Aside(props) {
   return (
     <Menu mode="vertical">
-      <SubMenu key="sub2" icon={<AppstoreOutlined />} title="应用">
-        <Menu.Item key="5">快来找钱吧</Menu.Item>
-        <Menu.Item key="6">来奔现吧</Menu.Item>
+      <SubMenu
+        key="sub2"
+        icon={<AppstoreOutlined />}
+        title={i18Ctrl.formatterMessage('application')}
+      >
+        <Menu.Item key="5">{i18Ctrl.formatterMessage('comeFindMoney')}</Menu.Item>
       </SubMenu>
-      <SubMenu key="sub1" icon={<MailOutlined />} title="运营模块">
+      <SubMenu
+        key="sub1"
+        icon={<MailOutlined />}
+        title={i18Ctrl.formatterMessage('operationModule')}
+      >
         <Menu.Item key="1">
-          <Link to="/main/middle/operation/user/list">用户管理</Link>
+          <Link to="/main/middle/operation/user/list">
+            {i18Ctrl.formatterMessage('userManagement')}
+          </Link>
         </Menu.Item>
-        <Menu.Item key="2">Option 2</Menu.Item>
-        <Menu.ItemGroup title="Item 2">
+        {/* <Menu.ItemGroup title="Item 2">
           <Menu.Item key="3">Option 3</Menu.Item>
           <Menu.Item key="4">Option 4</Menu.Item>
-        </Menu.ItemGroup>
+        </Menu.ItemGroup> */}
       </SubMenu>
     </Menu>
   );

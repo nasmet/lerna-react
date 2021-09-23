@@ -2,7 +2,7 @@
  * @Description: 渲染入口文件
  * @Author: 吴锦辉
  * @Date: 2021-08-16 09:26:31
- * @LastEditTime: 2021-09-17 15:10:34
+ * @LastEditTime: 2021-09-23 14:00:21
  */
 
 import React from 'react';
@@ -38,6 +38,10 @@ export async function bootstrap() {
 
 export async function mount(props) {
   console.log('[react16] props from main framework', props);
+  render(props);
+}
+
+export async function update(props) {
   render(props);
 }
 

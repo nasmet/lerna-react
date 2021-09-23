@@ -5,6 +5,7 @@ import { message } from 'antd';
 import apiCtrl from '@api';
 import cacheCtrl from '@cache';
 import routerJumpCtrl from '@routerjump';
+import i18Ctrl from '@i18';
 import styles from './index.module.scss';
 
 export default function Login(props) {
@@ -16,7 +17,7 @@ export default function Login(props) {
         cmpType: 'input',
         wrapProps: {
           name: 'account',
-          label: '账号',
+          label: i18Ctrl.formatterMessage('account'),
           rules,
         },
       },
@@ -24,7 +25,7 @@ export default function Login(props) {
         cmpType: 'input',
         wrapProps: {
           name: 'password',
-          label: '密码',
+          label: i18Ctrl.formatterMessage('password'),
           rules,
         },
         cmpProps: {
@@ -50,7 +51,7 @@ export default function Login(props) {
 
   return (
     <div className={styles.content}>
-      <div className={styles.title}>登录</div>
+      <div className={styles.title}>{i18Ctrl.formatterMessage('login')}</div>
       <ConfigForm
         configs={configs}
         col={1}
@@ -59,7 +60,7 @@ export default function Login(props) {
         showCancelBtn={false}
         ok={onLogin}
       />
-      <Link to="/admin/register">注册</Link>
+      <Link to="/admin/register">{i18Ctrl.formatterMessage('register')}</Link>
     </div>
   );
 }
