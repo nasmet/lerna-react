@@ -1,0 +1,13 @@
+{
+  "miniprogramRoot": "./",
+  "projectname": "hide-money",
+  "description": "藏钱",
+  "appid": "wx55996449c48dd8c7",
+  "setting": {
+    "urlCheck": true,
+    "es6": false,
+    "postcss": false,
+    "minified": false
+  },
+  "compileType": "miniprogram"
+}

@@ -121,7 +121,7 @@ function Header(props) {
   );
 }
 
-function Aside(props) {
+function Aside() {
   return (
     <Menu mode="vertical">
       <SubMenu
@@ -129,7 +129,7 @@ function Aside(props) {
         icon={<AppstoreOutlined />}
         title={i18Ctrl.formatterMessage('application')}
       >
-        <Menu.Item key="5">{i18Ctrl.formatterMessage('comeFindMoney')}</Menu.Item>
+        <Menu.Item key="5">{i18Ctrl.formatterMessage('hideMoney')}</Menu.Item>
       </SubMenu>
       <SubMenu
         key="sub1"

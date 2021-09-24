@@ -12,7 +12,10 @@
       ]
     },
     "bootstrap": {
-      "ignore": "component-*",
+      "ignore": [
+        "component-*",
+        "hide-money"
+      ],
       "npmClientArgs": [
         "--no-package-lock"
       ],
