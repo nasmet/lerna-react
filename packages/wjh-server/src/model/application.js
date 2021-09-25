@@ -1,13 +1,13 @@
 /*
- * @Description: 用户属性数据库查询
+ * @Description: 应用模块
  * @Author: 吴锦辉
- * @Date: 2021-09-14 11:47:48
- * @LastEditTime: 2021-09-25 17:21:23
+ * @Date: 2021-09-24 22:20:25
+ * @LastEditTime: 2021-09-25 14:19:24
  */
 
 const { query } = require('../mysql/index');
 
-class UserModel {
+class ApplicationModel {
   spliceWhereParam(data, like = false) {
     const keys = Object.keys(data);
 
@@ -30,10 +30,36 @@ class UserModel {
     return str;
   }
 
-  selectUser(data = {}) {
+  createApplication(data = {}) {
+    return new Promise((resolve, reject) => {
+      query({ sql: 'INSERT INTO application SET ?', data })
+        .then(res => {
+          resolve(res);
+        })
+        .catch(err => {
+          reject(err);
+        });
+    });
+  }
+
+  updateApplication(data = {}) {
+    return new Promise((resolve, reject) => {
+      const { id, ...other } = data;
+
+      query({ sql: `update application SET ? where id='${id}'`, data: other || {} })
+        .then(res => {
+          resolve(res);
+        })
+        .catch(err => {
+          reject(err);
+        });
+    });
+  }
+
+  selectApplication(data = {}) {
     const str = this.spliceWhereParam(data);
 
-    const sql = `select * from user ${str}`;
+    const sql = `select * from application ${str}`;
 
     console.log('sql: ', sql);
 
@@ -48,7 +74,7 @@ class UserModel {
     });
   }
 
-  selectUserByPage(data = {}) {
+  selectApplicationByPage(data = {}) {
     const { page, pageSize, ...other } = data || {};
 
     const from = (page - 1) * pageSize;
@@ -56,7 +82,7 @@ class UserModel {
 
     const str = this.spliceWhereParam(other || {}, true);
 
-    const sql = `select * from user ${str} limit ${from},${to}`;
+    const sql = `select * from application ${str} limit ${from},${to}`;
 
     console.log('sql: ', sql);
 
@@ -71,9 +97,9 @@ class UserModel {
     });
   }
 
-  selectUserCount() {
+  selectApplicationCount() {
     return new Promise((resolve, reject) => {
-      query({ sql: 'SELECT COUNT(*) FROM user' })
+      query({ sql: 'SELECT COUNT(*) FROM application' })
         .then(res => {
           resolve(res);
         })
@@ -84,4 +110,4 @@ class UserModel {
   }
 }
 
-module.exports = new UserModel();
+module.exports = new ApplicationModel();

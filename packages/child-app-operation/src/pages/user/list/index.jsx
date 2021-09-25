@@ -1,5 +1,5 @@
 import React, { useEffect, useCallback, useMemo, useState } from 'react';
-import { Button, message, Modal } from 'antd';
+import { Button, Modal } from 'antd';
 import { ExclamationCircleOutlined } from '@ant-design/icons';
 import { ConfigTable } from 'wjh-components';
 import apiCtrl from '@api';
@@ -10,7 +10,7 @@ const defaultParams = {
   pageSize: 10,
 };
 
-export default function List(props) {
+export default function List() {
   const [data, setData] = useState([]);
   const [total, setTotal] = useState(0);
   const [loading, setLoading] = useState(false);
@@ -19,7 +19,7 @@ export default function List(props) {
   useEffect(() => {
     setLoading(true);
 
-    const [, execute] = apiCtrl.post('/user/list', reqParms);
+    const [, execute] = apiCtrl.post('/operation/user/list', reqParms);
 
     execute
       .then(res => {
@@ -33,7 +33,7 @@ export default function List(props) {
       });
   }, [reqParms]);
 
-  const configs = useCallback(form => {
+  const configs = useCallback(() => {
     const rules = [{ required: false }];
 
     return [
@@ -84,24 +84,24 @@ export default function List(props) {
     ];
   }, []);
 
-  const onDeleteUser = useCallback(id => {
-    Modal.confirm({
-      title: formatterMessage('tips'),
-      icon: <ExclamationCircleOutlined />,
-      content: formatterMessage('confirmDeletion'),
-      okText: formatterMessage('confirm'),
-      cancelText: formatterMessage('cancel'),
-      onOk: () => {
-        const [, execute] = apiCtrl.post('/user/delete', { id });
+  // const onDeleteUser = useCallback(id => {
+  //   Modal.confirm({
+  //     title: formatterMessage('tips'),
+  //     icon: <ExclamationCircleOutlined />,
+  //     content: formatterMessage('confirmDeletion'),
+  //     okText: formatterMessage('confirm'),
+  //     cancelText: formatterMessage('cancel'),
+  //     onOk: () => {
+  //       const [, execute] = apiCtrl.post('/user/delete', { id });
 
-        execute.then(() => {
-          message.success(formatterMessage('successfullyDeleted'));
+  //       execute.then(() => {
+  //         message.success(formatterMessage('successfullyDeleted'));
 
-          setReqParams(pre => ({ ...pre }));
-        });
-      },
-    });
-  }, []);
+  //         setReqParams(pre => ({ ...pre }));
+  //       });
+  //     },
+  //   });
+  // }, []);
 
   const columns = useMemo(
     () => [
@@ -109,21 +109,8 @@ export default function List(props) {
         title: formatterMessage('account'),
         dataIndex: 'account',
       },
-      {
-        title: formatterMessage('operate'),
-        render: (text, row, index) => {
-          return (
-            <div>
-              <Button type="link">{formatterMessage('edit')}</Button>
-              <Button type="text" danger onClick={() => onDeleteUser(row.id)}>
-                {formatterMessage('delete')}
-              </Button>
-            </div>
-          );
-        },
-      },
     ],
-    [onDeleteUser]
+    []
   );
 
   const breadcrumbConfigs = useMemo(

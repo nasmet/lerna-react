@@ -14,6 +14,12 @@ export default function KeepAlive(props) {
     routerCacheMap[props.location.pathname] = SetActive;
   }
 
+  useEffect(() => {
+    return () => {
+      routerCacheMap[props.location.pathname] = undefined;
+    };
+  }, [props.location.pathname]);
+
   if (active) {
     return <div style={{ display: `${props.match ? 'block' : 'none'}` }}>{props.children}</div>;
   }
@@ -56,7 +62,7 @@ export function useHide(fn, pathname) {
           }
 
           flag.current = true;
-          cb.current && cb.current();
+          cb.current && cb.current(location.pathname);
         } else {
           flag.current = false;
         }

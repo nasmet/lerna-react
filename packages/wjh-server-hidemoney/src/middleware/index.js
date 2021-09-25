@@ -2,7 +2,7 @@
  * @Description: 中间件
  * @Author: 吴锦辉
  * @Date: 2021-09-14 09:20:06
- * @LastEditTime: 2021-09-17 16:40:56
+ * @LastEditTime: 2021-09-25 17:27:22
  */
 
 const mainCtrl = require('../controller/main');
@@ -21,16 +21,31 @@ function responseHandle(req, res) {
   });
 }
 
-function checkSessionHandle(req, res, next) {
-  const { authorization } = req.headers;
+const projectAppid = 'wx3d9ec401e55391fa';
+
+async function checkSessionHandle(req, res, next) {
+  const { authorization = '', appid = '' } = req.headers;
 
   try {
+    if (projectAppid !== appid) {
+      const code = codeMap.WrongAppid;
+
+      res.status(200).json({
+        code,
+        message: codeNameMap[code],
+      });
+
+      return;
+    }
+
     // 获取token
     const token = authorization.replace('Bearer ', '');
 
     const sessionCtrl = mainCtrl.getSessionCtrl();
 
-    if (!sessionCtrl.hasSession(token)) {
+    const userId = await sessionCtrl.hasSession(token);
+
+    if (!userId) {
       const code = codeMap.InvalidToken;
 
       res.status(200).json({
@@ -38,8 +53,8 @@ function checkSessionHandle(req, res, next) {
         message: codeNameMap[code],
       });
     } else {
-      res.userId = sessionCtrl.getSession(token).userId;
-      res.token = token;
+      res.userId = userId;
+      req.body.appid = appid;
 
       next();
     }

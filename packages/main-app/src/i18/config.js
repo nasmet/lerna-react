@@ -2,7 +2,7 @@
  * @Description: 语言包配置
  * @Author: 吴锦辉
  * @Date: 2021-09-24 09:16:13
- * @LastEditTime: 2021-09-24 09:17:46
+ * @LastEditTime: 2021-09-25 11:55:56
  */
 
 export default {
@@ -28,6 +28,17 @@ export default {
     application: '应用',
     operationModule: '运营模块',
     userManagement: '用户管理',
+    applicationManagement: '应用管理',
+    appid: 'appid',
+    name: '名称',
+    company: '公司',
+    developer: '开发者',
+    create: '创建',
+    desc: '描述',
+    createSuccess: '创建成功',
+    edit: '编辑',
+    details: '详情',
+    editSuccess: '编辑成功',
   },
   en: {
     globalization: 'globalization',
@@ -50,6 +61,17 @@ export default {
     hideMoney: 'hide money',
     application: 'application',
     operationModule: 'operation module',
-    userManagement: 'user Management',
+    userManagement: 'user management',
+    applicationManagement: 'application management',
+    appid: 'appid',
+    name: 'name',
+    company: 'company',
+    developer: 'developer',
+    create: 'create',
+    desc: 'description',
+    createSuccess: 'created successfully',
+    edit: 'edit',
+    details: 'details',
+    editSuccess: 'edit successfully',
   },
 };

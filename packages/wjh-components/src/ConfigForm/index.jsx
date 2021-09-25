@@ -2,14 +2,27 @@
  * @Description: 基于配置的表单组件
  * @Author: 吴锦辉
  * @Date: 2021-08-05 13:53:09
- * @LastEditTime: 2021-09-17 13:29:07
+ * @LastEditTime: 2021-09-25 11:49:11
  */
 
 import React, { useCallback, useMemo } from 'react';
-import { Form, Row, Col, Input, Select, Checkbox, Radio, DatePicker, Button } from 'antd';
+import { Link } from 'react-router-dom';
+import {
+  Form,
+  Row,
+  Col,
+  Input,
+  Select,
+  Checkbox,
+  Radio,
+  DatePicker,
+  Button,
+  Breadcrumb,
+} from 'antd';
 
 const { Item } = Form;
 const { RangePicker } = DatePicker;
+const { TextArea } = Input;
 
 export default function ConfigForm({
   configs,
@@ -18,7 +31,7 @@ export default function ConfigForm({
   formProps = {},
   showBtn = true,
   okText = '确认',
-  cancelText = '取消',
+  cancelText = '返回',
   resetText = '重置',
   showOkBtn = true,
   showCancelBtn = true,
@@ -27,6 +40,8 @@ export default function ConfigForm({
   ok,
   cancel,
   reset,
+  showBreadcrumb = false,
+  breadcrumbConfigs = [],
 }) {
   const [form] = Form.useForm();
 
@@ -51,6 +66,9 @@ export default function ConfigForm({
       switch (cmpType) {
         case 'input':
           temp = <Input allowClear {...cmpProps} />;
+          break;
+        case 'textarea':
+          temp = <TextArea allowClear showCount maxLength={50} {...cmpProps} />;
           break;
         case 'select':
           temp = <Select showSearch optionFilterProp="label" allowClear {...cmpProps} />;
@@ -143,30 +161,45 @@ export default function ConfigForm({
   }
 
   return (
-    // eslint-disable-next-line no-template-curly-in-string
-    <Form form={form} validateMessages={{ required: '${label}是必选字段' }} {...formProps}>
-      <Row gutter={gutter}>
-        {values}
-        {showBtn ? (
-          <Col span={btnSpan} style={{ textAlign: btnAlign }}>
-            {showResetBtn ? (
-              <Button style={{ marginRight: '16px' }} type="primary" onClick={onReset}>
-                {resetText}
-              </Button>
-            ) : null}
-            {showCancelBtn ? (
-              <Button style={{ marginRight: '16px' }} onClick={onCancel}>
-                {cancelText}
-              </Button>
-            ) : null}
-            {showOkBtn ? (
-              <Button type="primary" onClick={onSubmit}>
-                {okText}
-              </Button>
-            ) : null}
-          </Col>
-        ) : null}
-      </Row>
-    </Form>
+    <>
+      {showBreadcrumb && breadcrumbConfigs.length > 0 ? (
+        <div
+          style={{ marginBottom: '15px', paddingBottom: '15px', borderBottom: '1px solid #eee' }}
+        >
+          <Breadcrumb>
+            {breadcrumbConfigs.map((v, index) => (
+              // eslint-disable-next-line react/no-array-index-key
+              <Breadcrumb.Item key={index}>
+                {v.path ? <Link to={v.path}>{v.title}</Link> : v.title}
+              </Breadcrumb.Item>
+            ))}
+          </Breadcrumb>
+        </div>
+      ) : null}
+      <Form form={form} validateMessages={{ required: '${label}是必选字段' }} {...formProps}>
+        <Row gutter={gutter}>
+          {values}
+          {showBtn ? (
+            <Col span={btnSpan} style={{ textAlign: btnAlign }}>
+              {showResetBtn ? (
+                <Button style={{ marginRight: '16px' }} type="primary" onClick={onReset}>
+                  {resetText}
+                </Button>
+              ) : null}
+              {showCancelBtn ? (
+                <Button style={{ marginRight: '16px' }} onClick={onCancel}>
+                  {cancelText}
+                </Button>
+              ) : null}
+              {showOkBtn ? (
+                <Button type="primary" onClick={onSubmit}>
+                  {okText}
+                </Button>
+              ) : null}
+            </Col>
+          ) : null}
+        </Row>
+      </Form>
+    </>
   );
 }

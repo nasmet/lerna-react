@@ -2,7 +2,7 @@
  * @Description: 路由配置文件
  * @Author: 吴锦辉
  * @Date: 2021-08-16 08:57:07
- * @LastEditTime: 2021-09-22 10:45:15
+ * @LastEditTime: 2021-09-25 11:18:08
  */
 
 import React, { lazy } from 'react';
@@ -13,6 +13,9 @@ const MainLayout = lazy(() => import('@pages/main-layout'));
 
 const Login = lazy(() => import('@pages/admin/login'));
 const Register = lazy(() => import('@pages/admin/register'));
+
+const ApplicationManagement = lazy(() => import('@pages/main/application-manage'));
+const ApplicationDetails = lazy(() => import('@pages/main/application-manage/details'));
 
 /**
  * 路由包装，对路由做一些拦截
@@ -33,7 +36,6 @@ export default [
       {
         path: '/admin',
         Component: AdminLayout,
-        exact: true,
         children: [
           {
             path: '/admin/login',
@@ -50,8 +52,29 @@ export default [
       {
         path: '/main',
         Component: MainLayout,
-        exact: true,
-        children: [],
+        children: [
+          {
+            path: '/main/application',
+            Component: ApplicationManagement,
+            exact: true,
+            keepAlive: true,
+          },
+          {
+            path: '/main/application/create',
+            Component: ApplicationDetails,
+            exact: true,
+          },
+          {
+            path: '/main/application/details/:did',
+            Component: ApplicationDetails,
+            exact: true,
+          },
+          {
+            path: '/main/application/edit/:eid',
+            Component: ApplicationDetails,
+            exact: true,
+          },
+        ],
         WrapperComponent,
       },
       {

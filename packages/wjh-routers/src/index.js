@@ -2,7 +2,7 @@
  * @Description: 路由分组渲染方法
  * @Author: 吴锦辉
  * @Date: 2021-08-16 09:55:58
- * @LastEditTime: 2021-09-16 14:43:57
+ * @LastEditTime: 2021-09-25 09:47:55
  */
 
 import React, { Suspense } from 'react';
@@ -15,7 +15,7 @@ import KeepAlive from 'wjh-keepalive';
  * @return {ReactNode}
  */
 const RouteItem = route => {
-  const { redirect, from, to, path, Component, WrapperComponent, keepAlive } = route;
+  const { redirect, from, to, path, Component, WrapperComponent, keepAlive, exact } = route;
 
   if (redirect) {
     return <Redirect key={from + to} from={from} to={to} />;
@@ -53,7 +53,7 @@ const RouteItem = route => {
     );
   };
 
-  return <Route key={path} path={path} {...obj} />;
+  return <Route key={path} path={path} exact={exact} {...obj} />;
 };
 
 // 资源预加载Loading样式
@@ -65,7 +65,7 @@ const fallback = <div>loading......</div>;
  * @return {Function}       [description]
  */
 function fn(route) {
-  const { Component, children, path, WrapperComponent, keepAlive, isSwitch } = route;
+  const { Component, children, path, WrapperComponent, keepAlive, isSwitch, exact } = route;
 
   if (children && children.length > 0) {
     const render = props => {
@@ -110,7 +110,7 @@ function fn(route) {
       return <WrapperComponent {...props}>{render(props)}</WrapperComponent>;
     };
 
-    return <Route key={path} path={path} {...obj} />;
+    return <Route key={path} path={path} exact={exact} {...obj} />;
   }
 
   return RouteItem(route);
@@ -121,9 +121,5 @@ export default function RenderRouters({ routerConfig, loadingCmp }) {
     throw new Error('routerConfig路由配置未传入');
   }
 
-  return (
-    <Suspense fallback={loadingCmp || fallback}>
-      <Switch>{routerConfig.map(fn)}</Switch>
-    </Suspense>
-  );
+  return <Suspense fallback={loadingCmp || fallback}> {routerConfig.map(fn)}</Suspense>;
 }

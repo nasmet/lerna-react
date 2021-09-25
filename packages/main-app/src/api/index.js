@@ -2,7 +2,7 @@
  * @Description: 请求对象
  * @Author: 吴锦辉
  * @Date: 2021-09-15 11:26:27
- * @LastEditTime: 2021-09-22 18:01:29
+ * @LastEditTime: 2021-09-25 17:28:13
  */
 
 import { message } from 'antd';
@@ -47,6 +47,7 @@ const requestIntercept = configs => {
   }
 
   configs.headers.Authorization = `Bearer ${token || ''}`;
+  configs.headers.Appid = cacheCtrl.getAppid();
 
   return configs;
 };

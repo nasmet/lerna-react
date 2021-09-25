@@ -1,4 +1,4 @@
-import React, { useMemo, useCallback } from 'react';
+import React, { useMemo, useCallback, useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
 import { Menu, Dropdown, message } from 'antd';
 import { MailOutlined, AppstoreOutlined, SettingOutlined, DownOutlined } from '@ant-design/icons';
@@ -32,7 +32,7 @@ export default function Layout(props) {
           <Header {...props} />
         </div>
         <div className={styles.main}>
-          {props.children}
+          {props.children ? <div style={{ padding: '20px' }}>{props.children}</div> : null}
           <div id="child-app-operation" />
         </div>
       </div>
@@ -122,14 +122,37 @@ function Header(props) {
 }
 
 function Aside() {
+  const [applictionData, setApplicationData] = useState([]);
+
+  useEffect(() => {
+    const [, execute] = apiCtrl.post('/application/list', { page: 1, pageSize: 10 });
+
+    execute.then(res => {
+      const { list } = res;
+
+      setApplicationData(list);
+    });
+  }, []);
+
+  const onApplicationChange = useCallback(appid => {
+    cacheCtrl.setAppid(appid);
+  }, []);
+
   return (
     <Menu mode="vertical">
+      <Menu.Item icon={<AppstoreOutlined />} key="sub0">
+        <Link to="/main/application">{i18Ctrl.formatterMessage('applicationManagement')}</Link>
+      </Menu.Item>
       <SubMenu
         key="sub2"
         icon={<AppstoreOutlined />}
         title={i18Ctrl.formatterMessage('application')}
       >
-        <Menu.Item key="5">{i18Ctrl.formatterMessage('hideMoney')}</Menu.Item>
+        {applictionData.map(v => (
+          <Menu.Item key={v.id} onClick={() => onApplicationChange(v.appid)}>
+            {v.name}
+          </Menu.Item>
+        ))}
       </SubMenu>
       <SubMenu
         key="sub1"
@@ -137,14 +160,10 @@ function Aside() {
         title={i18Ctrl.formatterMessage('operationModule')}
       >
         <Menu.Item key="1">
-          <Link to="/main/middle/operation/user/list">
+          <Link to={`/main/${cacheCtrl.getAppid()}/operation/user/list`}>
             {i18Ctrl.formatterMessage('userManagement')}
           </Link>
         </Menu.Item>
-        {/* <Menu.ItemGroup title="Item 2">
-          <Menu.Item key="3">Option 3</Menu.Item>
-          <Menu.Item key="4">Option 4</Menu.Item>
-        </Menu.ItemGroup> */}
       </SubMenu>
     </Menu>
   );

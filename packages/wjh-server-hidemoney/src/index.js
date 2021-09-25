@@ -2,7 +2,7 @@
  * @Description: 服务启动入口
  * @Author: 吴锦辉
  * @Date: 2021-09-13 17:16:16
- * @LastEditTime: 2021-09-24 17:19:03
+ * @LastEditTime: 2021-09-25 17:11:52
  */
 
 const express = require('express');
@@ -22,7 +22,7 @@ app.use(function logHandler(req, res, next) {
   next();
 });
 
-app.use('/api/user', userRouter);
+app.use('/api/operation/user', userRouter);
 
 // eslint-disable-next-line no-unused-vars
 app.use(function errorHandler(err, req, res, next) {

@@ -98,6 +98,7 @@
     "react/prefer-stateless-function": "off",
     "react/jsx-uses-react": "error",
     "react/jsx-uses-vars": "error",
+    "no-template-curly-in-string": "off",
     "no-unused-vars": [
       "error",
       {

@@ -2,7 +2,7 @@
  * @Description: 中间件
  * @Author: 吴锦辉
  * @Date: 2021-09-14 09:20:06
- * @LastEditTime: 2021-09-17 16:40:56
+ * @LastEditTime: 2021-09-25 16:13:49
  */
 
 const mainCtrl = require('../controller/main');
@@ -21,7 +21,7 @@ function responseHandle(req, res) {
   });
 }
 
-function checkSessionHandle(req, res, next) {
+async function checkSessionHandle(req, res, next) {
   const { authorization } = req.headers;
 
   try {
@@ -30,7 +30,9 @@ function checkSessionHandle(req, res, next) {
 
     const sessionCtrl = mainCtrl.getSessionCtrl();
 
-    if (!sessionCtrl.hasSession(token)) {
+    const flag = await sessionCtrl.hasSession(token);
+
+    if (!flag) {
       const code = codeMap.InvalidToken;
 
       res.status(200).json({

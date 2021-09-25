@@ -1,4 +1,5 @@
 import React, { useState, useCallback } from 'react';
+import { Link } from 'react-router-dom';
 import { Table, Pagination, Breadcrumb } from 'antd';
 import ConfigForm from '../ConfigForm';
 
@@ -45,13 +46,13 @@ export default function ConfigTable({
     <div>
       {showBreadcrumb && breadcrumbConfigs.length > 0 ? (
         <div
-          style={{ marginBottom: '20px', paddingBottom: '20px', borderBottom: '1px solid #eee' }}
+          style={{ marginBottom: '15px', paddingBottom: '15px', borderBottom: '1px solid #eee' }}
         >
           <Breadcrumb>
             {breadcrumbConfigs.map((v, index) => (
               // eslint-disable-next-line react/no-array-index-key
-              <Breadcrumb.Item key={index} href={v.path}>
-                {v.title}
+              <Breadcrumb.Item key={index}>
+                {v.path ? <Link to={v.path}>{v.title}</Link> : v.title}
               </Breadcrumb.Item>
             ))}
           </Breadcrumb>
@@ -67,12 +68,13 @@ export default function ConfigTable({
             showResetBtn
             btnFull={false}
             ok={onSearch}
+            okText="搜索"
             reset={onReset}
           />
         </div>
       ) : null}
       {children}
-      <div style={{ marginTop: '40px' }}>
+      <div style={{ marginTop: '15px' }}>
         <Table
           pagination={false}
           dataSource={dataSource}

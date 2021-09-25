@@ -1,13 +1,13 @@
 /*
- * @Description: 用户属性数据库查询
+ * @Description: 应用模块
  * @Author: 吴锦辉
- * @Date: 2021-09-14 11:47:48
- * @LastEditTime: 2021-09-25 17:21:23
+ * @Date: 2021-09-25 15:07:36
+ * @LastEditTime: 2021-09-25 15:26:58
  */
 
 const { query } = require('../mysql/index');
 
-class UserModel {
+class SessionModel {
   spliceWhereParam(data, like = false) {
     const keys = Object.keys(data);
 
@@ -30,10 +30,22 @@ class UserModel {
     return str;
   }
 
-  selectUser(data = {}) {
+  createSession(data = {}) {
+    return new Promise((resolve, reject) => {
+      query({ sql: 'INSERT INTO session SET ?', data })
+        .then(res => {
+          resolve(res);
+        })
+        .catch(err => {
+          reject(err);
+        });
+    });
+  }
+
+  selectSession(data = {}) {
     const str = this.spliceWhereParam(data);
 
-    const sql = `select * from user ${str}`;
+    const sql = `select * from session ${str}`;
 
     console.log('sql: ', sql);
 
@@ -48,32 +60,15 @@ class UserModel {
     });
   }
 
-  selectUserByPage(data = {}) {
-    const { page, pageSize, ...other } = data || {};
+  deleteSession(data = {}) {
+    const str = this.spliceWhereParam(data);
 
-    const from = (page - 1) * pageSize;
-    const to = page * pageSize;
-
-    const str = this.spliceWhereParam(other || {}, true);
-
-    const sql = `select * from user ${str} limit ${from},${to}`;
+    const sql = `delete from session ${str}`;
 
     console.log('sql: ', sql);
 
     return new Promise((resolve, reject) => {
       query({ sql })
-        .then(res => {
-          resolve(res);
-        })
-        .catch(err => {
-          reject(err);
-        });
-    });
-  }
-
-  selectUserCount() {
-    return new Promise((resolve, reject) => {
-      query({ sql: 'SELECT COUNT(*) FROM user' })
         .then(res => {
           resolve(res);
         })
@@ -84,4 +79,4 @@ class UserModel {
   }
 }
 
-module.exports = new UserModel();
+module.exports = new SessionModel();

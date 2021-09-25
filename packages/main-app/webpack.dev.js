@@ -2,7 +2,7 @@
  * @Description: webpack开发配置文件
  * @Author: 吴锦辉
  * @Date: 2021-08-16 09:19:56
- * @LastEditTime: 2021-09-22 09:13:22
+ * @LastEditTime: 2021-09-25 17:16:26
  */
 
 const ReactRefreshPlugin = require('@pmmmwh/react-refresh-webpack-plugin');
@@ -35,6 +35,10 @@ module.exports = {
     historyApiFallback: true,
     port: 8080,
     proxy: {
+      '/api/operation': {
+        target: 'http://localhost:3001',
+        secure: false,
+      },
       '/api': {
         target: 'http://localhost:3000',
         secure: false,

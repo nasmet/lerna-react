@@ -1,8 +1,8 @@
 /*
- * @Description: 用户相关接口请求
+ * @Description: 用户模块
  * @Author: 吴锦辉
  * @Date: 2021-09-14 09:15:23
- * @LastEditTime: 2021-09-17 16:40:10
+ * @LastEditTime: 2021-09-25 16:18:27
  */
 
 const express = require('express');
@@ -68,6 +68,15 @@ router.post(
         const { id } = values[0];
 
         const token = sessionCtrl.generateSession(id);
+        const sessionId = generateSnowflakeId();
+
+        await sessionCtrl.removeSessionByUseId(id);
+
+        await sessionCtrl.createSession({
+          id: sessionId,
+          userId: id,
+          token,
+        });
 
         res.code = codeMap.Success;
         res.body = {
@@ -106,7 +115,7 @@ router.post(
     try {
       const sessionCtrl = mainCtrl.getSessionCtrl();
 
-      sessionCtrl.removeSession(res.token);
+      await sessionCtrl.removeSession(res.token);
 
       res.code = codeMap.Success;
 
@@ -121,6 +130,7 @@ router.post(
 /** 查询用户列表 */
 router.post(
   '/list',
+  verifyUserListParams(),
   async (req, res, next) => {
     try {
       const userCtrl = mainCtrl.getUserCtrl();
@@ -140,7 +150,6 @@ router.post(
       next(err);
     }
   },
-  verifyUserListParams(),
   async (req, res, next) => {
     try {
       const userCtrl = mainCtrl.getUserCtrl();
@@ -174,8 +183,6 @@ router.post(
       if (values.length > 0) {
         await userCtrl.deleteUser(req.body);
       }
-
-      console.log('total: ', values);
 
       res.code = codeMap.Success;
 
