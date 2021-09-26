@@ -2,7 +2,7 @@
  * @Description: 用户模块
  * @Author: 吴锦辉
  * @Date: 2021-09-14 09:15:23
- * @LastEditTime: 2021-09-25 16:18:27
+ * @LastEditTime: 2021-09-26 12:55:27
  */
 
 const express = require('express');
@@ -23,6 +23,15 @@ router.post(
   '/register',
   verifyLoginParams(),
   async (req, res, next) => {
+    /** 暂不支持接口注册 */
+    if (true) {
+      res.code = codeMap.NotSupported;
+
+      next();
+
+      return;
+    }
+
     try {
       const userCtrl = mainCtrl.getUserCtrl();
 

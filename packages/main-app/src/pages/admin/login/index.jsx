@@ -8,7 +8,7 @@ import routerJumpCtrl from '@routerjump';
 import i18Ctrl from '@i18';
 import styles from './index.module.scss';
 
-export default function Login(props) {
+export default function Login() {
   const configs = useCallback(() => {
     const rules = [{ required: true }];
 
@@ -60,7 +60,6 @@ export default function Login(props) {
         showCancelBtn={false}
         ok={onLogin}
       />
-      <Link to="/admin/register">{i18Ctrl.formatterMessage('register')}</Link>
     </div>
   );
 }

@@ -2,7 +2,7 @@
  * @Description: 路由配置文件
  * @Author: 吴锦辉
  * @Date: 2021-08-16 08:57:07
- * @LastEditTime: 2021-09-25 11:18:08
+ * @LastEditTime: 2021-09-26 12:58:26
  */
 
 import React, { lazy } from 'react';
@@ -80,7 +80,7 @@ export default [
       {
         redirect: true,
         from: '/',
-        to: '/admin/login',
+        to: '/main',
       },
     ],
   },

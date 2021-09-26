@@ -2,7 +2,7 @@
  * @Description: 请求控制器
  * @Author: 吴锦辉
  * @Date: 2021-09-24 16:05:30
- * @LastEditTime: 2021-09-24 17:17:00
+ * @LastEditTime: 2021-09-26 11:57:43
  */
 
 import Taro from '@tarojs/taro';
@@ -28,6 +28,7 @@ class HttpController {
       timeout: 10 * 1000,
       header: {
         'content-type': 'application/json', // 默认值
+        Appid: 'wx3d9ec401e55391fa',
       },
     };
 
