@@ -32,8 +32,11 @@ export default function Layout(props) {
           <Header {...props} />
         </div>
         <div className={styles.main}>
-          {props.children ? <div style={{ padding: '20px' }}>{props.children}</div> : null}
-          <div id="child-app-operation" />
+          {props.children ? (
+            <div style={{ padding: '20px' }}>
+              {props.children} <div id="child-app-operation" />
+            </div>
+          ) : null}
         </div>
       </div>
     </div>

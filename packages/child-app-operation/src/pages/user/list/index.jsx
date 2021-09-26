@@ -1,6 +1,7 @@
 import React, { useEffect, useCallback, useMemo, useState } from 'react';
 import { Button, Modal } from 'antd';
 import { ExclamationCircleOutlined } from '@ant-design/icons';
+import moment from 'moment';
 import { ConfigTable } from 'wjh-components';
 import apiCtrl from '@api';
 import { formatterMessage } from '@i18';
@@ -40,14 +41,6 @@ export default function List() {
       {
         cmpType: 'input',
         wrapProps: {
-          name: 'account',
-          label: formatterMessage('account'),
-          rules,
-        },
-      },
-      {
-        cmpType: 'input',
-        wrapProps: {
           name: 'username',
           label: formatterMessage('username'),
           rules,
@@ -84,30 +77,26 @@ export default function List() {
     ];
   }, []);
 
-  // const onDeleteUser = useCallback(id => {
-  //   Modal.confirm({
-  //     title: formatterMessage('tips'),
-  //     icon: <ExclamationCircleOutlined />,
-  //     content: formatterMessage('confirmDeletion'),
-  //     okText: formatterMessage('confirm'),
-  //     cancelText: formatterMessage('cancel'),
-  //     onOk: () => {
-  //       const [, execute] = apiCtrl.post('/user/delete', { id });
-
-  //       execute.then(() => {
-  //         message.success(formatterMessage('successfullyDeleted'));
-
-  //         setReqParams(pre => ({ ...pre }));
-  //       });
-  //     },
-  //   });
-  // }, []);
-
   const columns = useMemo(
     () => [
       {
-        title: formatterMessage('account'),
-        dataIndex: 'account',
+        title: formatterMessage('username'),
+        dataIndex: 'username',
+      },
+      {
+        title: formatterMessage('gender'),
+        dataIndex: 'gender',
+      },
+      {
+        title: formatterMessage('birthday'),
+        dataIndex: 'birthday',
+      },
+      {
+        title: formatterMessage('createTime'),
+        dataIndex: 'createTime',
+        render: (text, row) => {
+          return moment(row.createTime).format('YYYY-MM-DD HH:mm:ss');
+        },
       },
     ],
     []

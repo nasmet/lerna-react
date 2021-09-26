@@ -2,7 +2,7 @@
  * @Description: 语言包配置
  * @Author: 吴锦辉
  * @Date: 2021-09-24 09:16:13
- * @LastEditTime: 2021-09-25 11:55:56
+ * @LastEditTime: 2021-09-26 11:20:40
  */
 
 export default {
@@ -39,6 +39,7 @@ export default {
     edit: '编辑',
     details: '详情',
     editSuccess: '编辑成功',
+    createTime: '创建时间',
   },
   en: {
     globalization: 'globalization',
@@ -73,5 +74,6 @@ export default {
     edit: 'edit',
     details: 'details',
     editSuccess: 'edit successfully',
+    createTime: 'creation time',
   },
 };

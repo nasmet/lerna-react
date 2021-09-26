@@ -2,12 +2,13 @@
  * @Description: 应用管理
  * @Author: 吴锦辉
  * @Date: 2021-09-24 21:58:03
- * @LastEditTime: 2021-09-25 17:31:06
+ * @LastEditTime: 2021-09-26 11:36:54
  */
 
 import React, { useEffect, useCallback, useMemo, useState, useRef } from 'react';
 import { Link } from 'react-router-dom';
 import { Button, Modal } from 'antd';
+import moment from 'moment';
 import { ConfigTable } from 'wjh-components';
 import { useShow, useHide, active, destory } from 'wjh-keepalive';
 import apiCtrl from '@api';
@@ -61,6 +62,8 @@ export default function ApplicationManage(props) {
     if (!pathname.includes(path)) {
       destory(path);
     }
+
+    console.log('application hide');
   }, path);
 
   const configs = useCallback(() => {
@@ -110,6 +113,13 @@ export default function ApplicationManage(props) {
       {
         title: i18Ctrl.formatterMessage('company'),
         dataIndex: 'company',
+      },
+      {
+        title: i18Ctrl.formatterMessage('createTime'),
+        dataIndex: 'createTime',
+        render: (text, row) => {
+          return moment(row.createTime).format('YYYY-MM-DD HH:mm:ss');
+        },
       },
       {
         title: i18Ctrl.formatterMessage('operate'),

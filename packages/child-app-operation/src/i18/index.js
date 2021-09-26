@@ -2,7 +2,7 @@
  * @Description: 国际化控制器
  * @Author: 吴锦辉
  * @Date: 2021-09-23 12:55:19
- * @LastEditTime: 2021-09-23 13:50:05
+ * @LastEditTime: 2021-09-26 11:51:04
  */
 
 const languageConfig = {
@@ -23,6 +23,7 @@ const languageConfig = {
     'operation.delete': '删除',
     'operation.user': '用户',
     'operation.list': '列表',
+    'operation.createTime': '创建时间',
   },
   en: {
     'operation.account': 'account',
@@ -41,6 +42,7 @@ const languageConfig = {
     'operation.delete': 'delete',
     'operation.user': 'user',
     'operation.list': 'list',
+    'operation.createTime': 'creation time',
   },
 };
 

@@ -3,9 +3,6 @@
   "version": "1.0.7",
   "description": "适用于PC端react通用组件",
   "main": "./src/index.js",
-  "scripts": {
-    "build": "webpack"
-  },
   "author": "jinhui wu",
   "license": "ISC",
   "peerDependencies": {
@@ -16,18 +13,6 @@
     "react-dom": ">=16.8.0",
     "react-router-dom": ">=5.2.0",
     "classnames": ">=2.2.6"
-  },
-  "devDependencies": {
-    "@babel/core": "^7.10.5",
-    "@babel/preset-env": "^7.10.4",
-    "@babel/preset-react": "^7.10.4",
-    "babel-loader": "^8.1.0",
-    "css-loader": "^6.2.0",
-    "sass-loader": "^12.1.0",
-    "speed-measure-webpack-plugin": "^1.5.0",
-    "style-loader": "^3.2.1",
-    "webpack": "^5.48.0",
-    "webpack-cli": "^4.7.2"
   },
   "gitHead": "9637b5a7ad72591fe09bfd8403907d2b44d2968f"
 }

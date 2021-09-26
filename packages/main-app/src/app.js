@@ -2,11 +2,12 @@
  * @Description: app应用
  * @Author: 吴锦辉
  * @Date: 2021-08-16 08:55:25
- * @LastEditTime: 2021-09-22 16:10:08
+ * @LastEditTime: 2021-09-26 10:38:13
  */
 
 import React, { useEffect } from 'react';
 import { BrowserRouter } from 'react-router-dom';
+import KeepAlive from 'wjh-keepalive';
 import RenderRouters from 'wjh-routers';
 import { theme } from 'wjh-util';
 import 'antd/dist/antd.css';
@@ -24,7 +25,7 @@ function App() {
 
   return (
     <BrowserRouter>
-      <RenderRouters routerConfig={routers} />
+      <RenderRouters routerConfig={routers} KeepAliveCmp={KeepAlive} />
     </BrowserRouter>
   );
 }

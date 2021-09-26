@@ -31,12 +31,20 @@ export function useShow(fn, pathname) {
   const cb = useRef(fn);
   const listen = useRef(null);
   const path = useRef(pathname);
+  const flag = useRef(false);
 
   useEffect(() => {
     if (history) {
       listen.current = history.listen(location => {
         if (location.pathname === path.current) {
+          if (flag.current) {
+            return;
+          }
+
+          flag.current = true;
           cb.current && cb.current();
+        } else {
+          flag.current = false;
         }
       });
     }

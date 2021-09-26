@@ -2,7 +2,7 @@
  * @Description: 用户与命令行交互的工具学习
  * @Author: 吴锦辉
  * @Date: 2021-07-20 14:27:20
- * @LastEditTime: 2021-08-11 13:36:23
+ * @LastEditTime: 2021-09-26 11:42:43
  */
 
 const inquirer = require('inquirer');
@@ -11,9 +11,9 @@ const { getAllPackageJsonInfo } = require('./package-operator');
 
 function init() {
   getAllPackageJsonInfo().then(res => {
-    const packageInfos = res;
+    const packageInfos = res.filter(v => !!v.scripts);
 
-    const projects = res.map((v, index) => ({
+    const projects = packageInfos.map((v, index) => ({
       name: v.name,
       value: index,
     }));

@@ -2,12 +2,15 @@
  * @Description: 路由分组渲染方法
  * @Author: 吴锦辉
  * @Date: 2021-08-16 09:55:58
- * @LastEditTime: 2021-09-25 09:47:55
+ * @LastEditTime: 2021-09-26 10:36:42
  */
 
 import React, { Suspense } from 'react';
 import { Switch, Route, Redirect } from 'react-router-dom';
-import KeepAlive from 'wjh-keepalive';
+
+let KeepAlive = props => {
+  return props.children;
+};
 
 /**
  * 路由组件
@@ -116,9 +119,13 @@ function fn(route) {
   return RouteItem(route);
 }
 
-export default function RenderRouters({ routerConfig, loadingCmp }) {
+export default function RenderRouters({ routerConfig, loadingCmp, KeepAliveCmp }) {
   if (!routerConfig) {
     throw new Error('routerConfig路由配置未传入');
+  }
+
+  if (KeepAliveCmp) {
+    KeepAlive = KeepAliveCmp;
   }
 
   return <Suspense fallback={loadingCmp || fallback}> {routerConfig.map(fn)}</Suspense>;

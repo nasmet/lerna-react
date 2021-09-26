@@ -1,5 +1,5 @@
 {
-  "name": "wjh-server-hidemoney",
+  "name": "wjh-server-operation",
   "version": "1.0.7",
   "description": "node服务端",
   "main": "./src/index.js",

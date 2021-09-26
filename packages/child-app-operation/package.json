@@ -11,10 +11,12 @@
   "license": "ISC",
   "dependencies": {
     "antd": "^4.16.10",
+    "moment": "^2.29.1",
     "react": "^16.13.1",
     "react-dom": "^16.13.1",
     "react-router-dom": "^5.2.0",
     "wjh-components": "^1.0.7",
+    "wjh-keepalive": "^1.0.7",
     "wjh-request": "^1.0.7",
     "wjh-routers": "^1.0.7",
     "wjh-util": "^1.0.7"
