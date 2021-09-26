@@ -2,10 +2,11 @@
  * @Description: 请求控制器
  * @Author: 吴锦辉
  * @Date: 2021-09-24 16:05:30
- * @LastEditTime: 2021-09-26 11:57:43
+ * @LastEditTime: 2021-09-26 17:32:19
  */
 
 import Taro from '@tarojs/taro';
+import config from '@config';
 
 class HttpController {
   config: {
@@ -22,13 +23,13 @@ class HttpController {
     const { header = {}, ...other } = options;
 
     const defaultConfig = {
-      host: 'http://127.0.0.0:3001',
-      baseUrl: '/api-hidemoney',
+      host: config.host,
+      baseUrl: '/api',
       dataType: 'json',
       timeout: 10 * 1000,
       header: {
         'content-type': 'application/json', // 默认值
-        Appid: 'wx3d9ec401e55391fa',
+        appid: config.appid,
       },
     };
 
@@ -52,7 +53,9 @@ class HttpController {
     Taro.addInterceptor(interceptor);
   }
 
-  post(url, data = {}) {
+  _request(options) {
+    const { url, data = {}, method } = options || {};
+
     let requestTask;
 
     const taskId = this.taskId++;
@@ -66,12 +69,13 @@ class HttpController {
         header,
         dataType,
         timeout,
+        method,
         success: res => {
-          const { statusCode, errMsg } = res;
+          const { statusCode } = res;
 
           if (!/^2/.test(statusCode + '')) {
             Taro.showToast({
-              title: errMsg,
+              title: '服务器错误',
               icon: 'none',
             });
 
@@ -83,15 +87,30 @@ class HttpController {
               resolve(res.data.data);
               return;
             case 4000:
+              Taro.showToast({
+                title: '身份验证失败，请重新登录',
+                icon: 'none',
+              });
+
               reject();
               return;
             default:
-              reject();
+              Taro.showToast({
+                title: res.data.message,
+                icon: 'none',
+              });
+
+              reject(res.data.message);
               return;
           }
         },
-        fail: errMsg => {
-          reject(errMsg);
+        fail: err => {
+          Taro.showToast({
+            title: err.errMsg,
+            icon: 'none',
+          });
+
+          reject(err.errMsg);
         },
         complete: () => {
           this.cancelRequestById(taskId, false);
@@ -105,6 +124,22 @@ class HttpController {
     });
 
     return [taskId, excute];
+  }
+
+  post(url, data = {}) {
+    return this._request({
+      url,
+      data,
+      method: 'POST',
+    });
+  }
+
+  get(url, data = {}) {
+    return this._request({
+      url,
+      data,
+      method: 'GET',
+    });
   }
 
   cancelRequestById(taskId, flag = true) {

@@ -28,6 +28,7 @@
   },
   "scripts": {
     "init": "lerna clean && lerna bootstrap",
+    "bootstrap": "lerna bootstrap",
     "start": "node ./scripts/inquirer.js"
   }
 }

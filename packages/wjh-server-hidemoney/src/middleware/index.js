@@ -2,41 +2,48 @@
  * @Description: 中间件
  * @Author: 吴锦辉
  * @Date: 2021-09-14 09:20:06
- * @LastEditTime: 2021-09-26 13:56:20
+ * @LastEditTime: 2021-09-26 17:27:05
  */
 
 const mainCtrl = require('../controller/main');
 const { codeMap, codeNameMap } = require('../code/index');
 const { TypeJudgment } = require('../utils/type');
+const config = require('../config');
 
 function responseHandle(req, res) {
   res.setHeader('Content-Type', 'application/json');
 
-  const { code, body } = res;
+  const { code, body, message } = res;
 
   res.status(200).json({
     code,
-    message: codeNameMap[code],
+    message: message || codeNameMap[code],
     data: body,
   });
 }
 
 async function checkSessionHandle(req, res, next) {
-  const { authorization = '', appid = '' } = req.headers;
+  const { authorization, appid } = req.headers;
 
   try {
-    if (appid) {
-      req.body.appid = appid;
+    if (appid !== config.appid) {
+      res.code = codeMap.WrongAppid;
+
+      next();
+
+      return;
     }
+
+    req.body.appid = appid;
 
     // 获取token
     const token = authorization.replace('Bearer ', '');
 
     const sessionCtrl = mainCtrl.getSessionCtrl();
 
-    const userId = await sessionCtrl.hasSession(token);
+    const flag = await sessionCtrl.hasSession(token);
 
-    if (!userId) {
+    if (!flag) {
       const code = codeMap.InvalidToken;
 
       res.status(200).json({
@@ -44,7 +51,8 @@ async function checkSessionHandle(req, res, next) {
         message: codeNameMap[code],
       });
     } else {
-      res.userId = userId;
+      res.userId = sessionCtrl.getSession(token).userId;
+      res.token = token;
 
       next();
     }

@@ -2,7 +2,7 @@
  * @Description: 登录页
  * @Author: 吴锦辉
  * @Date: 2021-09-23 14:10:40
- * @LastEditTime: 2021-09-24 16:34:47
+ * @LastEditTime: 2021-09-26 17:35:04
  */
 
 import React, { useCallback, useEffect, useRef } from 'react';
@@ -86,8 +86,6 @@ export default function Index() {
   }, []);
 
   const onGetUserInfo = useCallback(e => {
-    console.log('detail: ', e.detail);
-    console.log('wxCode: ', data.current.wxCode);
     if (!e.detail) {
       Taro.showToast({
         title: '授权失败',
@@ -97,7 +95,14 @@ export default function Index() {
       return;
     }
 
-    const [_, excute] = httpCtrl.post('/login');
+    const { encryptedData, iv, userInfo } = e.detail;
+
+    const [, excute]: Array<any> = httpCtrl.post('/user/login', {
+      wxCode: data.current.wxCode,
+      encryptedData,
+      iv,
+      ...userInfo,
+    });
 
     excute.then(res => {});
   }, []);

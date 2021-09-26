@@ -2,7 +2,7 @@
  * @Description: taro配置文件
  * @Author: 吴锦辉
  * @Date: 2021-09-23 14:10:40
- * @LastEditTime: 2021-09-24 16:33:20
+ * @LastEditTime: 2021-09-26 14:00:15
  */
 
 import path from 'path';
@@ -23,6 +23,7 @@ const config = {
   alias: {
     '@store': path.resolve(__dirname, '../src/store'),
     '@api': path.resolve(__dirname, '../src/api'),
+    '@config': path.resolve(__dirname, '../src/config'),
   },
   copy: {
     patterns: [],
