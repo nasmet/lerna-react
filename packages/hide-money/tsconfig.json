@@ -26,7 +26,11 @@
     "paths": {
       "@api": ["src/api"],
       "@store": ["src/store"],
-      "@config": ["src/config"]
+      "@config": ["src/config"],
+      "@cache": ["src/cache"],
+      "@jump": ["src/jump"],
+      "@scene": ["src/scene"],
+      "@img": ["src/img"]
     }
   },
   "exclude": [

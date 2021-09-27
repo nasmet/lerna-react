@@ -2,11 +2,13 @@
  * @Description: 请求控制器
  * @Author: 吴锦辉
  * @Date: 2021-09-24 16:05:30
- * @LastEditTime: 2021-09-26 17:32:19
+ * @LastEditTime: 2021-09-27 10:13:53
  */
 
 import Taro from '@tarojs/taro';
 import config from '@config';
+import jumpCtrl from '@jump';
+import cacheCtrl from '@cache';
 
 class HttpController {
   config: {
@@ -90,6 +92,19 @@ class HttpController {
               Taro.showToast({
                 title: '身份验证失败，请重新登录',
                 icon: 'none',
+              });
+
+              const { path, params } = Taro.getCurrentInstance().router || {};
+
+              jumpCtrl.jumpBeforeLogin({
+                targetUrl: path,
+                targetOptions: params,
+              });
+
+              cacheCtrl.removeToken();
+
+              Taro.redirectTo({
+                url: 'main/login/login',
               });
 
               reject();

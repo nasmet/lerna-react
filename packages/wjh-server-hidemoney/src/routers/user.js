@@ -2,7 +2,7 @@
  * @Description: 用户模块
  * @Author: 吴锦辉
  * @Date: 2021-09-14 09:15:23
- * @LastEditTime: 2021-09-26 17:26:47
+ * @LastEditTime: 2021-09-27 09:44:00
  */
 
 const express = require('express');
@@ -15,40 +15,6 @@ const httpCtrl = require('../api');
 const config = require('../config');
 
 const router = express.Router();
-
-/** 注册 */
-router.post(
-  '/register',
-  verifyLoginParams(),
-  async (req, res, next) => {
-    try {
-      const userCtrl = mainCtrl.getUserCtrl();
-
-      let values = await userCtrl.selectUser(req.body);
-
-      if (values.length > 0) {
-        res.code = codeMap.AccountExist;
-
-        next();
-
-        return;
-      }
-
-      const id = generateSnowflakeId();
-
-      const { account, password } = req.body;
-
-      values = await userCtrl.createUser({ id, account, password });
-
-      res.code = codeMap.Success;
-
-      next();
-    } catch (err) {
-      next(err);
-    }
-  },
-  responseHandle
-);
 
 /** 登录 */
 router.post(
@@ -65,8 +31,6 @@ router.post(
 
         return;
       }
-
-      req.body.appid = appid;
 
       const [, execute] = httpCtrl.get('/sns/jscode2session', {
         appid: config.appid,
@@ -112,6 +76,7 @@ router.post(
 
         await userCtrl.createUser({
           id,
+          appid,
           openid,
           avatar: avatarUrl,
           province,

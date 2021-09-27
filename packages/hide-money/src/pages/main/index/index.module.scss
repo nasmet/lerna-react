@@ -1,26 +1,108 @@
+Page {
+  background: #fa4444;
+}
+
 .wrap {
   position: relative;
   width: 100%;
   height: 100%;
-  padding-left: 16px;
-  padding-right: 36px;
-  background-color: #fa4444;
-  background-repeat: no-repeat;
-  background-size: 100% 100%;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  overflow: hidden;
-  box-sizing: border-box;
 }
 
-.btn {
-  position: absolute;
-  bottom: 80px;
-  width: 373px;
-  height: 88px;
+.scrollView {
+  width: 100%;
+  height: 100%;
+}
+
+.container {
+  position: relative;
+  background-color: transparent;
   background-repeat: no-repeat;
   background-size: 100% 100%;
-  background-color: transparent;
-  color: #fff;
+  overflow: hidden;
+}
+
+.item {
+  position: absolute;
+  overflow: hidden;
+}
+
+.highLight {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  pointer-events: none;
+}
+
+.fastHide {
+  position: fixed;
+  left: 0;
+  top: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.7);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 10;
+}
+
+.content {
+  position: relative;
+  width: 600rpx;
+  margin: auto;
+  padding: 0 25rpx;
+  background-color: #fa4444;
+  border-radius: 30rpx;
+
+  .title {
+    width: 174rpx;
+    height: 55rpx;
+    margin: 20rpx auto;
+    text-align: center;
+  }
+
+  .inputAmount {
+    height: 80rpx;
+    background-color: #fff;
+    border-radius: 60rpx;
+    display: flex;
+    align-items: center;
+    padding: 0 45rpx;
+    font-size: 24rpx;
+    color: #000;
+    font-weight: bold;
+
+    .value {
+      font-size: 24rpx;
+      color: #a7a7a6;
+      text-align: right;
+      padding: 0 10rpx;
+      flex: 1;
+    }
+  }
+
+  .fee {
+    font-size: 24rpx;
+    text-align: center;
+    margin-top: 15rpx;
+    line-height: 30rpx;
+  }
+
+  .tip {
+    font-size: 24rpx;
+    line-height: 30rpx;
+    text-align: center;
+    margin-bottom: 30rpx;
+    margin-top: 25rpx;
+  }
+
+  .close {
+    position: absolute;
+    right: -15rpx;
+    top: -15rpx;
+    width: 56rpx;
+    height: 58rpx;
+  }
 }
