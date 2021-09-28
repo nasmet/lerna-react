@@ -2,7 +2,7 @@
  * @Description: 主场景
  * @Author: 吴锦辉
  * @Date: 2021-09-27 09:23:20
- * @LastEditTime: 2021-09-28 17:49:43
+ * @LastEditTime: 2021-09-28 17:53:23
  */
 
 import React, { useCallback, useEffect, useRef, useState } from 'react';
@@ -297,7 +297,9 @@ function HideMoney({ onClose, onShowShare }) {
     });
 
     excute
-      .then(() => {
+      .then(res => {
+        cacheCtrl.setHideRoomId(res.roomId);
+
         onClose && onClose(true);
 
         onShowShare && onShowShare(inputValue.current);
@@ -343,7 +345,7 @@ function HideMoney({ onClose, onShowShare }) {
 
 function Share({ onClose, shareMoney }) {
   const { nickName } = cacheCtrl.getUserInfo() || {};
-  const roomId = cacheCtrl.getRoomId();
+  const roomId = cacheCtrl.getHideRoomId();
 
   useShareAppMessage(res => {
     const shareContent = {

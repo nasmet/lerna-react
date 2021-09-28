@@ -2,7 +2,7 @@
  * @Description: 本地缓存
  * @Author: 吴锦辉
  * @Date: 2021-09-15 16:37:40
- * @LastEditTime: 2021-09-28 17:25:01
+ * @LastEditTime: 2021-09-28 17:53:17
  */
 
 import Taro from '@tarojs/taro';
@@ -100,6 +100,14 @@ class CacheController {
 
   getRoomInfo() {
     return this.map.get('roomInfo');
+  }
+
+  setHideRoomId(value) {
+    this.map.set('roomId', value);
+  }
+
+  getHideRoomId() {
+    return this.map.get('roomId');
   }
 
   /** 1: hide 2: find */
