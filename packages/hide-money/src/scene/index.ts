@@ -2,7 +2,7 @@
  * @Description: 场景配置
  * @Author: 吴锦辉
  * @Date: 2021-09-27 10:23:38
- * @LastEditTime: 2021-09-27 16:26:15
+ * @LastEditTime: 2021-09-28 14:10:55
  */
 
 // 场景资源
@@ -21,7 +21,6 @@
       disabled      // 是否可点击
       isHighLight: true, // 是否高亮显示
       image         // 物品图片
-      icon: `@img/index/fangjianicon/zhuozi.png`, // 一键藏钱中的小icon
       info          // 每个物品图片的配置信息
        {
         plist [
@@ -54,7 +53,7 @@
   [
     // 数组中置入一个样式信息即可
     `width:79rpx; height:43rpx;
-    background: url(@img/index/fangjian/other.png}),
+    background: url(@img/fangjian/other.png}),
     background-position: 0 0;
     background-size: 249rpx 358rpx;
     left: 780rpx;
@@ -66,7 +65,8 @@
 */
 export default // 私房钱 场景id 为 0
 {
-  sceneImage: require('@img/index/fangjian/scene.png'), // 场景图片
+  sceneId: '100',
+  sceneImage: require('@img/fangjian/scene.png'), // 场景图片
   width: 1811, // 场景宽度
   height: 2002, // 场景高度
   scrollX: 0,
@@ -79,9 +79,8 @@ export default // 私房钱 场景id 为 0
       id: 1000, // 物品id
       disabled: false, // 是否可点击
       isHighLight: true, // 是否高亮显示
-      image: require('@img/index/fangjian/zhuozi.png'), // 物品图片
-      highLight: require('@img/index/faguang/zhuozi.png'),
-      icon: require('@img/index/fangjianicon/zhuozi.png'),
+      image: require('@img/fangjian/zhuozi.png'), // 物品图片
+      highLight: require('@img/faguang/zhuozi.png'),
       info: {
         // 图片的配置
         plist: [
@@ -125,9 +124,8 @@ export default // 私房钱 场景id 为 0
       id: 1001, // 物品id
       disabled: false, // 是否可点击
       isHighLight: true, // 是否高亮显示
-      image: require('@img/index/fangjian/zhixiang.png'), // 物品图片
-      highLight: require('@img/index/faguang/zhixiang.png'),
-      icon: require('@img/index/fangjianicon/zhixiang.png'),
+      image: require('@img/fangjian/zhixiang.png'), // 物品图片
+      highLight: require('@img/faguang/zhixiang.png'),
       info: {
         // 图片的配置
         plist: [
@@ -149,7 +147,7 @@ export default // 私房钱 场景id 为 0
         ],
         unAnimation: [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10], // 无红包物品动画流程
         inAnimation: [0, 1, 2, 3, 4, 5, 6, 7, 11, 12, 13, 14], // 有红包物品动画流程
-        istyle: { right: '142rpx', bottom: '692rpx', zIndex: 2 },
+        istyle: { right: '560rpx', bottom: '480rpx', zIndex: 2 },
         width: 263, // 物品宽度
         height: 263, // 物品高度
         rwidth: 788, // 真实图片宽度
@@ -169,9 +167,8 @@ export default // 私房钱 场景id 为 0
       id: 1002, // 物品id
       disabled: false, // 是否禁用点击
       isHighLight: true, // 是否高亮显示
-      image: require('@img/index/fangjian/huapen.png'), // 物品图片
-      highLight: require('@img/index/faguang/huapen.png'),
-      icon: require('@img/index/fangjianicon/huapen.png'),
+      image: require('@img/fangjian/huapen.png'), // 物品图片
+      highLight: require('@img/faguang/huapen.png'),
       info: {
         // 图片的配置
         plist: [
@@ -213,9 +210,8 @@ export default // 私房钱 场景id 为 0
       id: 1003, // 物品id
       disabled: false, // 是否禁用点击
       isHighLight: true, // 是否高亮显示
-      image: require('@img/index/fangjian/fengjinghua.png'), // 物品图片
-      highLight: require('@img/index/faguang/fengjinghua.png'),
-      icon: require('@img/index/fangjianicon/fengjinghua.png'),
+      image: require('@img/fangjian/fengjinghua.png'), // 物品图片
+      highLight: require('@img/faguang/fengjinghua.png'),
       info: {
         // 图片的配置
         plist: [
@@ -251,9 +247,8 @@ export default // 私房钱 场景id 为 0
       id: 1004, // 物品id
       disabled: false, // 是否禁用点击
       isHighLight: true, // 是否高亮显示
-      image: require('@img/index/fangjian/fengjinghua2.png'), // 物品图片
-      highLight: require('@img/index/faguang/fengjinghua2.png'),
-      icon: require('@img/index/fangjianicon/fengjinghua2.png'),
+      image: require('@img/fangjian/fengjinghua2.png'), // 物品图片
+      highLight: require('@img/faguang/fengjinghua2.png'),
       info: {
         // 图片的配置
         plist: [
@@ -289,9 +284,8 @@ export default // 私房钱 场景id 为 0
       id: 1005, // 物品id
       disabled: false, // 是否禁用点击
       isHighLight: true, // 是否高亮显示
-      image: require('@img/index/fangjian/renxiang.png'), // 物品图片
-      highLight: require('@img/index/faguang/renxiang.png'),
-      icon: require('@img/index/fangjianicon/renxiang.png'),
+      image: require('@img/fangjian/renxiang.png'), // 物品图片
+      highLight: require('@img/faguang/renxiang.png'),
       info: {
         // 图片的配置
         plist: [
@@ -327,9 +321,8 @@ export default // 私房钱 场景id 为 0
       id: 1006, // 物品id
       disabled: false, // 是否禁用点击
       isHighLight: true, // 是否高亮显示
-      image: require('@img/index/fangjian/bijiben.png'), // 物品图片
-      highLight: require('@img/index/faguang/bijiben.png'),
-      icon: require('@img/index/fangjianicon/bijiben.png'),
+      image: require('@img/fangjian/bijiben.png'), // 物品图片
+      highLight: require('@img/faguang/bijiben.png'),
       info: {
         // 图片的配置
         plist: [
@@ -366,9 +359,8 @@ export default // 私房钱 场景id 为 0
       id: 1007, // 物品id
       disabled: false, // 是否禁用点击
       isHighLight: true, // 是否高亮显示
-      image: require('@img/index/fangjian/yizi.png'), // 物品图片
-      highLight: require('@img/index/faguang/yizi.png'),
-      icon: require('@img/index/fangjianicon/yizi.png'),
+      image: require('@img/fangjian/yizi.png'), // 物品图片
+      highLight: require('@img/faguang/yizi.png'),
       info: {
         // 图片的配置
         plist: [
@@ -406,9 +398,8 @@ export default // 私房钱 场景id 为 0
       id: 1008, // 物品id
       disabled: false, // 是否禁用点击
       isHighLight: true, // 是否高亮显示
-      image: require('@img/index/fangjian/shuibei.png'), // 物品图片
-      highLight: require('@img/index/faguang/shuibei.png'),
-      icon: require('@img/index/fangjianicon/shuibei.png'),
+      image: require('@img/fangjian/shuibei.png'), // 物品图片
+      highLight: require('@img/faguang/shuibei.png'),
       info: {
         // 图片的配置
         plist: [
@@ -445,9 +436,8 @@ export default // 私房钱 场景id 为 0
       id: 1009, // 物品id
       disabled: false, // 是否禁用点击
       isHighLight: true, // 是否高亮显示
-      image: require('@img/index/fangjian/taideng.png'), // 物品图片
-      highLight: require('@img/index/faguang/taideng.png'),
-      icon: require('@img/index/fangjianicon/taideng.png'),
+      image: require('@img/fangjian/taideng.png'), // 物品图片
+      highLight: require('@img/faguang/taideng.png'),
       info: {
         // 图片的配置
         plist: [
@@ -488,9 +478,8 @@ export default // 私房钱 场景id 为 0
       id: 1010, // 物品id
       disabled: false, // 是否禁用点击
       isHighLight: true, // 是否高亮显示
-      image: require('@img/index/fangjian/ditan.png'), // 物品图片
-      highLight: require('@img/index/faguang/ditan.png'),
-      icon: require('@img/index/fangjianicon/ditan.png'),
+      image: require('@img/fangjian/ditan.png'), // 物品图片
+      highLight: require('@img/faguang/ditan.png'),
       info: {
         // 图片的配置
         plist: [
@@ -531,7 +520,7 @@ export default // 私房钱 场景id 为 0
                         height:50rpx;
                         left: 1100rpx;
                         top: 950rpx;`,
-      image: require('@img/index/fangjian/other/feiji.png'),
+      image: require('@img/fangjian/other/feiji.png'),
     },
 
     // 福字
@@ -540,7 +529,7 @@ export default // 私房钱 场景id 为 0
                         height:143rpx;
                         left: 790rpx;
                         top: 730rpx;`,
-      image: require('@img/index/fangjian/other/fu.png'),
+      image: require('@img/fangjian/other/fu.png'),
     },
     // 纸巾盒
     {
@@ -548,7 +537,7 @@ export default // 私房钱 场景id 为 0
                         height:49rpx;
                         left: 1064rpx;
                         top: 862rpx;`,
-      image: require('@img/index/fangjian/other/zhijinhe.png'),
+      image: require('@img/fangjian/other/zhijinhe.png'),
     },
     // 红包
     {
@@ -556,7 +545,7 @@ export default // 私房钱 场景id 为 0
                         height:73rpx;
                         left: 1060rpx;
                         top: 890rpx;`,
-      image: require('@img/index/fangjian/other/hongbao.png'),
+      image: require('@img/fangjian/other/hongbao.png'),
     },
     // 食物
     {
@@ -564,7 +553,7 @@ export default // 私房钱 场景id 为 0
                         height:53rpx;
                         left: 1176rpx;
                         top: 882rpx;`,
-      image: require('@img/index/fangjian/other/shiwu.png'),
+      image: require('@img/fangjian/other/shiwu.png'),
     },
     // 衣架
     {
@@ -572,7 +561,7 @@ export default // 私房钱 场景id 为 0
                         height:574rpx;
                         left: 1248rpx;
                         top: 634rpx;`,
-      image: require('@img/index/fangjian/other/yijia.png'),
+      image: require('@img/fangjian/other/yijia.png'),
     },
     // 台灯
     {
@@ -580,7 +569,7 @@ export default // 私房钱 场景id 为 0
                         height:243rpx;
                         left: 1044rpx;
                         top: 640rpx;`,
-      image: require('@img/index/fangjian/other/taideng.png'),
+      image: require('@img/fangjian/other/taideng.png'),
     },
   ],
 };

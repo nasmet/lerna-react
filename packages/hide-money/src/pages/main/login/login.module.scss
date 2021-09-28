@@ -4,9 +4,6 @@
   height: 100%;
   padding-left: 16px;
   padding-right: 36px;
-  background-color: #fa4444;
-  background-repeat: no-repeat;
-  background-size: 100% 100%;
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -16,11 +13,5 @@
 
 .btn {
   position: absolute;
-  bottom: 80px;
-  width: 373px;
-  height: 88px;
-  background-repeat: no-repeat;
-  background-size: 100% 100%;
-  background-color: transparent;
-  color: #fff;
+  bottom: 100px;
 }

@@ -2,12 +2,14 @@
  * @Description: 本地缓存
  * @Author: 吴锦辉
  * @Date: 2021-09-15 16:37:40
- * @LastEditTime: 2021-09-27 09:18:56
+ * @LastEditTime: 2021-09-28 17:25:01
  */
 
 import Taro from '@tarojs/taro';
 
 class CacheController {
+  map: Map<string, any>;
+
   constructor() {
     this.map = new Map();
   }
@@ -56,6 +58,57 @@ class CacheController {
 
   setLanguage(value) {
     return this.set('language', value);
+  }
+
+  setSystemInfo() {
+    const systemInfo = Taro.getSystemInfoSync();
+
+    this.map.set('systemInfo', systemInfo);
+  }
+
+  getSystemInfo() {
+    if (!this.map.has('systemInfo')) {
+      this.setSystemInfo();
+    }
+
+    return this.map.get('systemInfo') || {};
+  }
+
+  setUserInfo(value) {
+    return this.set('user', value);
+  }
+
+  getUserInfo() {
+    return this.get('user');
+  }
+
+  setItemId(value) {
+    this.map.set('itemId', value);
+  }
+
+  getItemId() {
+    return this.map.get('itemId');
+  }
+
+  removeItemId() {
+    this.map.delete('itemId');
+  }
+
+  setRoomInfo(value) {
+    this.map.set('roomInfo', value);
+  }
+
+  getRoomInfo() {
+    return this.map.get('roomInfo');
+  }
+
+  /** 1: hide 2: find */
+  setMode(value) {
+    this.map.set('mode', value);
+  }
+
+  getMode() {
+    return this.map.get('mode');
   }
 }
 

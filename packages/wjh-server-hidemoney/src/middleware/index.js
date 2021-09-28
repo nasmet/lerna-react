@@ -2,13 +2,12 @@
  * @Description: 中间件
  * @Author: 吴锦辉
  * @Date: 2021-09-14 09:20:06
- * @LastEditTime: 2021-09-26 17:27:05
+ * @LastEditTime: 2021-09-28 17:50:58
  */
 
 const mainCtrl = require('../controller/main');
 const { codeMap, codeNameMap } = require('../code/index');
 const { TypeJudgment } = require('../utils/type');
-const config = require('../config');
 
 function responseHandle(req, res) {
   res.setHeader('Content-Type', 'application/json');
@@ -23,18 +22,19 @@ function responseHandle(req, res) {
 }
 
 async function checkSessionHandle(req, res, next) {
-  const { authorization, appid } = req.headers;
+  const { authorization } = req.headers;
 
   try {
-    if (appid !== config.appid) {
-      res.code = codeMap.WrongAppid;
+    if (!authorization) {
+      const code = codeMap.InvalidToken;
 
-      next();
+      res.status(200).json({
+        code,
+        message: codeNameMap[code],
+      });
 
       return;
     }
-
-    req.body.appid = appid;
 
     // 获取token
     const token = authorization.replace('Bearer ', '');
@@ -51,8 +51,7 @@ async function checkSessionHandle(req, res, next) {
         message: codeNameMap[code],
       });
     } else {
-      res.userId = sessionCtrl.getSession(token).userId;
-      res.token = token;
+      res.userId = sessionCtrl.getSession(token);
 
       next();
     }

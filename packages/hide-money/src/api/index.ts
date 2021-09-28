@@ -2,7 +2,7 @@
  * @Description: 请求控制器
  * @Author: 吴锦辉
  * @Date: 2021-09-24 16:05:30
- * @LastEditTime: 2021-09-27 10:13:53
+ * @LastEditTime: 2021-09-28 16:43:25
  */
 
 import Taro from '@tarojs/taro';
@@ -45,7 +45,9 @@ class HttpController {
     const interceptor = function (chain) {
       const requestParams = chain.requestParams;
 
-      console.log('requestParams: ', requestParams);
+      const token = cacheCtrl.getToken();
+
+      requestParams.header.authorization = `Bearer ${token || ''}`;
 
       return chain.proceed(requestParams).then(res => {
         return res;
@@ -81,6 +83,8 @@ class HttpController {
               icon: 'none',
             });
 
+            reject();
+
             return;
           }
 
@@ -89,6 +93,12 @@ class HttpController {
               resolve(res.data.data);
               return;
             case 4000:
+              setTimeout(() => {
+                Taro.redirectTo({
+                  url: '/pages/main/login/login',
+                });
+              }, 1500);
+
               Taro.showToast({
                 title: '身份验证失败，请重新登录',
                 icon: 'none',
@@ -102,10 +112,6 @@ class HttpController {
               });
 
               cacheCtrl.removeToken();
-
-              Taro.redirectTo({
-                url: 'main/login/login',
-              });
 
               reject();
               return;

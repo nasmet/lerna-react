@@ -2,18 +2,17 @@
  * @Description: 登录页
  * @Author: 吴锦辉
  * @Date: 2021-09-23 14:10:40
- * @LastEditTime: 2021-09-27 10:17:55
+ * @LastEditTime: 2021-09-28 14:29:11
  */
 
 import React, { useCallback, useEffect, useRef } from 'react';
 import Taro from '@tarojs/taro';
-import { View, Button } from '@tarojs/components';
+import { View } from '@tarojs/components';
 import httpCtrl from '@api';
 import cacheCtrl from '@cache';
 import jumpCtrl from '@jump';
+import { CustomButton } from '@component';
 import styles from './login.module.scss';
-import iconCover from '../img/icon-cover.png';
-import iconBtn from '../img/icon-btn.png';
 
 let codeTimer;
 /** wxcode有效期5分钟，单位毫秒 */
@@ -93,54 +92,45 @@ export default function Login() {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
-  const onGetUserInfo = useCallback(
-    e => {
-      if (!e.detail) {
+  const onGetUserInfo = useCallback(() => {
+    wx.getUserProfile({
+      desc: '用于完善个人资料', // 声明获取用户个人信息后的用途，后续会展示在弹窗中，请谨慎填写
+      success: res => {
+        Taro.showLoading();
+
+        const { userInfo } = res;
+
+        const [, excute]: Array<any> = httpCtrl.post('/user/login', {
+          wxCode: data.current.wxCode,
+          ...userInfo,
+        });
+
+        excute
+          .then(response => {
+            cacheCtrl.setToken(response.token);
+
+            cacheCtrl.setUserInfo(userInfo);
+
+            jumpCtrl.jumpAfterLogin();
+
+            Taro.hideLoading();
+          })
+          .catch(() => {
+            getWxCode(false);
+          });
+      },
+      fail: () => {
         Taro.showToast({
           title: '授权失败',
           icon: 'none',
         });
-
-        return;
-      }
-
-      Taro.showLoading();
-
-      const { encryptedData, iv, userInfo } = e.detail;
-
-      const [, excute]: Array<any> = httpCtrl.post('/user/login', {
-        wxCode: data.current.wxCode,
-        encryptedData,
-        iv,
-        ...userInfo,
-      });
-
-      excute
-        .then(res => {
-          cacheCtrl.setToken(res.token);
-
-          jumpCtrl.jumpAfterLogin();
-        })
-        .catch(() => {
-          getWxCode(false);
-        })
-        .finally(() => {
-          Taro.hideLoading();
-        });
-    },
-    [getWxCode]
-  );
+      },
+    });
+  }, [getWxCode]);
 
   return (
-    <View className={styles.wrap} style={{ backgroundImage: `url(${iconCover})` }}>
-      <Button
-        className={styles.btn}
-        openType='getUserInfo'
-        onGetUserInfo={onGetUserInfo}
-        style={{ backgroundImage: `url(${iconBtn})` }}
-      >
-        藏钱
-      </Button>
+    <View className={styles.wrap}>
+      <CustomButton className={styles.btn} btnText='登录' onClick={onGetUserInfo} />
     </View>
   );
 }

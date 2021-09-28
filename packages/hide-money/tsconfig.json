@@ -30,7 +30,9 @@
       "@cache": ["src/cache"],
       "@jump": ["src/jump"],
       "@scene": ["src/scene"],
-      "@img": ["src/img"]
+      "@img": ["src/img"],
+      "@utils": ["src/utils"],
+      "@component": ["src/component"],
     }
   },
   "exclude": [

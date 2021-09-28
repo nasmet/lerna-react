@@ -2,18 +2,23 @@
  * @Description: 路由跳转（主要处理登陆返回）
  * @Author: 吴锦辉
  * @Date: 2021-09-27 09:49:49
- * @LastEditTime: 2021-09-27 10:17:25
+ * @LastEditTime: 2021-09-28 16:17:20
  */
 
 import Taro from '@tarojs/taro';
 
 class JumpController {
+  targetUrl: any;
+  defalutUrl: any;
+  targetOptions: {};
+  jumpType: any;
+  defalutJumpType: any;
   constructor(url) {
     this.defalutUrl = url;
     this.defalutJumpType = 'redirect';
 
     this.targetUrl = '';
-    this.targetOptions = null;
+    this.targetOptions = {};
     /** redirect  */
     this.jumpType = '';
   }

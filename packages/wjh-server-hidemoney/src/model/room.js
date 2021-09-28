@@ -1,13 +1,13 @@
 /*
- * @Description: 用户属性数据库查询
+ * @Description: 房间属性数据库查询
  * @Author: 吴锦辉
- * @Date: 2021-09-14 11:47:48
- * @LastEditTime: 2021-09-28 15:30:45
+ * @Date: 2021-09-28 15:54:39
+ * @LastEditTime: 2021-09-28 16:24:11
  */
 
 const { query } = require('../mysql/index');
 
-class UserModel {
+class RoomModel {
   spliceWhereParam(data) {
     const keys = Object.keys(data);
 
@@ -28,9 +28,9 @@ class UserModel {
     return str;
   }
 
-  createUser(data = {}) {
+  createRoom(data = {}) {
     return new Promise((resolve, reject) => {
-      query({ sql: 'INSERT INTO user SET ?', data })
+      query({ sql: 'INSERT INTO room SET ?', data })
         .then(res => {
           resolve(res);
         })
@@ -40,10 +40,10 @@ class UserModel {
     });
   }
 
-  selectUser(data = {}) {
+  selectRoom(data = {}) {
     const str = this.spliceWhereParam(data);
 
-    const sql = `select * from user ${str}`;
+    const sql = `select * from room ${str}`;
 
     console.log('sql: ', sql);
 
@@ -57,24 +57,6 @@ class UserModel {
         });
     });
   }
-
-  updateUser(data = {}) {
-    const { id, ...other } = data || {};
-
-    const sql = `update user SET ? where id='${id}'`;
-
-    console.log('sql: ', sql);
-
-    return new Promise((resolve, reject) => {
-      query({ sql, data: other })
-        .then(res => {
-          resolve(res);
-        })
-        .catch(err => {
-          reject(err);
-        });
-    });
-  }
 }
 
-module.exports = new UserModel();
+module.exports = new RoomModel();

@@ -2,11 +2,11 @@
  * @Description: 用户模块
  * @Author: 吴锦辉
  * @Date: 2021-09-14 09:15:23
- * @LastEditTime: 2021-09-27 09:44:00
+ * @LastEditTime: 2021-09-28 15:42:46
  */
 
 const express = require('express');
-const { checkSessionHandle, responseHandle } = require('../middleware/index');
+const { responseHandle } = require('../middleware/index');
 const mainCtrl = require('../controller/main');
 const { codeMap } = require('../code/index');
 const { generateSnowflakeId } = require('../utils/index');
@@ -32,10 +32,12 @@ router.post(
         return;
       }
 
+      const { wxCode, avatarUrl, province, city, country, gender, language, nickName } = req.body;
+
       const [, execute] = httpCtrl.get('/sns/jscode2session', {
         appid: config.appid,
         secret: config.secret,
-        js_code: req.body.wxCode,
+        js_code: wxCode,
         grant_type: 'authorization_code',
       });
 
@@ -66,13 +68,22 @@ router.post(
         userId = id;
 
         await sessionCtrl.removeSessionByUseId(id);
+
+        await userCtrl.updateUser({
+          id,
+          avatar: avatarUrl,
+          province,
+          city,
+          country,
+          gender,
+          language,
+          name: nickName,
+        });
       } else {
         /** 创建用户 */
         const id = generateSnowflakeId();
 
         userId = id;
-
-        const { avatarUrl, province, city, country, gender, language, nickName } = req.body;
 
         await userCtrl.createUser({
           id,
@@ -108,7 +119,5 @@ router.post(
   },
   responseHandle
 );
-
-router.use(checkSessionHandle);
 
 module.exports = router;

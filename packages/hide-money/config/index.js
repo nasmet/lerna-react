@@ -2,7 +2,7 @@
  * @Description: taro配置文件
  * @Author: 吴锦辉
  * @Date: 2021-09-23 14:10:40
- * @LastEditTime: 2021-09-27 11:29:09
+ * @LastEditTime: 2021-09-28 10:14:49
  */
 
 import path from 'path';
@@ -28,6 +28,8 @@ const config = {
     '@jump': path.resolve(__dirname, '../src/jump'),
     '@scene': path.resolve(__dirname, '../src/scene'),
     '@img': path.resolve(__dirname, '../src/img'),
+    '@utils': path.resolve(__dirname, '../src/utils'),
+    '@component': path.resolve(__dirname, '../src/component'),
   },
   copy: {
     patterns: [],

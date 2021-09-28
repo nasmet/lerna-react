@@ -1,5 +1,5 @@
 Page {
-  background: #fa4444;
+  background: transparent;
 }
 
 .wrap {
@@ -11,31 +11,39 @@ Page {
 .scrollView {
   width: 100%;
   height: 100%;
+
+  .container {
+    position: relative;
+    background-color: transparent;
+    background-repeat: no-repeat;
+    background-size: 100% 100%;
+    overflow: hidden;
+  }
+
+  .item {
+    position: absolute;
+    overflow: hidden;
+  }
+
+  .highLight {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    pointer-events: none;
+  }
 }
 
-.container {
-  position: relative;
-  background-color: transparent;
-  background-repeat: no-repeat;
-  background-size: 100% 100%;
-  overflow: hidden;
-}
-
-.item {
+.close {
   position: absolute;
-  overflow: hidden;
+  right: -15px;
+  top: -15px;
+  width: 56px;
+  height: 58px;
 }
 
-.highLight {
-  position: absolute;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  pointer-events: none;
-}
-
-.fastHide {
+.hideMoneyModal {
   position: fixed;
   left: 0;
   top: 0;
@@ -46,63 +54,100 @@ Page {
   justify-content: center;
   align-items: center;
   z-index: 10;
-}
 
-.content {
-  position: relative;
-  width: 600rpx;
-  margin: auto;
-  padding: 0 25rpx;
-  background-color: #fa4444;
-  border-radius: 30rpx;
+  .content {
+    position: relative;
+    width: 600px;
+    margin: auto;
+    padding: 25px;
+    background-color: #fa4444;
+    border-radius: 30px;
 
-  .title {
-    width: 174rpx;
-    height: 55rpx;
-    margin: 20rpx auto;
-    text-align: center;
-  }
+    .inputAmount {
+      height: 80px;
+      background-color: #fff;
+      border-radius: 60px;
+      display: flex;
+      align-items: center;
+      padding: 0 45px;
+      font-size: 24px;
+      color: #000;
+      font-weight: bold;
 
-  .inputAmount {
-    height: 80rpx;
-    background-color: #fff;
-    border-radius: 60rpx;
-    display: flex;
-    align-items: center;
-    padding: 0 45rpx;
-    font-size: 24rpx;
-    color: #000;
-    font-weight: bold;
+      .value {
+        font-size: 24px;
+        color: #a7a7a6;
+        text-align: right;
+        padding: 0 10px;
+        flex: 1;
+      }
+    }
 
-    .value {
-      font-size: 24rpx;
-      color: #a7a7a6;
-      text-align: right;
-      padding: 0 10rpx;
-      flex: 1;
+    .fee {
+      font-size: 24px;
+      text-align: center;
+      margin-top: 15px;
+      line-height: 30px;
+    }
+
+    .tip {
+      font-size: 24px;
+      line-height: 30px;
+      text-align: center;
+      margin-bottom: 30px;
+      margin-top: 25px;
+    }
+
+    .btn {
+      margin-top: 25px;
+      display: flex;
+      justify-content: center;
     }
   }
+}
 
-  .fee {
-    font-size: 24rpx;
-    text-align: center;
-    margin-top: 15rpx;
-    line-height: 30rpx;
+.shareModal {
+  position: fixed;
+  left: 0;
+  top: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.7);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 10;
+
+  .shareContent {
+    position: relative;
+    width: 600px;
+    padding: 25px;
+    background-color: #fa4444;
+    border-radius: 30px;
+    color: #fff;
   }
 
-  .tip {
-    font-size: 24rpx;
-    line-height: 30rpx;
+  .title {
+    margin-bottom: 40px;
+    font-size: 40px;
     text-align: center;
-    margin-bottom: 30rpx;
-    margin-top: 25rpx;
+    line-height: 60px;
   }
 
-  .close {
-    position: absolute;
-    right: -15rpx;
-    top: -15rpx;
-    width: 56rpx;
-    height: 58rpx;
+  .word {
+    margin-bottom: 40px;
+    font-size: 32px;
+    text-align: center;
+    line-height: 60px;
+  }
+
+  .shareBtnContainer {
+    width: 100%;
+    display: flex;
+    justify-content: center;
+
+    .btn {
+      margin-right: 30px;
+    }
   }
 }

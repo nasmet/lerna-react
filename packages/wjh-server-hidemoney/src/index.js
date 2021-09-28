@@ -2,12 +2,13 @@
  * @Description: 服务启动入口
  * @Author: 吴锦辉
  * @Date: 2021-09-13 17:16:16
- * @LastEditTime: 2021-09-26 17:15:05
+ * @LastEditTime: 2021-09-28 16:03:01
  */
 
 const express = require('express');
 const bodyParser = require('body-parser');
 const userRouter = require('./routers/user');
+const roomRouter = require('./routers/room');
 
 const app = express();
 const port = 3002;
@@ -23,6 +24,7 @@ app.use(function logHandler(req, res, next) {
 });
 
 app.use('/api/user', userRouter);
+app.use('/api/room', roomRouter);
 
 // eslint-disable-next-line no-unused-vars
 app.use(function errorHandler(err, req, res, next) {

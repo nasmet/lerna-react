@@ -1,8 +1,8 @@
 /*
- * @Description: 用户模块的参数验证
+ * @Description: 房间模块的参数验证
  * @Author: 吴锦辉
- * @Date: 2021-09-16 10:23:43
- * @LastEditTime: 2021-09-28 15:44:14
+ * @Date: 2021-09-28 15:44:11
+ * @LastEditTime: 2021-09-28 17:13:59
  */
 
 const { verifyParamsHandle } = require('../middleware/index');
@@ -19,9 +19,29 @@ const { verifyParamsHandle } = require('../middleware/index');
 // 3: '[object String]',
 // 4: '[object Array]',
 
-function verifyLoginParams() {
+function verifyHideMoneyParams() {
   const verifyRules = {
-    wxCode: {
+    sceneId: {
+      required: true,
+      type: 3,
+    },
+    itemId: {
+      required: true,
+      type: 3,
+    },
+    money: {
+      required: true,
+      type: 3,
+      regex: /^\d{1,3}$/,
+    },
+  };
+
+  return verifyParamsHandle(verifyRules);
+}
+
+function verifyFindMoneyParams() {
+  const verifyRules = {
+    id: {
       required: true,
       type: 3,
     },
@@ -30,24 +50,7 @@ function verifyLoginParams() {
   return verifyParamsHandle(verifyRules);
 }
 
-function verifyUserListParams() {
-  const verifyRules = {
-    page: {
-      required: true,
-      type: 2,
-      regex: /^\d+$/,
-    },
-    pageSize: {
-      required: true,
-      type: 2,
-      regex: /^\d+$/,
-    },
-  };
-
-  return verifyParamsHandle(verifyRules);
-}
-
 module.exports = {
-  verifyLoginParams,
-  verifyUserListParams,
+  verifyHideMoneyParams,
+  verifyFindMoneyParams,
 };
