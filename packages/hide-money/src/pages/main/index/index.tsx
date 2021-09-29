@@ -2,7 +2,7 @@
  * @Description: 主场景
  * @Author: 吴锦辉
  * @Date: 2021-09-27 09:23:20
- * @LastEditTime: 2021-09-29 13:44:52
+ * @LastEditTime: 2021-09-29 16:16:42
  */
 
 import React, { useCallback, useEffect, useRef, useState } from 'react';
@@ -12,6 +12,7 @@ import sceneConfig from '@scene';
 import cacheCtrl from '@cache';
 import { CustomButton } from '@component';
 import httpCtrl from '@api';
+import iconRoom from '@img/fangjian/scene.png';
 import iconClose from '@img/icon-close.png';
 import styles from './index.module.scss';
 
@@ -40,6 +41,8 @@ enum MONEY {
 export default function Index() {
   const { roomId } = useRouter().params;
 
+  cacheCtrl.setMode(roomId ? MODE.FIND : MODE.HIDE);
+
   const [scrollLeft, setScrollLeft] = useState(0);
   const [showHideMoney, setShowHideMoney] = useState(false);
   const [showShare, setShowShare] = useState(false);
@@ -49,16 +52,40 @@ export default function Index() {
 
   useDidShow(() => {
     if (roomId) {
-      cacheCtrl.setMode(MODE.FIND);
       cacheCtrl.setFindRoomInfo({
         roomId,
       });
     } else {
-      cacheCtrl.setMode(MODE.HIDE);
       Taro.setNavigationBarTitle({
         title: '藏钱',
       });
     }
+  });
+
+  useShareAppMessage(res => {
+    const { nickName } = cacheCtrl.getUserInfo() || {};
+    const id = cacheCtrl.getHideRoomInfo().roomId;
+
+    const shareContent = {
+      hide: '红包新玩法，快来藏钱让朋友找吧',
+      find: `${nickName}在房间藏钱了，快来找吧`,
+    };
+
+    if (res.from === 'button') {
+      // 来自页面内转发按钮
+
+      return {
+        title: shareContent.find,
+        path: `/pages/main/index/index?roomId=${id}&from=share`,
+        imageUrl: iconRoom,
+      };
+    }
+
+    return {
+      title: shareContent.hide,
+      path: '/pages/main/index/index',
+      imageUrl: iconRoom,
+    };
   });
 
   useEffect(() => {
@@ -66,7 +93,7 @@ export default function Index() {
       return;
     }
 
-    /** 找钱 */
+    /** 找钱的房间信息 */
     Taro.showLoading({
       title: '',
       mask: true,
@@ -77,11 +104,21 @@ export default function Index() {
     });
 
     excute.then(res => {
+      /** 这里需要处理下房间过期以及红包是否已经被领取，限制找钱次数 */
       cacheCtrl.setFindRoomInfo(res);
 
       Taro.setNavigationBarTitle({
         title: res.nickName ? `${res.nickName}的房间` : '找钱',
       });
+
+      if (res.status === 1) {
+        Taro.showModal({
+          title: '',
+          content: '很遗憾，钱已经被领取了',
+        });
+
+        return;
+      }
 
       Taro.hideLoading();
     });
@@ -184,6 +221,28 @@ function Item({ item, onShowHideMoney, onShowShare }) {
   const itemStatus = useRef(ITEM_STATUS.IDEA);
   const animationStatus = useRef(false);
 
+  /** 找钱接口判断 */
+  const findMoney = useCallback(() => {
+    Taro.showLoading({
+      title: '',
+      mask: true,
+    });
+
+    const [, excute]: Array<any> = httpCtrl.post('/room/findMoney', {
+      roomId: cacheCtrl.getFindRoomInfo().roomId,
+      itemId: item.id + '',
+    });
+
+    excute.then(() => {
+      Taro.showModal({
+        title: '恭喜你找到了钱',
+        content: '已存入到你的钱包',
+      });
+
+      Taro.hideLoading();
+    });
+  }, [item.id]);
+
   const onClickItem = useCallback(
     status => {
       if (animationStatus.current) {
@@ -262,12 +321,12 @@ function Item({ item, onShowHideMoney, onShowShare }) {
               /** 找钱逻辑 */
               if (mode === MODE.FIND) {
                 if (cacheCtrl.getFindRoomInfo().itemId == item.id) {
-                  Taro.showToast({
-                    title: '恭喜你找到了钱',
-                  });
+                  /** 这里需要查询接口，判断红包是否被领走了 */
+                  findMoney();
                 } else {
                   Taro.showToast({
                     title: '很遗憾，没找到',
+                    icon: 'none',
                   });
                 }
 
@@ -296,7 +355,7 @@ function Item({ item, onShowHideMoney, onShowShare }) {
 
       fn();
     },
-    [item.info, onShowHideMoney, onShowShare, item.id]
+    [item.info, onShowHideMoney, onShowShare, item.id, findMoney]
   );
 
   return (
@@ -406,30 +465,6 @@ function HideMoney({ onClose }) {
 }
 
 function Share({ onClose }) {
-  useShareAppMessage(res => {
-    const { nickName } = cacheCtrl.getUserInfo() || {};
-    const roomId = cacheCtrl.getHideRoomInfo().roomId;
-
-    const shareContent = {
-      hide: '红包新玩法，快来藏钱让朋友找吧',
-      find: `${nickName}在房间藏钱了，快来找吧`,
-    };
-
-    if (res.from === 'button') {
-      // 来自页面内转发按钮
-
-      return {
-        title: shareContent.find,
-        path: `/pages/main/index/index?roomId=${roomId}&from=share`,
-      };
-    }
-
-    return {
-      title: shareContent.hide,
-      path: '/pages/main/index/index',
-    };
-  });
-
   return (
     <View className={styles.shareModal}>
       <View className={styles.shareContent}>

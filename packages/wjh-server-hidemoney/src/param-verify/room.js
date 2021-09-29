@@ -2,7 +2,7 @@
  * @Description: 房间模块的参数验证
  * @Author: 吴锦辉
  * @Date: 2021-09-28 15:44:11
- * @LastEditTime: 2021-09-28 17:13:59
+ * @LastEditTime: 2021-09-29 15:11:45
  */
 
 const { verifyParamsHandle } = require('../middleware/index');
@@ -39,7 +39,7 @@ function verifyHideMoneyParams() {
   return verifyParamsHandle(verifyRules);
 }
 
-function verifyFindMoneyParams() {
+function verifyRoomInfoParams() {
   const verifyRules = {
     id: {
       required: true,
@@ -50,7 +50,23 @@ function verifyFindMoneyParams() {
   return verifyParamsHandle(verifyRules);
 }
 
+function verifyFindMoneyParams() {
+  const verifyRules = {
+    roomId: {
+      required: true,
+      type: 3,
+    },
+    itemId: {
+      required: true,
+      type: 3,
+    },
+  };
+
+  return verifyParamsHandle(verifyRules);
+}
+
 module.exports = {
   verifyHideMoneyParams,
+  verifyRoomInfoParams,
   verifyFindMoneyParams,
 };

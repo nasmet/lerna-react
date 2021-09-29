@@ -2,7 +2,7 @@
  * @Description: 房间模块
  * @Author: 吴锦辉
  * @Date: 2021-09-28 15:38:25
- * @LastEditTime: 2021-09-29 13:42:23
+ * @LastEditTime: 2021-09-29 16:25:59
  */
 
 const express = require('express');
@@ -10,7 +10,11 @@ const { checkSessionHandle, responseHandle } = require('../middleware/index');
 const mainCtrl = require('../controller/main');
 const { codeMap } = require('../code/index');
 const { generateSnowflakeId } = require('../utils/index');
-const { verifyHideMoneyParams, verifyFindMoneyParams } = require('../param-verify/room');
+const {
+  verifyHideMoneyParams,
+  verifyRoomInfoParams,
+  verifyFindMoneyParams,
+} = require('../param-verify/room');
 
 const router = express.Router();
 
@@ -22,6 +26,7 @@ router.post(
   async (req, res, next) => {
     try {
       const roomCtrl = mainCtrl.getRoomCtrl();
+      const userCtrl = mainCtrl.getUserCtrl();
 
       const roomId = generateSnowflakeId();
 
@@ -30,6 +35,22 @@ router.post(
       req.body.id = roomId;
 
       await roomCtrl.createRoom(req.body);
+
+      /** 后续换成微信支付，需要做调整 */
+      let users = await userCtrl.selectUser({
+        id: res.userId,
+      });
+
+      users = JSON.parse(JSON.stringify(users));
+
+      const user = users[0];
+
+      const money = Number(user.hideMoney) + Number(req.body.money);
+
+      await userCtrl.updateUser({
+        id: res.userId,
+        hideMoney: money,
+      });
 
       res.code = codeMap.Success;
       res.body = {
@@ -44,21 +65,21 @@ router.post(
   responseHandle
 );
 
-/** 找钱 */
+/** 房间信息 */
 router.post(
   '/info',
-  verifyFindMoneyParams(),
+  verifyRoomInfoParams(),
   checkSessionHandle,
   async (req, res, next) => {
     try {
       const roomCtrl = mainCtrl.getRoomCtrl();
       const userCtrl = mainCtrl.getUserCtrl();
 
-      let values = await roomCtrl.selectRoom(req.body);
+      let rooms = await roomCtrl.selectRoom(req.body);
 
-      values = JSON.parse(JSON.stringify(values));
+      rooms = JSON.parse(JSON.stringify(rooms));
 
-      if (values.length === 0) {
+      if (rooms.length === 0) {
         res.code = codeMap.RoomNotExist;
 
         next();
@@ -66,19 +87,18 @@ router.post(
         return;
       }
 
-      // eslint-disable-next-line prefer-destructuring
-      values = values[0];
+      const room = rooms[0];
 
       let users = await userCtrl.selectUser({
-        id: values.userId,
+        id: room.userId,
       });
 
       users = JSON.parse(JSON.stringify(users));
 
-      const user = users[0];
+      const user = users[0] || {};
 
       res.code = codeMap.Success;
-      res.body = { ...values, nickName: user.name };
+      res.body = { ...room, nickName: user.name };
 
       next();
     } catch (err) {
@@ -91,24 +111,65 @@ router.post(
 /** 找钱 */
 router.post(
   '/findmoney',
-  verifyHideMoneyParams(),
+  verifyFindMoneyParams(),
   checkSessionHandle,
   async (req, res, next) => {
     try {
       const roomCtrl = mainCtrl.getRoomCtrl();
+      const userCtrl = mainCtrl.getUserCtrl();
 
-      const roomId = generateSnowflakeId();
+      const { roomId, itemId } = req.body;
 
-      req.body.userId = res.userId;
+      let rooms = await roomCtrl.selectRoom({
+        id: roomId,
+      });
 
-      req.body.id = roomId;
+      rooms = JSON.parse(JSON.stringify(rooms));
 
-      await roomCtrl.createRoom(req.body);
+      if (rooms.length === 0) {
+        res.code = codeMap.RoomNotExist;
+
+        next();
+
+        return;
+      }
+
+      const room = rooms[0];
+
+      if (room.itemId !== itemId) {
+        res.code = codeMap.NotFound;
+
+        next();
+      }
+
+      if (room.status === 1) {
+        res.code = codeMap.MoneyCollected;
+
+        next();
+      }
+
+      await roomCtrl.updateRoom({
+        id: roomId,
+        status: 1,
+        findUserId: res.userId,
+      });
+
+      let users = await userCtrl.selectUser({
+        id: res.userId,
+      });
+
+      users = JSON.parse(JSON.stringify(users));
+
+      const user = users[0];
+
+      const money = Number(user.findMoney) + Number(room.money);
+
+      await userCtrl.updateUser({
+        id: res.userId,
+        findMoney: money,
+      });
 
       res.code = codeMap.Success;
-      res.body = {
-        roomId,
-      };
 
       next();
     } catch (err) {

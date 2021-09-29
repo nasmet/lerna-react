@@ -2,7 +2,7 @@
  * @Description: code关系映射
  * @Author: 吴锦辉
  * @Date: 2021-09-14 10:02:03
- * @LastEditTime: 2021-09-28 17:20:38
+ * @LastEditTime: 2021-09-29 16:05:56
  */
 
 const codeMap = {
@@ -17,6 +17,8 @@ const codeMap = {
   NotSupported: 4005,
   WrongAppid: 4006,
   RoomNotExist: 4007,
+  NotFound: 4008,
+  MoneyCollected: 4009,
 
   /** 服务端错误 */
   Unknown: 5000,
@@ -33,6 +35,8 @@ const codeNameMap = {
   [codeMap.NotSupported]: '暂不支持',
   [codeMap.WrongAppid]: '错误的appid',
   [codeMap.RoomNotExist]: '房间不存在',
+  [codeMap.NotFound]: '很遗憾，没找到',
+  [codeMap.MoneyCollected]: '很遗憾，钱已经被领取了',
 };
 
 module.exports = {
