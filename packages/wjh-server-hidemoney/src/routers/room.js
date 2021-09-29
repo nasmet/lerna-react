@@ -2,7 +2,7 @@
  * @Description: 房间模块
  * @Author: 吴锦辉
  * @Date: 2021-09-28 15:38:25
- * @LastEditTime: 2021-09-28 17:20:43
+ * @LastEditTime: 2021-09-29 13:42:23
  */
 
 const express = require('express');
@@ -52,6 +52,7 @@ router.post(
   async (req, res, next) => {
     try {
       const roomCtrl = mainCtrl.getRoomCtrl();
+      const userCtrl = mainCtrl.getUserCtrl();
 
       let values = await roomCtrl.selectRoom(req.body);
 
@@ -68,8 +69,16 @@ router.post(
       // eslint-disable-next-line prefer-destructuring
       values = values[0];
 
+      let users = await userCtrl.selectUser({
+        id: values.userId,
+      });
+
+      users = JSON.parse(JSON.stringify(users));
+
+      const user = users[0];
+
       res.code = codeMap.Success;
-      res.body = values;
+      res.body = { ...values, nickName: user.name };
 
       next();
     } catch (err) {

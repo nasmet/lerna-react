@@ -2,16 +2,33 @@
  * @Description: 本地缓存
  * @Author: 吴锦辉
  * @Date: 2021-09-15 16:37:40
- * @LastEditTime: 2021-09-28 17:53:17
+ * @LastEditTime: 2021-09-29 13:26:19
  */
 
 import Taro from '@tarojs/taro';
 
+interface IHideRoomInfo {
+  roomId?: string;
+  itemId?: string;
+  money?: string;
+}
+
+interface IFideRoomInfo {
+  roomId?: string;
+  itemId?: string;
+}
+
 class CacheController {
   map: Map<string, any>;
+  mode: any;
+  hideRoomInfo: IHideRoomInfo;
+  findRoomInfo: IFideRoomInfo;
 
   constructor() {
     this.map = new Map();
+    this.mode = -1;
+    this.hideRoomInfo = {};
+    this.findRoomInfo = {};
   }
 
   set(key, value) {
@@ -52,14 +69,6 @@ class CacheController {
     return this.remove('token');
   }
 
-  getLanguage() {
-    return this.get('language');
-  }
-
-  setLanguage(value) {
-    return this.set('language', value);
-  }
-
   setSystemInfo() {
     const systemInfo = Taro.getSystemInfoSync();
 
@@ -82,41 +91,28 @@ class CacheController {
     return this.get('user');
   }
 
-  setItemId(value) {
-    this.map.set('itemId', value);
-  }
-
-  getItemId() {
-    return this.map.get('itemId');
-  }
-
-  removeItemId() {
-    this.map.delete('itemId');
-  }
-
-  setRoomInfo(value) {
-    this.map.set('roomInfo', value);
-  }
-
-  getRoomInfo() {
-    return this.map.get('roomInfo');
-  }
-
-  setHideRoomId(value) {
-    this.map.set('roomId', value);
-  }
-
-  getHideRoomId() {
-    return this.map.get('roomId');
-  }
-
-  /** 1: hide 2: find */
   setMode(value) {
-    this.map.set('mode', value);
+    this.mode = value;
   }
 
   getMode() {
-    return this.map.get('mode');
+    return this.mode;
+  }
+
+  setHideRoomInfo(value) {
+    this.hideRoomInfo = { ...this.hideRoomInfo, ...value };
+  }
+
+  getHideRoomInfo() {
+    return this.hideRoomInfo;
+  }
+
+  setFindRoomInfo(value) {
+    this.findRoomInfo = { ...this.findRoomInfo, ...value };
+  }
+
+  getFindRoomInfo() {
+    return this.findRoomInfo;
   }
 }
 

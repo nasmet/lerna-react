@@ -2,27 +2,43 @@
  * @Description: 主场景
  * @Author: 吴锦辉
  * @Date: 2021-09-27 09:23:20
- * @LastEditTime: 2021-09-28 17:53:23
+ * @LastEditTime: 2021-09-29 13:44:52
  */
 
 import React, { useCallback, useEffect, useRef, useState } from 'react';
-import Taro, { useShareAppMessage, useRouter } from '@tarojs/taro';
+import Taro, { useShareAppMessage, useRouter, useDidShow } from '@tarojs/taro';
 import { View, ScrollView, Image, Input } from '@tarojs/components';
 import sceneConfig from '@scene';
 import cacheCtrl from '@cache';
 import { CustomButton } from '@component';
 import httpCtrl from '@api';
-import iconClose from '@img/index/default/close.png';
+import iconClose from '@img/icon-close.png';
 import styles from './index.module.scss';
 
 const { windowHeight = 603 } = cacheCtrl.getSystemInfo();
 
 const scale = (windowHeight * 2) / sceneConfig.height;
 
+enum MODE {
+  HIDE = 1,
+  FIND = 2,
+}
+
+enum ITEM_STATUS {
+  IDEA = 1,
+  /** 开启动画 */
+  OPEN = 2,
+  /** 关闭动画 */
+  CLOSE = 3,
+}
+
+enum MONEY {
+  OPEN = 1,
+  CLOSE = 2,
+}
+
 export default function Index() {
   const { roomId } = useRouter().params;
-
-  cacheCtrl.setMode(roomId ? 2 : 1);
 
   const [scrollLeft, setScrollLeft] = useState(0);
   const [showHideMoney, setShowHideMoney] = useState(false);
@@ -30,10 +46,23 @@ export default function Index() {
 
   const scrollLeftCache = useRef(0);
   const closeItemAnimation = useRef<null | any>(null);
-  const shareMoney = useRef(0);
+
+  useDidShow(() => {
+    if (roomId) {
+      cacheCtrl.setMode(MODE.FIND);
+      cacheCtrl.setFindRoomInfo({
+        roomId,
+      });
+    } else {
+      cacheCtrl.setMode(MODE.HIDE);
+      Taro.setNavigationBarTitle({
+        title: '藏钱',
+      });
+    }
+  });
 
   useEffect(() => {
-    if (!roomId) {
+    if (cacheCtrl.getMode() === MODE.HIDE) {
       return;
     }
 
@@ -44,15 +73,19 @@ export default function Index() {
     });
 
     const [, excute]: Array<any> = httpCtrl.post('/room/info', {
-      id: roomId,
+      id: cacheCtrl.getFindRoomInfo().roomId,
     });
 
     excute.then(res => {
-      cacheCtrl.setRoomInfo(res);
+      cacheCtrl.setFindRoomInfo(res);
+
+      Taro.setNavigationBarTitle({
+        title: res.nickName ? `${res.nickName}的房间` : '找钱',
+      });
 
       Taro.hideLoading();
     });
-  }, [roomId]);
+  }, []);
 
   useEffect(() => {
     if (showHideMoney) {
@@ -66,17 +99,17 @@ export default function Index() {
     closeItemAnimation.current = cb;
   }, []);
 
-  const onCloseHideMoney = useCallback(flag => {
+  const onCloseHideMoney = useCallback(status => {
     setShowHideMoney(false);
 
-    if (flag) {
+    if (status === MONEY.OPEN) {
+      closeItemAnimation.current && closeItemAnimation.current(status);
+    } else {
       closeItemAnimation.current && closeItemAnimation.current();
     }
   }, []);
 
-  const onShowShare = useCallback(money => {
-    shareMoney.current = money;
-
+  const onShowShare = useCallback(() => {
     setShowShare(true);
   }, []);
 
@@ -117,7 +150,12 @@ export default function Index() {
             src={sceneConfig.sceneImage}
           />
           {sceneConfig.itemList.map(item => (
-            <Item key={item.id} item={item} onShowHideMoney={onShowHideMoney} />
+            <Item
+              key={item.id}
+              item={item}
+              onShowHideMoney={onShowHideMoney}
+              onShowShare={onShowShare}
+            />
           ))}
           {sceneConfig.itemNomalList.map((item, index) => (
             <View key={index} className={styles.item} style={item.style}>
@@ -127,119 +165,139 @@ export default function Index() {
         </View>
       </ScrollView>
 
-      {showHideMoney ? <HideMoney onClose={onCloseHideMoney} onShowShare={onShowShare} /> : null}
+      {showHideMoney ? <HideMoney onClose={onCloseHideMoney} /> : null}
 
-      {showShare ? <Share onClose={onCloseShare} shareMoney={shareMoney.current} /> : null}
+      {showShare ? <Share onClose={onCloseShare} /> : null}
     </View>
   );
 }
 
-function Item({ item, onShowHideMoney }) {
+function Item({ item, onShowHideMoney, onShowShare }) {
   const [offset, setOffset] = useState(() => {
     const temp = item.info.plist[item.currentPlist];
 
     return `${temp[0]}rpx, ${temp[1]}rpx`;
   });
-  const [highLightStatus, setHighLightStatus] = useState(() => {
-    return cacheCtrl.getMode() === 1 ? true : false;
-  });
+  const [highLightStatus, setHighLightStatus] = useState(() => cacheCtrl.getMode() === MODE.HIDE);
 
   /** 1: 默认 2: 藏钱开始 3: 藏钱结束 */
-  const flag = useRef(1);
+  const itemStatus = useRef(ITEM_STATUS.IDEA);
   const animationStatus = useRef(false);
 
-  const onClickItem = useCallback(() => {
-    if (animationStatus.current) {
-      return;
-    }
+  const onClickItem = useCallback(
+    status => {
+      if (animationStatus.current) {
+        return;
+      }
 
-    /** 找钱逻辑 */
-    if (cacheCtrl.getMode() === 2 && flag.current === 2) {
-      return;
-    }
+      const mode = cacheCtrl.getMode();
 
-    setHighLightStatus(false);
+      /** 找钱item结束逻辑 */
+      if (mode === MODE.FIND && itemStatus.current === ITEM_STATUS.OPEN) {
+        return;
+      }
 
-    animationStatus.current = true;
+      setHighLightStatus(false);
 
-    let { unAnimation, plist } = item.info;
+      animationStatus.current = true;
 
-    switch (flag.current) {
-      case 1:
-        flag.current = 2;
+      const { unAnimation, inAnimation, plist } = item.info;
+      let aimation: Array<number> = unAnimation;
 
-        cacheCtrl.setItemId(item.id);
-        break;
-      case 2:
-        flag.current = 3;
+      switch (itemStatus.current) {
+        case ITEM_STATUS.IDEA:
+          itemStatus.current = ITEM_STATUS.OPEN;
 
-        unAnimation = [...unAnimation];
-        unAnimation.reverse();
-        break;
-    }
+          if (mode === MODE.HIDE) {
+            cacheCtrl.setHideRoomInfo({
+              itemId: item.id,
+            });
+          }
 
-    let points: Array<string> = [];
-    let temp;
+          if (mode === MODE.FIND && cacheCtrl.getFindRoomInfo().itemId == item.id) {
+            aimation = inAnimation;
+          }
+          break;
+        case ITEM_STATUS.OPEN:
+          itemStatus.current = ITEM_STATUS.CLOSE;
 
-    for (let i = 0, len = unAnimation.length; i < len; i++) {
-      temp = plist[unAnimation[i]];
+          if (status === MONEY.OPEN) {
+            aimation = [...inAnimation].reverse();
+          } else {
+            aimation = [...unAnimation].reverse();
+          }
 
-      points.push(`${temp[0]}rpx, ${temp[1]}rpx`);
-    }
+          break;
+      }
 
-    const duration = 500;
-    const count = unAnimation.length;
-    const intervalTime = duration / count;
-    let start = 0;
+      let points: Array<string> = [];
+      let temp;
 
-    const execute = () => {
-      const point = points[start++];
+      for (let i = 0, len = aimation.length; i < len; i++) {
+        temp = plist[aimation[i]];
 
-      setOffset(point);
-    };
+        points.push(`${temp[0]}rpx, ${temp[1]}rpx`);
+      }
 
-    const fn = () => {
-      execute();
+      const duration = 500;
+      const count = unAnimation.length;
+      const intervalTime = duration / count;
+      let start = 0;
 
-      setTimeout(() => {
-        if (count === start) {
-          /** 动画结束 */
-          animationStatus.current = false;
+      const execute = () => {
+        const point = points[start++];
 
-          if (flag.current === 2) {
-            /** 找钱逻辑 */
-            if (cacheCtrl.getMode() === 2) {
-              if (cacheCtrl.getRoomInfo().itemId == item.id) {
-                Taro.showToast({
-                  title: '恭喜你找到了钱',
-                });
-              } else {
-                Taro.showToast({
-                  title: '很遗憾，没找到',
-                });
+        setOffset(point);
+      };
+
+      const fn = () => {
+        execute();
+
+        setTimeout(() => {
+          if (count === start) {
+            /** 动画结束 */
+            animationStatus.current = false;
+
+            if (itemStatus.current === ITEM_STATUS.OPEN) {
+              /** 找钱逻辑 */
+              if (mode === MODE.FIND) {
+                if (cacheCtrl.getFindRoomInfo().itemId == item.id) {
+                  Taro.showToast({
+                    title: '恭喜你找到了钱',
+                  });
+                } else {
+                  Taro.showToast({
+                    title: '很遗憾，没找到',
+                  });
+                }
+
+                return;
               }
 
-              return;
+              onShowHideMoney && onShowHideMoney(onClickItem);
             }
 
-            onShowHideMoney && onShowHideMoney(onClickItem);
+            if (itemStatus.current === ITEM_STATUS.CLOSE) {
+              itemStatus.current = ITEM_STATUS.IDEA;
+
+              setHighLightStatus(true);
+
+              if (status === MONEY.OPEN) {
+                onShowShare && onShowShare();
+              }
+            }
+
+            return;
           }
 
-          if (flag.current === 3) {
-            flag.current = 1;
+          fn();
+        }, intervalTime);
+      };
 
-            setHighLightStatus(true);
-          }
-
-          return;
-        }
-
-        fn();
-      }, intervalTime);
-    };
-
-    fn();
-  }, [item.info, onShowHideMoney, item.id]);
+      fn();
+    },
+    [item.info, onShowHideMoney, onShowShare, item.id]
+  );
 
   return (
     <View
@@ -258,14 +316,14 @@ function Item({ item, onShowHideMoney }) {
           transform: `translate(${offset})`,
         }}
         src={item.image}
-        onClick={onClickItem}
+        onClick={() => onClickItem(undefined)}
       />
       {highLightStatus ? <Image className={styles.highLight} src={item.highLight} /> : null}
     </View>
   );
 }
 
-function HideMoney({ onClose, onShowShare }) {
+function HideMoney({ onClose }) {
   const inputValue = useRef(0);
   const submitStatus = useRef(false);
 
@@ -292,24 +350,28 @@ function HideMoney({ onClose, onShowShare }) {
 
     const [, excute]: Array<any> = httpCtrl.post('/room/hidemoney', {
       money: inputValue.current,
-      itemId: cacheCtrl.getItemId() + '',
+      itemId: cacheCtrl.getHideRoomInfo().itemId + '',
       sceneId: sceneConfig.sceneId,
     });
 
     excute
       .then(res => {
-        cacheCtrl.setHideRoomId(res.roomId);
+        cacheCtrl.setHideRoomInfo({
+          roomId: res.roomId,
+        });
 
-        onClose && onClose(true);
+        onClose && onClose(MONEY.OPEN);
 
-        onShowShare && onShowShare(inputValue.current);
+        cacheCtrl.setHideRoomInfo({
+          money: inputValue.current,
+        });
 
         Taro.hideLoading();
       })
       .finally(() => {
         submitStatus.current = false;
       });
-  }, [onClose, onShowShare]);
+  }, [onClose]);
 
   const onInput = useCallback(e => {
     inputValue.current = e.detail.value;
@@ -343,11 +405,11 @@ function HideMoney({ onClose, onShowShare }) {
   );
 }
 
-function Share({ onClose, shareMoney }) {
-  const { nickName } = cacheCtrl.getUserInfo() || {};
-  const roomId = cacheCtrl.getHideRoomId();
-
+function Share({ onClose }) {
   useShareAppMessage(res => {
+    const { nickName } = cacheCtrl.getUserInfo() || {};
+    const roomId = cacheCtrl.getHideRoomInfo().roomId;
+
     const shareContent = {
       hide: '红包新玩法，快来藏钱让朋友找吧',
       find: `${nickName}在房间藏钱了，快来找吧`,
@@ -358,7 +420,7 @@ function Share({ onClose, shareMoney }) {
 
       return {
         title: shareContent.find,
-        path: `/pages/main/index/index?roomId=${roomId}`,
+        path: `/pages/main/index/index?roomId=${roomId}&from=share`,
       };
     }
 
@@ -372,7 +434,7 @@ function Share({ onClose, shareMoney }) {
     <View className={styles.shareModal}>
       <View className={styles.shareContent}>
         <View className={styles.title}>藏钱成功</View>
-        <View className={styles.word}>藏钱金额：{shareMoney} 元</View>
+        <View className={styles.word}>藏钱金额：{cacheCtrl.getHideRoomInfo().money} 元</View>
         <View className={styles.shareBtnContainer}>
           {/* <CustomButton className={styles.btn} btnText="生成海报" /> */}
           <CustomButton openType='share' btnText='分享给好友' />
