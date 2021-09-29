@@ -1,0 +1,39 @@
+
+.guideModal{
+	position: fixed;
+	top: 0;
+	left: 0;
+	right: 0;
+	bottom: 0;
+	width: 100vw;
+	height: 100vh;
+	background:rgba(0,0,0,0.3);
+	color: #fff;
+	font-size: 40 * $px;
+	font-family: MicrosoftYaHei;
+	z-index: 999;
+
+  .arrow{
+    position: absolute;
+    top: 0;
+    right: 20 * $px;
+    width: 100 * $px;
+  }
+
+  .content{
+    margin-top: 20vw;
+    margin-left: 20vw;
+  }
+
+  .first{
+    display: flex;
+    align-items: center;
+  }
+
+  .icon{
+    margin-left: 8 * $px;
+    margin-right: 8 * $px;
+    width: 64 * $px;
+  }
+}
+
