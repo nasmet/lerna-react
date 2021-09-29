@@ -41,8 +41,8 @@ export default function List() {
       {
         cmpType: 'input',
         wrapProps: {
-          name: 'username',
-          label: formatterMessage('username'),
+          name: 'nickName',
+          label: formatterMessage('nickName'),
           rules,
         },
       },

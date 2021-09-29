@@ -2,7 +2,7 @@
  * @Description: 用户控制器
  * @Author: 吴锦辉
  * @Date: 2021-09-14 13:59:45
- * @LastEditTime: 2021-09-25 17:10:39
+ * @LastEditTime: 2021-09-29 16:39:18
  */
 
 const userModel = require('../model/user');
@@ -38,10 +38,10 @@ class UserController {
     });
   }
 
-  selectUserCount() {
+  selectUserCount(data = {}) {
     return new Promise((resolve, reject) => {
       userModel
-        .selectUserCount()
+        .selectUserCount(data)
         .then(res => {
           resolve(res);
         })

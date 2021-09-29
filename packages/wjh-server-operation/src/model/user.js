@@ -2,7 +2,7 @@
  * @Description: 用户属性数据库查询
  * @Author: 吴锦辉
  * @Date: 2021-09-14 11:47:48
- * @LastEditTime: 2021-09-25 17:21:23
+ * @LastEditTime: 2021-09-29 16:39:05
  */
 
 const { query } = require('../mysql/index');
@@ -71,9 +71,15 @@ class UserModel {
     });
   }
 
-  selectUserCount() {
+  selectUserCount(data = {}) {
+    const str = this.spliceWhereParam(data);
+
+    const sql = `SELECT COUNT(*) FROM user ${str}`;
+
+    console.log('sql: ', sql);
+
     return new Promise((resolve, reject) => {
-      query({ sql: 'SELECT COUNT(*) FROM user' })
+      query({ sql })
         .then(res => {
           resolve(res);
         })

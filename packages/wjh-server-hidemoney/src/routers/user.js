@@ -2,7 +2,7 @@
  * @Description: 用户模块
  * @Author: 吴锦辉
  * @Date: 2021-09-14 09:15:23
- * @LastEditTime: 2021-09-28 15:42:46
+ * @LastEditTime: 2021-09-29 16:34:04
  */
 
 const express = require('express');
@@ -77,7 +77,7 @@ router.post(
           country,
           gender,
           language,
-          name: nickName,
+          nickName,
         });
       } else {
         /** 创建用户 */
@@ -95,7 +95,7 @@ router.post(
           country,
           gender,
           language,
-          name: nickName,
+          nickName,
         });
       }
 

@@ -2,14 +2,14 @@
  * @Description: 国际化控制器
  * @Author: 吴锦辉
  * @Date: 2021-09-23 12:55:19
- * @LastEditTime: 2021-09-26 11:51:04
+ * @LastEditTime: 2021-09-29 16:32:59
  */
 
 const languageConfig = {
   'zh-cn': {
     'operation.account': '账号',
     'operation.tips': '温馨提示',
-    'operation.username': '用户名',
+    'operation.nickName': '昵称',
     'operation.gender': '性别',
     'operation.man': '男',
     'operation.woman': '女',
@@ -28,7 +28,7 @@ const languageConfig = {
   en: {
     'operation.account': 'account',
     'operation.tips': 'tips',
-    'operation.username': 'username',
+    'operation.nickName': 'nick name',
     'operation.gender': 'gender',
     'operation.man': 'man',
     'operation.woman': 'woman',

@@ -2,7 +2,7 @@
  * @Description: 用户相关接口请求
  * @Author: 吴锦辉
  * @Date: 2021-09-14 09:15:23
- * @LastEditTime: 2021-09-25 17:13:34
+ * @LastEditTime: 2021-09-29 16:40:26
  */
 
 const express = require('express');
@@ -22,7 +22,9 @@ router.post(
     try {
       const userCtrl = mainCtrl.getUserCtrl();
 
-      let values = await userCtrl.selectUserCount();
+      let values = await userCtrl.selectUserCount({
+        appid: req.body.appid,
+      });
 
       values = JSON.parse(JSON.stringify(values));
 
