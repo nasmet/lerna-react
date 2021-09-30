@@ -2,18 +2,21 @@
  * @Description: 主场景
  * @Author: 吴锦辉
  * @Date: 2021-09-27 09:23:20
- * @LastEditTime: 2021-09-29 16:16:42
+ * @LastEditTime: 2021-09-30 16:55:14
  */
 
 import React, { useCallback, useEffect, useRef, useState } from 'react';
 import Taro, { useShareAppMessage, useRouter, useDidShow } from '@tarojs/taro';
-import { View, ScrollView, Image, Input } from '@tarojs/components';
+import { View, ScrollView, Image, Input, Swiper, SwiperItem, Text } from '@tarojs/components';
+import classNames from 'classnames';
 import sceneConfig from '@scene';
 import cacheCtrl from '@cache';
 import { CustomButton } from '@component';
 import httpCtrl from '@api';
 import iconRoom from '@img/fangjian/scene.png';
 import iconClose from '@img/icon-close.png';
+import iconMenu from '@img/bar-6.png';
+import roomCtrl from '../controller/room';
 import styles from './index.module.scss';
 
 const { windowHeight = 603 } = cacheCtrl.getSystemInfo();
@@ -41,18 +44,19 @@ enum MONEY {
 export default function Index() {
   const { roomId } = useRouter().params;
 
-  cacheCtrl.setMode(roomId ? MODE.FIND : MODE.HIDE);
+  roomCtrl.setMode(roomId ? MODE.FIND : MODE.HIDE);
 
   const [scrollLeft, setScrollLeft] = useState(0);
   const [showHideMoney, setShowHideMoney] = useState(false);
   const [showShare, setShowShare] = useState(false);
+  const [showRank, setShowRank] = useState(false);
 
   const scrollLeftCache = useRef(0);
   const closeItemAnimation = useRef<null | any>(null);
 
   useDidShow(() => {
     if (roomId) {
-      cacheCtrl.setFindRoomInfo({
+      roomCtrl.setFindRoomInfo({
         roomId,
       });
     } else {
@@ -64,7 +68,7 @@ export default function Index() {
 
   useShareAppMessage(res => {
     const { nickName } = cacheCtrl.getUserInfo() || {};
-    const id = cacheCtrl.getHideRoomInfo().roomId;
+    const id = roomCtrl.getHideRoomInfo().roomId;
 
     const shareContent = {
       hide: '红包新玩法，快来藏钱让朋友找吧',
@@ -89,7 +93,7 @@ export default function Index() {
   });
 
   useEffect(() => {
-    if (cacheCtrl.getMode() === MODE.HIDE) {
+    if (roomCtrl.getMode() === MODE.HIDE) {
       return;
     }
 
@@ -100,12 +104,12 @@ export default function Index() {
     });
 
     const [, excute]: Array<any> = httpCtrl.post('/room/info', {
-      id: cacheCtrl.getFindRoomInfo().roomId,
+      id: roomCtrl.getFindRoomInfo().roomId,
     });
 
     excute.then(res => {
       /** 这里需要处理下房间过期以及红包是否已经被领取，限制找钱次数 */
-      cacheCtrl.setFindRoomInfo(res);
+      roomCtrl.setFindRoomInfo(res);
 
       Taro.setNavigationBarTitle({
         title: res.nickName ? `${res.nickName}的房间` : '找钱',
@@ -129,6 +133,10 @@ export default function Index() {
       setScrollLeft(scrollLeftCache.current);
     }
   }, [showHideMoney]);
+
+  const onScroll = useCallback(e => {
+    scrollLeftCache.current = e.detail.scrollLeft;
+  }, []);
 
   const onShowHideMoney = useCallback(cb => {
     setShowHideMoney(true);
@@ -154,8 +162,12 @@ export default function Index() {
     setShowShare(false);
   }, []);
 
-  const onScroll = useCallback(e => {
-    scrollLeftCache.current = e.detail.scrollLeft;
+  const onShowRank = useCallback(() => {
+    setShowRank(true);
+  }, []);
+
+  const onCloseRank = useCallback(() => {
+    setShowRank(false);
   }, []);
 
   return (
@@ -202,9 +214,13 @@ export default function Index() {
         </View>
       </ScrollView>
 
+      <Menu showRank={onShowRank} />
+
       {showHideMoney ? <HideMoney onClose={onCloseHideMoney} /> : null}
 
       {showShare ? <Share onClose={onCloseShare} /> : null}
+
+      {showRank ? <Rank onClose={onCloseRank} /> : null}
     </View>
   );
 }
@@ -215,7 +231,7 @@ function Item({ item, onShowHideMoney, onShowShare }) {
 
     return `${temp[0]}rpx, ${temp[1]}rpx`;
   });
-  const [highLightStatus, setHighLightStatus] = useState(() => cacheCtrl.getMode() === MODE.HIDE);
+  const [highLightStatus, setHighLightStatus] = useState(() => roomCtrl.getMode() === MODE.HIDE);
 
   /** 1: 默认 2: 藏钱开始 3: 藏钱结束 */
   const itemStatus = useRef(ITEM_STATUS.IDEA);
@@ -229,7 +245,7 @@ function Item({ item, onShowHideMoney, onShowShare }) {
     });
 
     const [, excute]: Array<any> = httpCtrl.post('/room/findMoney', {
-      roomId: cacheCtrl.getFindRoomInfo().roomId,
+      roomId: roomCtrl.getFindRoomInfo().roomId,
       itemId: item.id + '',
     });
 
@@ -249,7 +265,7 @@ function Item({ item, onShowHideMoney, onShowShare }) {
         return;
       }
 
-      const mode = cacheCtrl.getMode();
+      const mode = roomCtrl.getMode();
 
       /** 找钱item结束逻辑 */
       if (mode === MODE.FIND && itemStatus.current === ITEM_STATUS.OPEN) {
@@ -268,12 +284,12 @@ function Item({ item, onShowHideMoney, onShowShare }) {
           itemStatus.current = ITEM_STATUS.OPEN;
 
           if (mode === MODE.HIDE) {
-            cacheCtrl.setHideRoomInfo({
+            roomCtrl.setHideRoomInfo({
               itemId: item.id,
             });
           }
 
-          if (mode === MODE.FIND && cacheCtrl.getFindRoomInfo().itemId == item.id) {
+          if (mode === MODE.FIND && roomCtrl.getFindRoomInfo().itemId == item.id) {
             aimation = inAnimation;
           }
           break;
@@ -320,7 +336,7 @@ function Item({ item, onShowHideMoney, onShowShare }) {
             if (itemStatus.current === ITEM_STATUS.OPEN) {
               /** 找钱逻辑 */
               if (mode === MODE.FIND) {
-                if (cacheCtrl.getFindRoomInfo().itemId == item.id) {
+                if (roomCtrl.getFindRoomInfo().itemId == item.id) {
                   /** 这里需要查询接口，判断红包是否被领走了 */
                   findMoney();
                 } else {
@@ -409,19 +425,19 @@ function HideMoney({ onClose }) {
 
     const [, excute]: Array<any> = httpCtrl.post('/room/hidemoney', {
       money: inputValue.current,
-      itemId: cacheCtrl.getHideRoomInfo().itemId + '',
+      itemId: roomCtrl.getHideRoomInfo().itemId + '',
       sceneId: sceneConfig.sceneId,
     });
 
     excute
       .then(res => {
-        cacheCtrl.setHideRoomInfo({
+        roomCtrl.setHideRoomInfo({
           roomId: res.roomId,
         });
 
         onClose && onClose(MONEY.OPEN);
 
-        cacheCtrl.setHideRoomInfo({
+        roomCtrl.setHideRoomInfo({
           money: inputValue.current,
         });
 
@@ -469,7 +485,7 @@ function Share({ onClose }) {
     <View className={styles.shareModal}>
       <View className={styles.shareContent}>
         <View className={styles.title}>藏钱成功</View>
-        <View className={styles.word}>藏钱金额：{cacheCtrl.getHideRoomInfo().money} 元</View>
+        <View className={styles.word}>藏钱金额：{roomCtrl.getHideRoomInfo().money} 元</View>
         <View className={styles.shareBtnContainer}>
           {/* <CustomButton className={styles.btn} btnText="生成海报" /> */}
           <CustomButton openType='share' btnText='分享给好友' />
@@ -479,5 +495,120 @@ function Share({ onClose }) {
         </View>
       </View>
     </View>
+  );
+}
+
+const menuData = [
+  {
+    type: 'tixian',
+    icon: require('@img/bar-5.png'),
+    name: '提现入口',
+  },
+  {
+    type: 'rank',
+    icon: require('@img/bar-3.png'),
+    name: '排行榜',
+  },
+];
+
+function Menu({ showRank }) {
+  const [expandStatus, setExpandStatus] = useState(false);
+
+  const onExpandChange = useCallback(() => {
+    setExpandStatus(pre => !pre);
+  }, []);
+
+  const onBarChange = useCallback(
+    type => {
+      switch (type) {
+        case 'rank':
+          showRank && showRank();
+          return;
+      }
+    },
+    [showRank]
+  );
+
+  return (
+    <View className={styles.menuContainer}>
+      <View className={styles.barContainer}>
+        <View className={classNames(styles.bars, { [styles.active]: expandStatus })}>
+          {menuData.map((v, index) => (
+            <View key={index} className={styles.bar}>
+              <Image src={v.icon} mode='widthFix' onClick={() => onBarChange(v.type)} />
+            </View>
+          ))}
+        </View>
+      </View>
+      <View
+        className={classNames(styles.menu, { [styles.active]: expandStatus })}
+        onClick={onExpandChange}
+      >
+        <Image src={iconMenu} />
+      </View>
+    </View>
+  );
+}
+
+const rankData = [
+  {
+    type: 'hide',
+    name: '藏钱',
+  },
+  {
+    type: 'find',
+    name: '找钱',
+  },
+];
+
+function Rank({ onClose }) {
+  const [current, setCurrent] = useState(0);
+
+  const onSwiperChange = useCallback(e => {
+    setCurrent(e.detail.current);
+  }, []);
+
+  return (
+    <View className={styles.rankModal}>
+      <View className={styles.content}>
+        <View className={styles.tabs}>
+          {rankData.map((v, index) => (
+            <View
+              key={index}
+              className={classNames(styles.tab, { [styles.active]: current === index })}
+              onClick={() => setCurrent(index)}
+            >
+              {v.name}
+            </View>
+          ))}
+        </View>
+        <Swiper className={styles.swiper} current={current} onChange={onSwiperChange}>
+          {rankData.map((v, index) => (
+            <SwiperItem key={index}>
+              <RankContent type={v.type} />
+            </SwiperItem>
+          ))}
+        </Swiper>
+      </View>
+    </View>
+  );
+}
+
+function RankContent({ type }) {
+  const [data, setData] = useState<Record<string, any>>([]);
+
+  return (
+    <ScrollView scrollY>
+      <View>
+        {data.map((v, index) => (
+          <View key={index}>
+            {index < 3 ? <Image src={v.avatar} /> : index + 1}
+            <Image src={v.avatar} />
+            <Text>{v.nickName}</Text>
+            <Text>{v.money}</Text>
+          </View>
+        ))}
+      </View>
+    </ScrollView>
   );
 }

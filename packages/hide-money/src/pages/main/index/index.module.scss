@@ -49,7 +49,7 @@ Page {
   top: 0;
   width: 100%;
   height: 100%;
-  background-color: rgba(0, 0, 0, 0.7);
+  background-color: rgba(0, 0, 0, 0.6);
   display: flex;
   justify-content: center;
   align-items: center;
@@ -149,5 +149,85 @@ Page {
     .btn {
       margin-right: 30px;
     }
+  }
+}
+
+.menuContainer{
+  position: fixed;
+  right: 30px;
+  bottom: 100px;
+  width: 88px;
+  height: auto;
+  overflow: hidden;
+
+  .menu{
+    width: 88px;
+    height: 92px;
+    transform: rotate(0deg);
+    transition: transform 0.3s;
+
+    &.active{
+      transform: rotate(90deg);
+    }
+  }
+
+  .barContainer{
+    height: auto;
+    overflow: hidden;
+  }
+
+  .bars{
+    transform: translateY(100%);
+    transition: transform 0.3s;
+
+    &.active{
+      transform: translateY(0)
+    }
+  }
+}
+
+.rankModal{
+  position: fixed;
+  top: 0;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  width: 100%;
+  height: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background-color: rgba(0, 0, 0, 0.6);
+
+  .content{
+    width: 546px;
+     border-top-left-radius: 30px;
+     border-top-right-radius: 30px;
+    overflow: hidden;
+  }
+
+  .tabs{
+    width: 100%;
+    height: 80px;
+    display: flex;
+
+    .tab{
+      flex: 1;
+      background-color: #fff;
+      border-bottom: 1px solid #dedede;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+
+      &.active{
+        background-color: #f94444;
+        border-bottom: 1px solid #f94444;
+        color: #fff;
+      }
+    }
+  }
+
+  .swiper{
+    background-color: #fff;
   }
 }
