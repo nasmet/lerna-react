@@ -2,12 +2,13 @@
  * @Description: 中间件
  * @Author: 吴锦辉
  * @Date: 2021-09-14 09:20:06
- * @LastEditTime: 2021-09-28 17:50:58
+ * @LastEditTime: 2021-10-01 11:03:49
  */
 
 const mainCtrl = require('../controller/main');
 const { codeMap, codeNameMap } = require('../code/index');
 const { TypeJudgment } = require('../utils/type');
+const config = require('../config');
 
 function responseHandle(req, res) {
   res.setHeader('Content-Type', 'application/json');
@@ -129,7 +130,25 @@ function verifyParamsHandle(rules) {
   };
 }
 
+function verifyAppid(req, res, next) {
+  const { appid } = req.headers;
+
+  if (appid !== config.appid) {
+    const code = codeMap.WrongAppid;
+
+    res.status(200).json({
+      code,
+      message: codeNameMap[code],
+    });
+
+    return;
+  }
+
+  next();
+}
+
 module.exports = {
+  verifyAppid,
   responseHandle,
   checkSessionHandle,
   verifyParamsHandle,

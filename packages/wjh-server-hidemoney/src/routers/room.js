@@ -2,11 +2,11 @@
  * @Description: 房间模块
  * @Author: 吴锦辉
  * @Date: 2021-09-28 15:38:25
- * @LastEditTime: 2021-09-29 16:25:59
+ * @LastEditTime: 2021-10-01 16:55:54
  */
 
 const express = require('express');
-const { checkSessionHandle, responseHandle } = require('../middleware/index');
+const { checkSessionHandle, responseHandle, verifyAppid } = require('../middleware/index');
 const mainCtrl = require('../controller/main');
 const { codeMap } = require('../code/index');
 const { generateSnowflakeId } = require('../utils/index');
@@ -21,6 +21,7 @@ const router = express.Router();
 /** 藏钱 */
 router.post(
   '/hidemoney',
+  verifyAppid,
   verifyHideMoneyParams(),
   checkSessionHandle,
   async (req, res, next) => {
@@ -68,6 +69,7 @@ router.post(
 /** 房间信息 */
 router.post(
   '/info',
+  verifyAppid,
   verifyRoomInfoParams(),
   checkSessionHandle,
   async (req, res, next) => {
@@ -98,7 +100,7 @@ router.post(
       const user = users[0] || {};
 
       res.code = codeMap.Success;
-      res.body = { ...room, nickName: user.name };
+      res.body = { ...room, nickName: user.nickName };
 
       next();
     } catch (err) {
@@ -111,6 +113,7 @@ router.post(
 /** 找钱 */
 router.post(
   '/findmoney',
+  verifyAppid,
   verifyFindMoneyParams(),
   checkSessionHandle,
   async (req, res, next) => {
@@ -140,12 +143,16 @@ router.post(
         res.code = codeMap.NotFound;
 
         next();
+
+        return;
       }
 
       if (room.status === 1) {
         res.code = codeMap.MoneyCollected;
 
         next();
+
+        return;
       }
 
       await roomCtrl.updateRoom({

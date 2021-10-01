@@ -2,16 +2,17 @@
  * @Description: 主场景
  * @Author: 吴锦辉
  * @Date: 2021-09-27 09:23:20
- * @LastEditTime: 2021-09-30 16:55:14
+ * @LastEditTime: 2021-10-01 17:19:26
  */
 
-import React, { useCallback, useEffect, useRef, useState } from 'react';
+import React, { useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import Taro, { useShareAppMessage, useRouter, useDidShow } from '@tarojs/taro';
 import { View, ScrollView, Image, Input, Swiper, SwiperItem, Text } from '@tarojs/components';
+import VirtualList from '@tarojs/components/virtual-list';
 import classNames from 'classnames';
 import sceneConfig from '@scene';
 import cacheCtrl from '@cache';
-import { CustomButton } from '@component';
+import { CustomButton, Mask } from '@component';
 import httpCtrl from '@api';
 import iconRoom from '@img/fangjian/scene.png';
 import iconClose from '@img/icon-close.png';
@@ -50,6 +51,7 @@ export default function Index() {
   const [showHideMoney, setShowHideMoney] = useState(false);
   const [showShare, setShowShare] = useState(false);
   const [showRank, setShowRank] = useState(false);
+  const [showWallet, setShowWallet] = useState(false);
 
   const scrollLeftCache = useRef(0);
   const closeItemAnimation = useRef<null | any>(null);
@@ -66,27 +68,34 @@ export default function Index() {
     }
   });
 
-  useShareAppMessage(res => {
-    const { nickName } = cacheCtrl.getUserInfo() || {};
-    const id = roomCtrl.getHideRoomInfo().roomId;
+  useShareAppMessage(() => {
+    const mode = roomCtrl.getMode();
 
-    const shareContent = {
-      hide: '红包新玩法，快来藏钱让朋友找吧',
-      find: `${nickName}在房间藏钱了，快来找吧`,
-    };
-
-    if (res.from === 'button') {
-      // 来自页面内转发按钮
+    if (mode === MODE.FIND) {
+      // eslint-disable-next-line no-shadow
+      const { roomId, nickName } = roomCtrl.getFindRoomInfo();
 
       return {
-        title: shareContent.find,
+        title: `${nickName}在房间藏钱了，快来找吧`,
+        path: `/pages/main/index/index?roomId=${roomId}&from=share`,
+        imageUrl: iconRoom,
+      };
+    }
+
+    const id = roomCtrl.getHideRoomInfo().roomId;
+
+    if (mode === MODE.HIDE && id) {
+      const { nickName } = cacheCtrl.getUserInfo() || {};
+
+      return {
+        title: `${nickName}在房间藏钱了，快来找吧`,
         path: `/pages/main/index/index?roomId=${id}&from=share`,
         imageUrl: iconRoom,
       };
     }
 
     return {
-      title: shareContent.hide,
+      title: '红包新玩法，快来藏钱让朋友找吧',
       path: '/pages/main/index/index',
       imageUrl: iconRoom,
     };
@@ -119,9 +128,8 @@ export default function Index() {
         Taro.showModal({
           title: '',
           content: '很遗憾，钱已经被领取了',
+          showCancel: false,
         });
-
-        return;
       }
 
       Taro.hideLoading();
@@ -129,10 +137,10 @@ export default function Index() {
   }, []);
 
   useEffect(() => {
-    if (showHideMoney) {
+    if (showHideMoney || showShare || showRank || showWallet) {
       setScrollLeft(scrollLeftCache.current);
     }
-  }, [showHideMoney]);
+  }, [showHideMoney, showShare, showRank, showWallet]);
 
   const onScroll = useCallback(e => {
     scrollLeftCache.current = e.detail.scrollLeft;
@@ -168,6 +176,14 @@ export default function Index() {
 
   const onCloseRank = useCallback(() => {
     setShowRank(false);
+  }, []);
+
+  const onShowWallet = useCallback(() => {
+    setShowWallet(true);
+  }, []);
+
+  const onCloseWallet = useCallback(() => {
+    setShowWallet(false);
   }, []);
 
   return (
@@ -214,13 +230,15 @@ export default function Index() {
         </View>
       </ScrollView>
 
-      <Menu showRank={onShowRank} />
+      <Menu showRank={onShowRank} showWallet={onShowWallet} />
 
       {showHideMoney ? <HideMoney onClose={onCloseHideMoney} /> : null}
 
       {showShare ? <Share onClose={onCloseShare} /> : null}
 
       {showRank ? <Rank onClose={onCloseRank} /> : null}
+
+      {showWallet ? <Wallet onClose={onCloseWallet} /> : null}
     </View>
   );
 }
@@ -253,6 +271,7 @@ function Item({ item, onShowHideMoney, onShowShare }) {
       Taro.showModal({
         title: '恭喜你找到了钱',
         content: '已存入到你的钱包',
+        showCancel: false,
       });
 
       Taro.hideLoading();
@@ -453,8 +472,8 @@ function HideMoney({ onClose }) {
   }, []);
 
   return (
-    <View className={styles.hideMoneyModal}>
-      <View className={styles.content}>
+    <Mask>
+      <View className={styles.hideMoneyContent}>
         <View className={styles.inputAmount}>
           <View>金额：</View>
           <Input
@@ -476,13 +495,13 @@ function HideMoney({ onClose }) {
           <CustomButton btnText='藏钱' onClick={onHide} />
         </View>
       </View>
-    </View>
+    </Mask>
   );
 }
 
 function Share({ onClose }) {
   return (
-    <View className={styles.shareModal}>
+    <Mask>
       <View className={styles.shareContent}>
         <View className={styles.title}>藏钱成功</View>
         <View className={styles.word}>藏钱金额：{roomCtrl.getHideRoomInfo().money} 元</View>
@@ -494,15 +513,15 @@ function Share({ onClose }) {
           <Image src={iconClose} />
         </View>
       </View>
-    </View>
+    </Mask>
   );
 }
 
 const menuData = [
   {
-    type: 'tixian',
+    type: 'wallet',
     icon: require('@img/bar-5.png'),
-    name: '提现入口',
+    name: '钱包',
   },
   {
     type: 'rank',
@@ -511,7 +530,7 @@ const menuData = [
   },
 ];
 
-function Menu({ showRank }) {
+function Menu({ showRank, showWallet }) {
   const [expandStatus, setExpandStatus] = useState(false);
 
   const onExpandChange = useCallback(() => {
@@ -524,9 +543,12 @@ function Menu({ showRank }) {
         case 'rank':
           showRank && showRank();
           return;
+        case 'wallet':
+          showWallet && showWallet();
+          return;
       }
     },
-    [showRank]
+    [showRank, showWallet]
   );
 
   return (
@@ -552,11 +574,11 @@ function Menu({ showRank }) {
 
 const rankData = [
   {
-    type: 'hide',
+    type: 'hideMoney',
     name: '藏钱',
   },
   {
-    type: 'find',
+    type: 'findMoney',
     name: '找钱',
   },
 ];
@@ -569,8 +591,8 @@ function Rank({ onClose }) {
   }, []);
 
   return (
-    <View className={styles.rankModal}>
-      <View className={styles.content}>
+    <Mask>
+      <View className={styles.rankContent}>
         <View className={styles.tabs}>
           {rankData.map((v, index) => (
             <View
@@ -589,26 +611,184 @@ function Rank({ onClose }) {
             </SwiperItem>
           ))}
         </Swiper>
+        <View className={styles.close} onClick={onClose}>
+          <Image src={iconClose} />
+        </View>
       </View>
-    </View>
+    </Mask>
   );
 }
 
+const rankIconData = [
+  require('@img/icon-rank1.png'),
+  require('@img/icon-rank2.png'),
+  require('@img/icon-rank3.png'),
+];
+
 function RankContent({ type }) {
-  const [data, setData] = useState<Record<string, any>>([]);
+  const [data, setData] = useState<Array<object>>([]);
+  const [loading, setLoading] = useState(false);
+  const [requestParams, setRequestParams] = useState(() => ({
+    page: 1,
+    pageSize: 10,
+    sort: `${type} desc`,
+  }));
+
+  const dataLen = data.length;
+  const itemSize = 50;
+  const height = 400;
+  const previewLoadingCount = height / itemSize;
+
+  useEffect(() => {
+    setLoading(true);
+
+    const [, excute]: Array<any> = httpCtrl.post('/user/list', { ...requestParams });
+
+    excute
+      .then(res => {
+        if (requestParams.page === 1) {
+          setData(res);
+        } else {
+          setData(pre => [...pre, ...res]);
+        }
+      })
+      .finally(() => {
+        setLoading(false);
+      });
+  }, [requestParams]);
+
+  const Row = useCallback(props => {
+    // eslint-disable-next-line no-shadow
+    const { id, index, style, data } = props;
+
+    const v = data[index];
+
+    return (
+      <View className={styles.item} id={id} style={style}>
+        {index < 3 ? (
+          <Image className={styles.rank} src={rankIconData[index]} />
+        ) : (
+          <Text className={styles.rank}>{index + 1}</Text>
+        )}
+        <Image className={styles.avatar} src={v.avatar} />
+        <Text className={styles.nickName}>{v.nickName}</Text>
+        <Text className={styles.money}>{v[type]}元</Text>
+      </View>
+    );
+  }, []);
+
+  const onScroll = useCallback(
+    ({ scrollDirection, scrollOffset }) => {
+      const len = data.length;
+
+      if (
+        // 避免重复加载数据
+        !loading &&
+        // 只有往前滚动我们才触发
+        scrollDirection === 'forward' &&
+        // 5 = (列表高度 / 单项列表高度)
+        // 100 = 滚动提前加载量，可根据样式情况调整
+        scrollOffset > (len - previewLoadingCount - 1) * itemSize
+      ) {
+        setRequestParams(pre => ({
+          ...pre,
+          page: pre.page + 1,
+        }));
+      }
+    },
+    [loading, data, previewLoadingCount]
+  );
+
+  if (!loading && dataLen <= 0) {
+    return (
+      <View className={styles.noData}>
+        <View className={styles.word}>暂无数据</View>
+        <CustomButton openType='share' btnText='邀请好友' />
+      </View>
+    );
+  }
+
+  if (loading && dataLen <= 0) {
+    return <View className={styles.noData}>数据加载中...</View>;
+  }
 
   return (
-    <ScrollView scrollY>
-      <View>
-        {data.map((v, index) => (
-          <View key={index}>
-            {index < 3 ? <Image src={v.avatar} /> : index + 1}
-            <Image src={v.avatar} />
-            <Text>{v.nickName}</Text>
-            <Text>{v.money}</Text>
-          </View>
-        ))}
+    <VirtualList
+      className={styles.rankList}
+      width='100%'
+      height={400} /* 列表的高度 */
+      itemData={data} /* 渲染列表的数据 */
+      itemCount={dataLen} /*  渲染列表的长度 */
+      itemSize={50} /* 列表单项的高度  */
+      onScroll={onScroll}
+    >
+      {/* 列表单项组件，这里只能传入一个组件 */}
+      {Row}
+    </VirtualList>
+  );
+}
+
+function Wallet({ onClose }) {
+  const [money, setMoney] = useState(0);
+  const withdrawnStatus = useRef(false);
+
+  useEffect(() => {
+    Taro.showLoading();
+
+    const [, excute]: Array<any> = httpCtrl.post('/user/withdrawable');
+
+    excute.then(res => {
+      setMoney(res.withdrawable);
+
+      Taro.hideLoading();
+    });
+  }, []);
+
+  const onWithdrawn = useCallback(() => {
+    if (!money) {
+      return;
+    }
+
+    if (withdrawnStatus.current) {
+      return;
+    }
+
+    withdrawnStatus.current = true;
+
+    Taro.showLoading();
+
+    const [, excute]: Array<any> = httpCtrl.post('/user/withdrawn');
+
+    excute
+      .then(() => {
+        Taro.hideLoading();
+
+        onClose && onClose();
+
+        Taro.showModal({
+          title: '提现成功',
+          content: '预计1-3个工作日到账微信钱包',
+          showCancel: false,
+        });
+      })
+      .finally(() => {
+        withdrawnStatus.current = false;
+      });
+  }, [money, onClose]);
+
+  return (
+    <Mask>
+      <View className={styles.walletContent}>
+        <View className={styles.title}>可提现金额：{money}</View>
+        <CustomButton
+          btnText={money ? '全部提现' : '邀请好友'}
+          openType={money ? '' : 'share'}
+          onClick={onWithdrawn}
+        />
+        <View className={styles.close} onClick={onClose}>
+          <Image src={iconClose} />
+        </View>
       </View>
-    </ScrollView>
+    </Mask>
   );
 }

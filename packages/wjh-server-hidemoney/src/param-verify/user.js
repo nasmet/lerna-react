@@ -2,7 +2,7 @@
  * @Description: 用户模块的参数验证
  * @Author: 吴锦辉
  * @Date: 2021-09-16 10:23:43
- * @LastEditTime: 2021-09-28 15:44:14
+ * @LastEditTime: 2021-10-01 15:48:52
  */
 
 const { verifyParamsHandle } = require('../middleware/index');
