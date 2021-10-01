@@ -2,7 +2,7 @@
  * @Description: 主场景
  * @Author: 吴锦辉
  * @Date: 2021-09-27 09:23:20
- * @LastEditTime: 2021-10-01 17:19:26
+ * @LastEditTime: 2021-10-01 20:45:06
  */
 
 import React, { useCallback, useEffect, useMemo, useRef, useState } from 'react';
@@ -779,7 +779,7 @@ function Wallet({ onClose }) {
   return (
     <Mask>
       <View className={styles.walletContent}>
-        <View className={styles.title}>可提现金额：{money}</View>
+        <View className={styles.title}>可提现金额：{money}元</View>
         <CustomButton
           btnText={money ? '全部提现' : '邀请好友'}
           openType={money ? '' : 'share'}
