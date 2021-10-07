@@ -13,7 +13,7 @@ import styles from './index.module.scss';
 registerMicroApps([
   {
     name: 'child-app-operation',
-    entry: '//localhost:8081',
+    entry: '//120.78.195.150:8081',
     container: '#child-app-operation',
     activeRule: '/main/:business/operation',
   },
@@ -48,7 +48,7 @@ function Header(props) {
     const [, execute] = apiCtrl.post('/user/loginout');
 
     execute.then(() => {
-      cacheCtrl.remove('token');
+      cacheCtrl.removeToken();
 
       props.history.replace('/admin/login');
 
@@ -126,6 +126,7 @@ function Header(props) {
 
 function Aside() {
   const [applictionData, setApplicationData] = useState([]);
+  const [appid, setAppid] = useState('');
 
   useEffect(() => {
     const [, execute] = apiCtrl.post('/application/list', { page: 1, pageSize: 10 });
@@ -138,7 +139,7 @@ function Aside() {
   }, []);
 
   const onApplicationChange = useCallback(appid => {
-    cacheCtrl.setAppid(appid);
+    setAppid(appid);
   }, []);
 
   return (
@@ -163,7 +164,7 @@ function Aside() {
         title={i18Ctrl.formatterMessage('operationModule')}
       >
         <Menu.Item key="1">
-          <Link to={`/main/${cacheCtrl.getAppid()}/operation/user/list`}>
+          <Link to={`/main/${appid}/operation/user/list`}>
             {i18Ctrl.formatterMessage('userManagement')}
           </Link>
         </Menu.Item>

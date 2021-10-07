@@ -2,7 +2,7 @@
  * @Description: 本地缓存
  * @Author: 吴锦辉
  * @Date: 2021-09-15 16:37:40
- * @LastEditTime: 2021-09-25 14:46:49
+ * @LastEditTime: 2021-10-07 20:32:10
  */
 
 class CacheController {
@@ -54,18 +54,6 @@ class CacheController {
 
   setLanguage(value) {
     return this.set('language', value);
-  }
-
-  getAppid() {
-    return this.map.get('appid');
-  }
-
-  setAppid(value) {
-    return this.map.set('appid', value);
-  }
-
-  removeAppid() {
-    return this.map.delete('appid');
   }
 }
 
