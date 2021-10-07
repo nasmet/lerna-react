@@ -2,7 +2,7 @@
  * @Description: mysql配置
  * @Author: 吴锦辉
  * @Date: 2021-09-14 11:33:02
- * @LastEditTime: 2021-09-14 15:48:20
+ * @LastEditTime: 2021-10-07 20:03:52
  */
 
 const mysql = require('mysql');
@@ -11,7 +11,7 @@ const baseConfig = {
   connectionLimit: 10,
   host: '127.0.0.1',
   user: 'root',
-  password: '824966wjh',
+  password: '824966Wjh.',
   database: 'wjh',
   port: 3306,
 };
