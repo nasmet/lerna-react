@@ -2,7 +2,7 @@
  * @Description: webpack配置文件
  * @Author: 吴锦辉
  * @Date: 2021-08-16 09:19:32
- * @LastEditTime: 2021-10-07 18:51:14
+ * @LastEditTime: 2021-10-07 19:44:18
  */
 
 const path = require('path');
@@ -18,7 +18,8 @@ process.env.NODE_ENV = env;
 const baseConfig = {
   entry: './src/index.js',
   output: {
-    publicPath: 'http://120.78.195.150:3003',
+    publicPath: 'http://0.0.0.0:8080/',
+    chunkFilename: '[id].chunk.js',
     path: path.resolve(__dirname, 'build'),
   },
   module: {
