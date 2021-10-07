@@ -139,6 +139,8 @@ function Aside() {
   }, []);
 
   const onApplicationChange = useCallback(appid => {
+    cacheCtrl.setAppid(appid);
+
     setAppid(appid);
   }, []);
 
