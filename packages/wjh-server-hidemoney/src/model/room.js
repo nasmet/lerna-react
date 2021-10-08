@@ -2,7 +2,7 @@
  * @Description: 房间属性数据库查询
  * @Author: 吴锦辉
  * @Date: 2021-09-28 15:54:39
- * @LastEditTime: 2021-09-29 16:00:43
+ * @LastEditTime: 2021-10-08 10:15:57
  */
 
 const { query } = require('../mysql/index');
@@ -45,8 +45,6 @@ class RoomModel {
 
     const sql = `select * from room ${str}`;
 
-    console.log('sql: ', sql);
-
     return new Promise((resolve, reject) => {
       query({ sql })
         .then(res => {
@@ -62,8 +60,6 @@ class RoomModel {
     const { id, ...other } = data || {};
 
     const sql = `update room SET ? where id='${id}'`;
-
-    console.log('sql: ', sql);
 
     return new Promise((resolve, reject) => {
       query({ sql, data: other })

@@ -8,7 +8,7 @@
     "css": "sass"
   },
   "scripts": {
-    "dev:weapp": "taro build --type weapp -- --watch",
+    "dev:weapp": "taro build --type weapp --watch",
     "dev:swan": "npm run build:swan -- --watch",
     "dev:alipay": "npm run build:alipay -- --watch",
     "dev:tt": "npm run build:tt -- --watch",

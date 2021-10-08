@@ -2,7 +2,7 @@
  * @Description: mysql配置
  * @Author: 吴锦辉
  * @Date: 2021-09-14 11:33:02
- * @LastEditTime: 2021-10-07 20:03:52
+ * @LastEditTime: 2021-10-08 10:53:50
  */
 
 const mysql = require('mysql');
@@ -15,6 +15,10 @@ const baseConfig = {
   database: 'wjh',
   port: 3306,
 };
+
+if (process.env.NODE_ENV === 'development') {
+  baseConfig.password = '824966wjh';
+}
 
 const pool = mysql.createPool(baseConfig);
 

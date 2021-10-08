@@ -41,36 +41,16 @@ export default function List() {
       {
         cmpType: 'input',
         wrapProps: {
+          name: 'openid',
+          label: 'openid',
+          rules,
+        },
+      },
+      {
+        cmpType: 'input',
+        wrapProps: {
           name: 'nickName',
           label: formatterMessage('nickName'),
-          rules,
-        },
-      },
-      {
-        cmpType: 'select',
-        wrapProps: {
-          name: 'gender',
-          label: formatterMessage('gender'),
-          rules,
-        },
-        cmpProps: {
-          options: [
-            {
-              label: formatterMessage('man'),
-              value: 1,
-            },
-            {
-              label: formatterMessage('woman'),
-              value: 2,
-            },
-          ],
-        },
-      },
-      {
-        cmpType: 'datepicker',
-        wrapProps: {
-          name: 'date',
-          label: formatterMessage('birthday'),
           rules,
         },
       },
@@ -80,17 +60,30 @@ export default function List() {
   const columns = useMemo(
     () => [
       {
-        title: formatterMessage('username'),
-        dataIndex: 'username',
+        title: 'openid',
+        dataIndex: 'openid',
       },
       {
-        title: formatterMessage('gender'),
-        dataIndex: 'gender',
+        title: formatterMessage('nickName'),
+        dataIndex: 'nickName',
       },
       {
-        title: formatterMessage('birthday'),
-        dataIndex: 'birthday',
+        title: formatterMessage('hideMoney'),
+        dataIndex: 'hideMoney',
       },
+      {
+        title: formatterMessage('findMoney'),
+        dataIndex: 'findMoney',
+      },
+      {
+        title: formatterMessage('freezeMoney'),
+        dataIndex: 'freezeMoney',
+      },
+      {
+        title: formatterMessage('withdrawnMoney'),
+        dataIndex: 'withdrawnMoney',
+      },
+
       {
         title: formatterMessage('createTime'),
         dataIndex: 'createTime',

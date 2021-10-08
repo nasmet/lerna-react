@@ -2,7 +2,7 @@
  * @Description: 用户模块
  * @Author: 吴锦辉
  * @Date: 2021-09-14 09:15:23
- * @LastEditTime: 2021-09-26 12:55:27
+ * @LastEditTime: 2021-10-08 11:07:13
  */
 
 const express = require('express');
@@ -97,7 +97,9 @@ router.post(
         return;
       }
 
-      values = await userCtrl.selectUser(req.body);
+      values = await userCtrl.selectUser({
+        account: req.body.account,
+      });
 
       let code = codeMap.AccountNotExist;
 

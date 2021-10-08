@@ -2,7 +2,7 @@
  * @Description: 国际化控制器
  * @Author: 吴锦辉
  * @Date: 2021-09-23 12:55:19
- * @LastEditTime: 2021-09-29 16:32:59
+ * @LastEditTime: 2021-10-08 14:22:40
  */
 
 const languageConfig = {
@@ -10,10 +10,10 @@ const languageConfig = {
     'operation.account': '账号',
     'operation.tips': '温馨提示',
     'operation.nickName': '昵称',
-    'operation.gender': '性别',
-    'operation.man': '男',
-    'operation.woman': '女',
-    'operation.birthday': '出生日期',
+    'operation.hideMoney': '藏钱金额',
+    'operation.findMoney': '找钱金额',
+    'operation.freezeMoney': '冻结金额',
+    'operation.withdrawnMoney': '已提现金额',
     'operation.confirmDeletion': '确认删除?',
     'operation.confirm': '确认',
     'operation.cancel': '取消',
@@ -29,10 +29,10 @@ const languageConfig = {
     'operation.account': 'account',
     'operation.tips': 'tips',
     'operation.nickName': 'nick name',
-    'operation.gender': 'gender',
-    'operation.man': 'man',
-    'operation.woman': 'woman',
-    'operation.birthday': 'birthday',
+    'operation.hideMoney': 'hide money',
+    'operation.findMoney': 'find money',
+    'operation.freezeMoney': 'freeze money',
+    'operation.withdrawnMoney': 'withdrawn money',
     'operation.confirmDeletion': 'confirm deletion?',
     'operation.confirm': 'confirm',
     'operation.cancel': 'cancel',

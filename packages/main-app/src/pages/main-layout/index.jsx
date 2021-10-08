@@ -1,19 +1,28 @@
 import React, { useMemo, useCallback, useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
 import { Menu, Dropdown, message } from 'antd';
-import { MailOutlined, AppstoreOutlined, SettingOutlined, DownOutlined } from '@ant-design/icons';
+import {
+  MailOutlined,
+  AppstoreOutlined,
+  SettingOutlined,
+  DownOutlined,
+  MenuUnfoldOutlined,
+  MenuFoldOutlined,
+} from '@ant-design/icons';
 import { registerMicroApps } from 'qiankun';
 import { theme } from 'wjh-util';
+import classNames from 'classnames';
 import apiCtrl from '@api';
 import cacheCtrl from '@cache';
 import themeConfig from '@theme';
 import i18Ctrl from '@i18';
+import config from '@config';
 import styles from './index.module.scss';
 
 registerMicroApps([
   {
     name: 'child-app-operation',
-    entry: '//120.78.195.150:8081',
+    entry: `//${config.ip}:8081`,
     container: '#child-app-operation',
     activeRule: '/main/:business/operation',
   },
@@ -22,14 +31,26 @@ registerMicroApps([
 const { SubMenu } = Menu;
 
 export default function Layout(props) {
+  const [collapsed, setCollapsed] = useState(false);
+
   return (
     <div className={styles.wrap}>
-      <div className={styles.aside}>
+      <div
+        className={classNames(styles.aside, {
+          [styles.collapsed]: collapsed,
+        })}
+      >
         <Aside {...props} />
       </div>
       <div className={styles.content}>
         <div className={styles.header}>
-          <Header {...props} />
+          <div onClick={() => setCollapsed(pre => !pre)}>
+            {collapsed ? <MenuUnfoldOutlined /> : <MenuFoldOutlined />}
+          </div>
+
+          <div>
+            <Header {...props} />
+          </div>
         </div>
         <div className={styles.main}>
           {props.children ? (

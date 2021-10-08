@@ -11,8 +11,14 @@
   width: 240px;
   height: 100%;
   background-color: $primary;
+  transition: width 0.3s;
   word-break: break-all;
-  overflow: auto;
+  overflow-y: auto;
+  overflow-x: hidden;
+
+  &.collapsed{
+    width: 0;
+  }
 }
 
 .content {
@@ -28,7 +34,7 @@
     height: auto;
     padding: 20px;
     display: flex;
-    justify-content: flex-end;
+    justify-content: space-between;
     background-color: $primary;
     overflow: auto;
   }

@@ -2,8 +2,13 @@
  * @Description: 服务启动入口
  * @Author: 吴锦辉
  * @Date: 2021-09-13 17:16:16
- * @LastEditTime: 2021-09-25 17:11:52
+ * @LastEditTime: 2021-10-08 10:53:41
  */
+
+const { argv } = require('yargs');
+
+const { NODE_ENV } = argv;
+process.env.NODE_ENV = NODE_ENV;
 
 const express = require('express');
 const bodyParser = require('body-parser');

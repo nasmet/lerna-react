@@ -4,7 +4,8 @@
   "description": "node服务端",
   "main": "./src/index.js",
   "scripts": {
-    "start": "nodemon ./src/index.js"
+    "start": "nodemon ./src/index.js --NODE_ENV=development",
+    "build": "nodemon ./src/index.js --NODE_ENV=production"
   },
   "author": "jinhui wu",
   "license": "ISC",

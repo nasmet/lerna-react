@@ -2,7 +2,7 @@
  * @Description: 用户属性数据库查询
  * @Author: 吴锦辉
  * @Date: 2021-09-14 11:47:48
- * @LastEditTime: 2021-10-01 11:10:21
+ * @LastEditTime: 2021-10-08 10:15:24
  */
 
 const { query } = require('../mysql/index');
@@ -46,8 +46,6 @@ class UserModel {
 
     const sql = `select * from user ${str}`;
 
-    console.log('sql: ', sql);
-
     return new Promise((resolve, reject) => {
       query({ sql })
         .then(res => {
@@ -63,8 +61,6 @@ class UserModel {
     const { id, ...other } = data || {};
 
     const sql = `update user SET ? where id='${id}'`;
-
-    console.log('sql: ', sql);
 
     return new Promise((resolve, reject) => {
       query({ sql, data: other })
@@ -93,8 +89,6 @@ class UserModel {
     const str = this.spliceWhereParam({ appid });
 
     const sql = `select * from user ${str} ${sort} limit ${from},${to}`;
-
-    console.log('sql: ', sql);
 
     return new Promise((resolve, reject) => {
       query({ sql })

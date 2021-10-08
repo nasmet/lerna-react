@@ -2,7 +2,7 @@
  * @Description: 应用模块
  * @Author: 吴锦辉
  * @Date: 2021-09-25 15:07:36
- * @LastEditTime: 2021-09-26 13:49:05
+ * @LastEditTime: 2021-10-08 10:15:43
  */
 
 const { query } = require('../mysql/index');
@@ -47,8 +47,6 @@ class SessionModel {
 
     const sql = `select * from session_hidemoney ${str}`;
 
-    console.log('sql: ', sql);
-
     return new Promise((resolve, reject) => {
       query({ sql })
         .then(res => {
@@ -64,8 +62,6 @@ class SessionModel {
     const str = this.spliceWhereParam(data);
 
     const sql = `delete from session_hidemoney ${str}`;
-
-    console.log('sql: ', sql);
 
     return new Promise((resolve, reject) => {
       query({ sql })

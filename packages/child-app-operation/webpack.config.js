@@ -2,7 +2,7 @@
  * @Description: webpack配置文件
  * @Author: 吴锦辉
  * @Date: 2021-08-16 09:29:06
- * @LastEditTime: 2021-10-07 20:01:20
+ * @LastEditTime: 2021-10-08 13:40:09
  */
 
 const path = require('path');
@@ -11,24 +11,12 @@ const { merge } = require('webpack-merge');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
 const devConfig = require('./webpack.dev.js');
 const proConfig = require('./webpack.pro.js');
-const { name } = require('./package');
 
 const { env } = argv;
 process.env.NODE_ENV = env;
 
 const baseConfig = {
   entry: './src/index.js',
-  output: {
-    publicPath: 'http://120.78.195.150:8081/',
-    path: path.resolve(__dirname, 'build'),
-    /** 微应用配置 */
-    library: {
-      name: `${name}-[name]`,
-      type: 'umd',
-    },
-    uniqueName: `webpackJsonp_${name}`,
-    globalObject: 'window',
-  },
   module: {
     rules: [
       {

@@ -2,8 +2,13 @@
  * @Description: 服务启动入口
  * @Author: 吴锦辉
  * @Date: 2021-09-13 17:16:16
- * @LastEditTime: 2021-09-25 17:31:25
+ * @LastEditTime: 2021-10-08 10:52:25
  */
+
+const { argv } = require('yargs');
+
+const { NODE_ENV } = argv;
+process.env.NODE_ENV = NODE_ENV;
 
 const express = require('express');
 const bodyParser = require('body-parser');
@@ -11,7 +16,6 @@ const userRouter = require('./routers/user');
 const applicationRouter = require('./routers/application');
 
 const app = express();
-const port = 3000;
 
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(bodyParser.json());
@@ -32,6 +36,8 @@ app.use(function errorHandler(err, req, res, next) {
 
   res.status(500).send(err.message);
 });
+
+const port = 3000;
 
 app.listen(port, () => {
   console.log(`express服务在端口：${port}监听`);
