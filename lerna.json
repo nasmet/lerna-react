@@ -14,7 +14,8 @@
     "bootstrap": {
       "ignore": [
         "component-*",
-        "hide-money"
+        "hide-money",
+        "classroom-live"
       ],
       "npmClientArgs": [
         "--no-package-lock"
