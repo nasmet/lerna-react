@@ -2,7 +2,7 @@
  * @Description: 常用方法库
  * @Author: 吴锦辉
  * @Date: 2021-08-25 17:11:49
- * @LastEditTime: 2021-09-22 10:10:51
+ * @LastEditTime: 2021-10-08 17:08:55
  */
 
 export * as size from './size.js';
@@ -12,3 +12,4 @@ export * as theme from './theme.js';
 export { default as I18 } from './i18.js';
 export { default as ThrottleRequest } from './throttle-request';
 export { default as RouterJump } from './router-jump';
+export * as fileCtrl from './file';
