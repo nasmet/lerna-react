@@ -1,1 +1,9 @@
 $primary: var(--primary);
+
+@mixin textWrap($row){
+  display: -webkit-box;
+  -webkit-line-clamp: $row;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+  word-break: break-all;
+}
