@@ -2,7 +2,7 @@
  * @Description: 房间
  * @Author: 吴锦辉
  * @Date: 2021-09-30 13:40:58
- * @LastEditTime: 2021-10-01 16:41:19
+ * @LastEditTime: 2021-10-09 10:20:02
  */
 
 interface IHideRoomInfo {
@@ -15,6 +15,7 @@ interface IFideRoomInfo {
   roomId?: string;
   itemId?: string;
   nickName?: string;
+  money?: string;
 }
 
 class RoomController {

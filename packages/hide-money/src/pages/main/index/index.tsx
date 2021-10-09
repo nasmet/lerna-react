@@ -2,10 +2,10 @@
  * @Description: 主场景
  * @Author: 吴锦辉
  * @Date: 2021-09-27 09:23:20
- * @LastEditTime: 2021-10-01 20:45:06
+ * @LastEditTime: 2021-10-09 10:19:49
  */
 
-import React, { useCallback, useEffect, useMemo, useRef, useState } from 'react';
+import React, { useCallback, useEffect, useRef, useState } from 'react';
 import Taro, { useShareAppMessage, useRouter, useDidShow } from '@tarojs/taro';
 import { View, ScrollView, Image, Input, Swiper, SwiperItem, Text } from '@tarojs/components';
 import VirtualList from '@tarojs/components/virtual-list';
@@ -269,7 +269,7 @@ function Item({ item, onShowHideMoney, onShowShare }) {
 
     excute.then(() => {
       Taro.showModal({
-        title: '恭喜你找到了钱',
+        title: `恭喜你找到了${roomCtrl.getFindRoomInfo().money}`,
         content: '已存入到你的钱包',
         showCancel: false,
       });
@@ -478,8 +478,8 @@ function HideMoney({ onClose }) {
           <View>金额：</View>
           <Input
             className={styles.value}
-            type='number'
-            placeholder='请输入金额'
+            type="number"
+            placeholder="请输入金额"
             maxlength={5}
             onInput={onInput}
           />
@@ -492,7 +492,7 @@ function HideMoney({ onClose }) {
           <Image src={iconClose} />
         </View>
         <View className={styles.btn}>
-          <CustomButton btnText='藏钱' onClick={onHide} />
+          <CustomButton btnText="藏钱" onClick={onHide} />
         </View>
       </View>
     </Mask>
@@ -507,7 +507,7 @@ function Share({ onClose }) {
         <View className={styles.word}>藏钱金额：{roomCtrl.getHideRoomInfo().money} 元</View>
         <View className={styles.shareBtnContainer}>
           {/* <CustomButton className={styles.btn} btnText="生成海报" /> */}
-          <CustomButton openType='share' btnText='分享给好友' />
+          <CustomButton openType="share" btnText="分享给好友" />
         </View>
         <View className={styles.close} onClick={onClose}>
           <Image src={iconClose} />
@@ -557,7 +557,7 @@ function Menu({ showRank, showWallet }) {
         <View className={classNames(styles.bars, { [styles.active]: expandStatus })}>
           {menuData.map((v, index) => (
             <View key={index} className={styles.bar}>
-              <Image src={v.icon} mode='widthFix' onClick={() => onBarChange(v.type)} />
+              <Image src={v.icon} mode="widthFix" onClick={() => onBarChange(v.type)} />
             </View>
           ))}
         </View>
@@ -657,25 +657,28 @@ function RankContent({ type }) {
       });
   }, [requestParams]);
 
-  const Row = useCallback(props => {
-    // eslint-disable-next-line no-shadow
-    const { id, index, style, data } = props;
+  const Row = useCallback(
+    props => {
+      // eslint-disable-next-line no-shadow
+      const { id, index, style, data } = props;
 
-    const v = data[index];
+      const v = data[index];
 
-    return (
-      <View className={styles.item} id={id} style={style}>
-        {index < 3 ? (
-          <Image className={styles.rank} src={rankIconData[index]} />
-        ) : (
-          <Text className={styles.rank}>{index + 1}</Text>
-        )}
-        <Image className={styles.avatar} src={v.avatar} />
-        <Text className={styles.nickName}>{v.nickName}</Text>
-        <Text className={styles.money}>{v[type]}元</Text>
-      </View>
-    );
-  }, []);
+      return (
+        <View className={styles.item} id={id} style={style}>
+          {index < 3 ? (
+            <Image className={styles.rank} src={rankIconData[index]} />
+          ) : (
+            <Text className={styles.rank}>{index + 1}</Text>
+          )}
+          <Image className={styles.avatar} src={v.avatar} />
+          <Text className={styles.nickName}>{v.nickName}</Text>
+          <Text className={styles.money}>{v[type]}元</Text>
+        </View>
+      );
+    },
+    [type]
+  );
 
   const onScroll = useCallback(
     ({ scrollDirection, scrollOffset }) => {
@@ -703,7 +706,7 @@ function RankContent({ type }) {
     return (
       <View className={styles.noData}>
         <View className={styles.word}>暂无数据</View>
-        <CustomButton openType='share' btnText='邀请好友' />
+        <CustomButton openType="share" btnText="邀请好友" />
       </View>
     );
   }
@@ -715,7 +718,7 @@ function RankContent({ type }) {
   return (
     <VirtualList
       className={styles.rankList}
-      width='100%'
+      width="100%"
       height={400} /* 列表的高度 */
       itemData={data} /* 渲染列表的数据 */
       itemCount={dataLen} /*  渲染列表的长度 */
