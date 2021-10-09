@@ -2,13 +2,8 @@
  * @Description: 服务启动入口
  * @Author: 吴锦辉
  * @Date: 2021-09-13 17:16:16
- * @LastEditTime: 2021-10-08 14:16:05
+ * @LastEditTime: 2021-10-09 11:40:31
  */
-
-const { argv } = require('yargs');
-
-const { NODE_ENV } = argv;
-process.env.NODE_ENV = NODE_ENV;
 
 const express = require('express');
 const helmet = require('helmet');
@@ -35,6 +30,4 @@ app.use(function errorHandler(err, req, res, next) {
   });
 });
 
-const port = 3002;
-
-app.listen(port, () => {});
+app.listen(process.env.PORT, () => {});

@@ -1,12 +1,7 @@
 {
   "name": "wjh-server-operation",
   "version": "1.0.7",
-  "description": "node服务端",
-  "main": "./src/index.js",
-  "scripts": {
-    "start": "nodemon ./src/index.js --NODE_ENV=development",
-    "build": "nodemon ./src/index.js --NODE_ENV=production"
-  },
+  "description": "运营服务",
   "author": "jinhui wu",
   "license": "ISC",
   "dependencies": {
@@ -14,8 +9,5 @@
     "body-parser": "^1.19.0",
     "mysql": "^2.18.1",
     "snowflake-id": "^1.1.0"
-  },
-  "devDependencies": {
-    "nodemon": "^2.0.12"
   }
 }
