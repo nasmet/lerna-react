@@ -14,5 +14,5 @@ package-lock.json
 config.json
 *.min.js
 *.sh
-Dockerfile
 .temp/
+classroom-live

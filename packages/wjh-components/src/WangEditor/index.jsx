@@ -1,3 +1,11 @@
+/*
+ * @Description: WangEditor
+ * @Author: 吴锦辉
+ * @Date: 2021-10-08 17:14:43
+ * @LastEditTime: 2021-10-11 11:29:41
+ * @Reference: https://www.wangeditor.com/
+ */
+
 import React, { useEffect, useRef } from 'react';
 import WangEditor from 'wangeditor';
 
