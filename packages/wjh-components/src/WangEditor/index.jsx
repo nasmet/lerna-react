@@ -1,9 +1,9 @@
 /*
- * @Description: WangEditor
+ * @Description: WangEditor(后续重写下，基于react)
  * @Author: 吴锦辉
  * @Date: 2021-10-08 17:14:43
- * @LastEditTime: 2021-10-11 11:29:41
- * @Reference: https://www.wangeditor.com/
+ * @LastEditTime: 2021-10-11 11:50:34
+ * @Reference: https://www.wangeditor.com/v5/guide/for-frame.html#react
  */
 
 import React, { useEffect, useRef } from 'react';

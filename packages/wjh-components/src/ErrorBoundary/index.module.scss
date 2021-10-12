@@ -1,0 +1,19 @@
+.errorPage {
+  width: 100vw;
+  height: 100vh;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  word-break: break-all;
+
+  .tip {
+    margin-bottom: 58 * $px;
+    display: inline-block;
+    font-size: 32 * $px;
+    font-family: PingFangSC-Regular, PingFang SC;
+    font-weight: 400;
+    color: #a5a5a5;
+    line-height: 32 * $px;
+  }
+}
