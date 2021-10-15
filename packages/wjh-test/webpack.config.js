@@ -2,10 +2,9 @@
  * @Description: webpack配置文件
  * @Author: 吴锦辉
  * @Date: 2021-07-20 13:55:02
- * @LastEditTime: 2021-09-14 14:53:28
+ * @LastEditTime: 2021-10-15 17:23:23
  */
 
-const ReactRefreshPlugin = require('@pmmmwh/react-refresh-webpack-plugin');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
 const webpack = require('webpack');
 const path = require('path');
@@ -21,7 +20,6 @@ module.exports = {
         loader: 'babel-loader',
         options: {
           presets: ['@babel/env', '@babel/preset-react'],
-          plugins: [require.resolve('react-refresh/babel')], // 为 react-refresh 添加
         },
       },
       {
@@ -46,7 +44,6 @@ module.exports = {
     ],
   },
   plugins: [
-    new ReactRefreshPlugin(), // 为 react-refresh 添加
     new HtmlWebpackPlugin({
       template: './src/index.html',
     }),
@@ -58,7 +55,7 @@ module.exports = {
     historyApiFallback: true,
     proxy: {
       '/api': {
-        target: 'http://localhost:3000',
+        target: '',
         secure: false,
         pathRewrite: { '^/api': '' },
       },

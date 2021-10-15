@@ -2,11 +2,10 @@
  * @Description: webpack开发配置文件
  * @Author: 吴锦辉
  * @Date: 2021-08-13 10:52:55
- * @LastEditTime: 2021-08-27 11:07:03
+ * @LastEditTime: 2021-10-15 17:26:59
  */
 
 const { argv } = require('yargs');
-const ReactRefreshPlugin = require('@pmmmwh/react-refresh-webpack-plugin');
 
 const { domain = '' } = argv;
 
@@ -40,14 +39,11 @@ module.exports = {
         loader: 'babel-loader',
         options: {
           presets: ['@babel/env', '@babel/preset-react'],
-          plugins: [require.resolve('react-refresh/babel')], // 为 react-refresh 添加
         },
       },
     ],
   },
-  plugins: [
-    new ReactRefreshPlugin(), // 为 react-refresh 添加
-  ],
+  plugins: [],
   devServer: {
     port: 8080,
     hot: true,
