@@ -10,7 +10,6 @@ import { BrowserRouter } from 'react-router-dom';
 import KeepAlive from 'wjh-keepalive';
 import RenderRouters from 'wjh-routers';
 import { theme } from 'wjh-util';
-import 'antd/dist/antd.css';
 import themeConfig from '@theme';
 import { WrapContainer, store } from '@store';
 import i18Ctrl from '@i18';
