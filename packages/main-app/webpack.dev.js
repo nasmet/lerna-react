@@ -2,16 +2,12 @@
  * @Description: webpack开发配置文件
  * @Author: 吴锦辉
  * @Date: 2021-08-16 09:19:56
- * @LastEditTime: 2021-10-15 17:20:55
+ * @LastEditTime: 2021-10-16 14:27:03
  */
 
 const webpack = require('webpack');
 
 module.exports = {
-  output: {
-    publicPath: 'http://localhost:8080/',
-    chunkFilename: '[name].[chunkhash].js',
-  },
   mode: 'development',
   module: {
     rules: [
@@ -32,7 +28,7 @@ module.exports = {
   ],
   devServer: {
     hot: true,
-    open: true,
+    open: false,
     historyApiFallback: true,
     // host: '0.0.0.0',
     port: 8080,

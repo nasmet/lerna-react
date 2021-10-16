@@ -2,21 +2,41 @@
  * @Description: webpack配置文件
  * @Author: 吴锦辉
  * @Date: 2021-08-16 09:19:32
- * @LastEditTime: 2021-10-08 13:50:19
+ * @LastEditTime: 2021-10-16 14:28:07
  */
 
-const path = require('path');
 const { argv } = require('yargs');
+
+const { env } = argv;
+
+const path = require('path');
 const { merge } = require('webpack-merge');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
+const MiniCssExtractPlugin = require('mini-css-extract-plugin');
 const devConfig = require('./webpack.dev.js');
 const proConfig = require('./webpack.pro.js');
 
-const { env } = argv;
-process.env.NODE_ENV = env;
-
 const baseConfig = {
   entry: './src/index.js',
+  optimization: {
+    moduleIds: 'deterministic',
+    runtimeChunk: 'single',
+    splitChunks: {
+      cacheGroups: {
+        vendor: {
+          test: /[\\/]node_modules[\\/]/,
+          name: 'vendors',
+          chunks: 'all',
+        },
+      },
+    },
+  },
+  plugins: [
+    new HtmlWebpackPlugin({
+      template: './public/index.html',
+    }),
+    new MiniCssExtractPlugin(),
+  ],
   module: {
     rules: [
       {
@@ -29,12 +49,12 @@ const baseConfig = {
       },
       {
         test: /\.css$/,
-        use: ['style-loader', 'css-loader'],
+        use: [MiniCssExtractPlugin.loader, 'css-loader'],
       },
       {
         test: /\.scss$/,
         use: [
-          'style-loader',
+          MiniCssExtractPlugin.loader,
           'css-loader',
           'sass-loader',
           {
@@ -46,6 +66,21 @@ const baseConfig = {
           },
         ],
       },
+      // {
+      //   test: /\.scss$/,
+      //   use: [
+      //     'style-loader',
+      //     'css-loader',
+      //     'sass-loader',
+      //     {
+      //       loader: 'sass-resources-loader',
+      //       options: {
+      //         sourceMap: true,
+      //         resources: [path.resolve(__dirname, './src/global.scss')], // 一定是path.resolve的绝对路径
+      //       },
+      //     },
+      //   ],
+      // },
       {
         test: /\.(png|jpe?g|gif|webp|woff2?|eot|ttf|otf)$/i,
         use: [
@@ -60,11 +95,6 @@ const baseConfig = {
       },
     ],
   },
-  plugins: [
-    new HtmlWebpackPlugin({
-      template: './public/index.html',
-    }),
-  ],
   resolve: {
     alias: {
       '@pages': path.resolve(__dirname, 'src/pages'),

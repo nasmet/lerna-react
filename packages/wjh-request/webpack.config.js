@@ -2,7 +2,7 @@
  * @Description: webpack配置文件
  * @Author: 吴锦辉
  * @Date: 2021-07-20 13:55:02
- * @LastEditTime: 2021-09-26 15:47:38
+ * @LastEditTime: 2021-10-16 12:57:23
  */
 
 const path = require('path');
@@ -12,7 +12,6 @@ module.exports = {
   mode: 'production',
   output: {
     path: path.resolve(__dirname, 'build'),
-    /** 微应用配置 */
     library: {
       name: 'wjh-request',
       type: 'umd',

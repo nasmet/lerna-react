@@ -2,10 +2,10 @@
  * @Description: 路由配置文件
  * @Author: 吴锦辉
  * @Date: 2021-08-16 08:57:07
- * @LastEditTime: 2021-09-26 12:58:26
+ * @LastEditTime: 2021-10-16 13:22:09
  */
 
-import React, { lazy } from 'react';
+import { lazy } from 'react';
 import BaseLayout from '@pages/base-layout';
 
 const AdminLayout = lazy(() => import('@pages/admin-layout'));
@@ -51,6 +51,7 @@ export default [
       },
       {
         path: '/main',
+        WrapperComponent,
         Component: MainLayout,
         children: [
           {
@@ -75,7 +76,6 @@ export default [
             exact: true,
           },
         ],
-        WrapperComponent,
       },
       {
         redirect: true,
