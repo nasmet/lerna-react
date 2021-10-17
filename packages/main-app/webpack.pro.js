@@ -27,5 +27,10 @@ module.exports = {
     clean: true,
   },
   mode: 'production',
+  cache: {
+    type: 'filesystem',
+    compression: 'gzip',
+    profile: true,
+  },
   plugins,
 };
