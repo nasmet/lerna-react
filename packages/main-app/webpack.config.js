@@ -2,7 +2,7 @@
  * @Description: webpack配置文件
  * @Author: 吴锦辉
  * @Date: 2021-08-16 09:19:32
- * @LastEditTime: 2021-10-17 15:15:05
+ * @LastEditTime: 2021-10-17 18:37:31
  */
 
 const { argv } = require('yargs');
@@ -14,8 +14,6 @@ const { merge } = require('webpack-merge');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
 const MiniCssExtractPlugin = require('mini-css-extract-plugin');
 const threadLoader = require('thread-loader');
-const devConfig = require('./webpack.dev.js');
-const proConfig = require('./webpack.pro.js');
 
 const loaderPoolOptions = {
   // 池选项，例如传递给 loader 选项
@@ -149,11 +147,11 @@ let buildConfig;
 
 switch (env) {
   case 'production':
-    buildConfig = proConfig;
+    buildConfig = require('./webpack.pro.js');
 
     break;
   case 'development':
-    buildConfig = devConfig;
+    buildConfig = require('./webpack.dev.js');
 
     break;
   default:
