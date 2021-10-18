@@ -1,7 +1,0 @@
-lib
-dist
-build
-var
-node_modules
-package.json
-package-lock.json

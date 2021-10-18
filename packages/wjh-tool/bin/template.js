@@ -3,12 +3,11 @@
  * @Description: 生成react项目模板
  * @Author: 吴锦辉
  * @Date: 2021-08-13 10:41:36
- * @LastEditTime: 2021-08-24 16:00:39
+ * @LastEditTime: 2021-10-18 11:38:17
  */
 
 const fs = require('fs');
 const path = require('path');
-const { exec } = require('child_process');
 const inquirer = require('inquirer');
 
 const destPath = process.cwd();
@@ -19,7 +18,12 @@ function getTemplateList() {
   return fs.readdirSync(templatePath).filter(v => !/^\..+/.test(v));
 }
 
-function displayPath(filePath) {
+/**
+ * @description: 递归复制项目模版
+ * @param {string} filePath 项目模版根路径
+ * @return {void}
+ */
+function copyTemplate(filePath) {
   fs.stat(filePath, (err, stat) => {
     if (err) {
       console.error(err);
@@ -45,7 +49,7 @@ function displayPath(filePath) {
           console.error(err);
         } else {
           files.forEach(file => {
-            displayPath(path.resolve(filePath, file));
+            copyTemplate(path.resolve(filePath, file));
           });
         }
       });
@@ -66,21 +70,10 @@ function createProjectByTemplate() {
     .then(res => {
       const templateName = res.template;
       const sourceTemplatePath = path.resolve(__dirname, `../template/${templateName}`);
-      const destTemplatePath = path.resolve(destPath, templateName);
 
       console.log('项目创建中');
-      displayPath(sourceTemplatePath);
-      setTimeout(() => {
-        exec(`cd ${destTemplatePath} && git init`, error => {
-          if (error) {
-            console.error(error);
 
-            return;
-          }
-
-          console.log('项目创建完成');
-        });
-      }, 2000);
+      copyTemplate(sourceTemplatePath);
     });
 }
 

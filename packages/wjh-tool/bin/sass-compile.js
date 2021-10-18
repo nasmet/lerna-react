@@ -4,7 +4,7 @@
  * @Description: scss编译
  * @Author: 吴锦辉
  * @Date: 1985-10-26 16:15:00
- * @LastEditTime: 2021-10-18 11:09:08
+ * @LastEditTime: 2021-10-18 11:20:50
  */
 
 const gulp = require('gulp');
@@ -31,7 +31,7 @@ function watchSass(root) {
           extname: '.css',
         })
       )
-      .pipe(gulp.dest('../'));
+      .pipe(gulp.dest('./'));
   });
 }
 

@@ -1,0 +1,6 @@
+.wrap {
+  color: red;
+}
+.wrap .header {
+  width: 100%;
+}

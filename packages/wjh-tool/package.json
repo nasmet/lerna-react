@@ -8,7 +8,8 @@
     "ic": "./bin/img-compress.js",
     "gs": "./bin/git-simple.js",
     "ns": "./bin/npm-simple.js",
-    "sc": "./bin/sass-compile.js"
+    "sc": "./bin/sass-compile.js",
+    "cr": "./bin/template.js"
   },
   "devDependencies": {
     "@babel/generator": "^7.14.5",
@@ -19,6 +20,7 @@
     "gulp-imagemin": "^6.1.0",
     "gulp-rename": "^1.4.0",
     "gulp-sass": "^5.0.0",
+    "inquirer": "^8.1.2",
     "shelljs": "^0.8.4",
     "yargs": "^17.1.0"
   },

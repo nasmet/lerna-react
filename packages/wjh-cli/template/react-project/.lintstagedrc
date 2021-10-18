@@ -1,4 +1,0 @@
-{
-  "*.{css,less}": ["stylelint"],
-  "*.{js,jsx,ts,tsx}": ["eslint"]
-}
