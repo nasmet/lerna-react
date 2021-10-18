@@ -1,15 +1,17 @@
+#! /usr/bin/env node
+
 /*
- * @Description: 抽象语法树学习
+ * @Description: 使用ast删除console.log
  * @Author: 吴锦辉
- * @Date: 2021-07-13 09:58:52
- * @LastEditTime: 2021-07-19 11:43:23
+ * @Date: 2021-10-18 10:44:42
+ * @LastEditTime: 2021-10-18 10:49:18
  */
 
 const babylon = require('babylon');
 const traverse = require('@babel/traverse').default;
 const generator = require('@babel/generator').default;
-const t = require('@babel/types');
-const { streamWriteFile, streamReadFile } = require('./stream');
+// const types = require('@babel/types');
+const { streamWriteFile, streamReadFile } = require('../utils/stream');
 
 /**
  * @description: 通过抽象语法树删除log
@@ -39,7 +41,7 @@ function deleteLog(file) {
   }
 
   streamReadFile(file)
-    .then((res) => {
+    .then(res => {
       const ast = parse(res);
 
       transform(ast);
@@ -73,7 +75,7 @@ function addContent(file, content) {
   }
 
   streamReadFile(file)
-    .then((res) => {
+    .then(res => {
       const ast = parse(res);
 
       const addAst = parse(content);
@@ -90,15 +92,3 @@ function addContent(file, content) {
       console.error('读取文件失败');
     });
 }
-
-/**
- * @description: 词法分析器
- * @param {string} sourceCode
- * @return {object[]}
- */
-function LexicalAnalyzer(sourceCode) {}
-
-module.exports = {
-  deleteLog,
-  addContent,
-};

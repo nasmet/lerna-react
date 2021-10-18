@@ -2,7 +2,7 @@
  * @Description: 数字相关处理
  * @Author: 吴锦辉
  * @Date: 2021-09-09 16:35:40
- * @LastEditTime: 2021-09-09 17:14:11
+ * @LastEditTime: 2021-10-18 10:39:35
  */
 
 /**
@@ -44,4 +44,25 @@ export function add(a, b) {
 
   // eslint-disable-next-line no-restricted-properties
   return (+a + +b) / Math.pow(10, len);
+}
+
+/**
+ * @description: 数字小于10前缀补零
+ * @param {number | string} number
+ * @return {string}
+ */
+export function addZero(number) {
+  if (typeof number === 'string') {
+    if (isNaN(number)) {
+      return number;
+    }
+
+    number = +number;
+  }
+
+  if (Number.isInteger(number) && number >= 0 && number < 10) {
+    return `0${number}`;
+  }
+
+  return number;
 }

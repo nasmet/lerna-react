@@ -2,7 +2,7 @@
  * @Description: 字符串扩展方法
  * @Author: 吴锦辉
  * @Date: 2021-05-08 16:52:14
- * @LastEditTime: 2021-05-10 09:41:50
+ * @LastEditTime: 2021-10-18 10:52:56
  */
 
 /**
@@ -10,8 +10,8 @@
  * @param {string} str
  * @return {number[]}
  */
-function strToAsc(str) {
-  return str.split('').map((v) => v.charCodeAt());
+export function strToAsc(str) {
+  return str.split('').map(v => v.charCodeAt());
 }
 
 /**
@@ -19,11 +19,6 @@ function strToAsc(str) {
  * @param {number[]}
  * @return {string}
  */
-function ascToStr(nums) {
-  return nums.map((v) => String.fromCharCode(v)).join('');
+export function ascToStr(nums) {
+  return nums.map(v => String.fromCharCode(v)).join('');
 }
-
-module.exports = {
-  strToAsc,
-  ascToStr,
-};

@@ -4,7 +4,7 @@
  * @Description: 图片压缩脚本
  * @Author: 吴锦辉
  * @Date: 2021-04-22 17:31:34
- * @LastEditTime: 2021-04-27 15:43:59
+ * @LastEditTime: 2021-10-18 10:27:31
  * reference: http://www.bubuko.com/infodetail-3616461.html
  */
 
@@ -27,7 +27,7 @@ const config = {
 function randomGenerateIP() {
   return Array(4)
     .fill(1)
-    .map(() => parseInt(Math.random() * 254 + 1))
+    .map(() => parseInt(Math.random() * 254 + 1, 10))
     .join('.');
 }
 
@@ -54,48 +54,67 @@ function getAjaxOptions() {
 }
 
 /**
- * @description: 文件上传压缩
- * @param {string} imgPath 文件路径
- * @return {void}
- */
-function fileUpload(imgPath) {
-  let req = https.request(getAjaxOptions(), (res) => {
-    res.on('data', (buf) => {
-      let obj = JSON.parse(buf.toString());
-      if (obj.error)
-        console.log(`压缩失败！\n 当前文件：${imgPath} \n ${obj.message}`);
-      else fileDownload(imgPath, obj);
-    });
-  });
-
-  req.write(fs.readFileSync(imgPath), 'binary');
-  req.on('error', (e) =>
-    console.error(`请求错误! \n 当前文件：${imgPath} \n, e`)
-  );
-  req.end();
-}
-
-/**
  * @description: 文件下载
  * @param {string} entryImgPath 输出路径
  * @param {object} obj 文件数据
  * @return {void}
  */
 function fileDownload(entryImgPath, obj) {
-  let options = new URL(obj.output.url);
-  let req = https.request(options, (res) => {
+  const options = new URL(obj.output.url);
+
+  const req = https.request(options, res => {
     let body = '';
+
     res.setEncoding('binary');
-    res.on('data', (data) => (body += data));
+
+    res.on('data', data => {
+      body += data;
+    });
+
     res.on('end', () => {
-      fs.writeFile(entryImgPath, body, 'binary', (err) => {
-        if (err) return console.error(err);
+      fs.writeFile(entryImgPath, body, 'binary', err => {
+        if (err) {
+          console.error(err);
+
+          return;
+        }
 
         console.log(`${entryImgPath}压缩成功`);
       });
     });
   });
-  req.on('error', (e) => console.error(e));
+
+  req.on('error', e => {
+    console.error(e);
+  });
+
+  req.end();
+}
+
+/**
+ * @description: 文件上传压缩
+ * @param {string} imgPath 文件路径
+ * @return {void}
+ */
+function fileUpload(imgPath) {
+  const req = https.request(getAjaxOptions(), res => {
+    res.on('data', buf => {
+      const obj = JSON.parse(buf.toString());
+
+      if (obj.error) {
+        console.log(`压缩失败！\n 当前文件：${imgPath} \n ${obj.message}`);
+      } else {
+        fileDownload(imgPath, obj);
+      }
+    });
+  });
+
+  req.write(fs.readFileSync(imgPath), 'binary');
+
+  req.on('error', e => {
+    console.error(`请求错误! \n 当前文件：${imgPath} \n,`, e);
+  });
+
   req.end();
 }
 
@@ -108,26 +127,24 @@ function compressImage(root) {
   fs.stat(root, (err, stat) => {
     if (err) {
       console.error(err);
-    } else {
-      if (stat.isFile() && config.ImageRegex.test(root)) {
-        console.log(`${root}压缩中`);
+    } else if (stat.isFile() && config.ImageRegex.test(root)) {
+      console.log(`${root}压缩中`);
 
-        fileUpload(root);
-      } else if (stat.isDirectory()) {
-        if (config.IgnoreRegex.test(root)) {
-          return;
-        }
-
-        fs.readdir(root, (err, files) => {
-          if (err) {
-            console.error(err);
-          } else {
-            files.forEach((file) => {
-              compressImage(path.join(root, file));
-            });
-          }
-        });
+      fileUpload(root);
+    } else if (stat.isDirectory()) {
+      if (config.IgnoreRegex.test(root)) {
+        return;
       }
+
+      fs.readdir(root, (err, files) => {
+        if (err) {
+          console.error(err);
+        } else {
+          files.forEach(file => {
+            compressImage(path.join(root, file));
+          });
+        }
+      });
     }
   });
 }

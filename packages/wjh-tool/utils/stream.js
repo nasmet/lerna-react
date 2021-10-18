@@ -2,7 +2,7 @@
  * @Description: 文件流
  * @Author: 吴锦辉
  * @Date: 2021-05-08 14:31:54
- * @LastEditTime: 2021-07-15 16:42:12
+ * @LastEditTime: 2021-10-18 10:45:41
  */
 
 const fs = require('fs');
@@ -18,7 +18,7 @@ function streamReadFile(file) {
 
     let buf = Buffer.alloc(0);
 
-    rs.on('data', (chunk) => {
+    rs.on('data', chunk => {
       buf = Buffer.concat([buf, chunk], buf.length + chunk.length);
     });
 
@@ -30,7 +30,7 @@ function streamReadFile(file) {
       rs.close();
     });
 
-    rs.on('err', (err) => {
+    rs.on('err', err => {
       console.error(err);
 
       reject();
@@ -47,7 +47,7 @@ function streamWriteFile(file, data) {
   return new Promise((reslove, reject) => {
     const ws = fs.createWriteStream(file);
 
-    ws.write(data, (err) => {
+    ws.write(data, err => {
       if (err) {
         console.error(err);
 
