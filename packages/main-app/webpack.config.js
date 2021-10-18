@@ -2,7 +2,7 @@
  * @Description: webpack配置文件
  * @Author: 吴锦辉
  * @Date: 2021-08-16 09:19:32
- * @LastEditTime: 2021-10-17 18:37:31
+ * @LastEditTime: 2021-10-18 15:08:59
  */
 
 const { argv } = require('yargs');
@@ -50,27 +50,23 @@ const loaderPoolOptions = {
   name: 'loader-pool',
 };
 
+/* node-sass 中有个来自 Node.js 线程池的阻塞线程的 bug。
+  当使用 thread-loader 时，需要设置 workerParallelJobs: 2 */
+const sassLoaderPoolOptions = {
+  ...loaderPoolOptions,
+  workerParallelJobs: 2,
+};
+
 threadLoader.warmup(loaderPoolOptions, [
   // 加载模块
   // 可以是任意模块，例如
   'babel-loader',
 ]);
 
+threadLoader.warmup(sassLoaderPoolOptions, ['sass-loader']);
+
 const baseConfig = {
   entry: './src/index.js',
-  optimization: {
-    moduleIds: 'deterministic',
-    runtimeChunk: 'single',
-    splitChunks: {
-      cacheGroups: {
-        vendor: {
-          test: /[\\/]node_modules[\\/]/,
-          name: 'vendors',
-          chunks: 'all',
-        },
-      },
-    },
-  },
   plugins: [
     new HtmlWebpackPlugin({
       template: './public/index.html',
@@ -104,6 +100,10 @@ const baseConfig = {
         use: [
           MiniCssExtractPlugin.loader,
           'css-loader',
+          {
+            loader: 'thread-loader',
+            options: sassLoaderPoolOptions,
+          },
           'sass-loader',
           {
             loader: 'sass-resources-loader',
@@ -115,16 +115,12 @@ const baseConfig = {
         ],
       },
       {
-        test: /\.(png|jpe?g|gif|webp|woff2?|eot|ttf|otf)$/i,
-        use: [
-          {
-            loader: 'url-loader',
-            options: {
-              limit: false,
-              name: 'img/[name].[ext]',
-            },
-          },
-        ],
+        test: /\.(png|svg|jpg|jpeg|gif)$/i,
+        type: 'asset/resource',
+      },
+      {
+        test: /\.(woff|woff2|eot|ttf|otf)$/i,
+        type: 'asset/resource',
       },
     ],
   },
@@ -147,7 +143,7 @@ let buildConfig;
 
 switch (env) {
   case 'production':
-    buildConfig = require('./webpack.pro.js');
+    buildConfig = require('./webpack.prod.js');
 
     break;
   case 'development':
