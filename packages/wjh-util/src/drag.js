@@ -2,7 +2,7 @@
  * @Description: 拖拽类
  * @Author: 吴锦辉
  * @Date: 2021-10-15 15:45:14
- * @LastEditTime: 2021-10-15 15:45:32
+ * @LastEditTime: 2021-10-19 09:32:49
  */
 
 export default class ElementDrap {
@@ -61,19 +61,22 @@ export default class ElementDrap {
       this.borderTop = offsetY;
       this.borderRight = innerWidth - (offsetWidth - offsetX);
       this.borderBottom = innerHeight - (offsetHeight - offsetY);
-      console.log('鼠标开始拖动', this.openDrag, innerWidth, innerHeight);
+
       window.addEventListener('mousemove', this.onMouseMenuMove, false);
     }, this.delayTime);
   }
 
   onMouseMenuUp() {
-    console.log('鼠标松开', this.openDrag);
     this.clearTimer();
+
     if (!this.openDrag) {
       return;
     }
+
     window.removeEventListener('mouseup', this.onMouseMenuUp);
+
     window.removeEventListener('mousemove', this.onMouseMenuMove);
+
     this.offsetWrapX += this.mouseOffsetX;
     this.offsetWrapY += this.mouseOffsetY;
     this.openDrag = false;

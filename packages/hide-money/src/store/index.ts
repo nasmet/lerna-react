@@ -2,7 +2,7 @@
  * @Description: 全局状态树
  * @Author: 吴锦辉
  * @Date: 2021-09-22 15:08:08
- * @LastEditTime: 2021-09-24 09:49:51
+ * @LastEditTime: 2021-10-19 14:01:47
  */
 
 import { createContextFactory, Store } from 'wjh-store';
@@ -12,11 +12,11 @@ const { WrapContainer, useDispatch, useSelecor, connect } = createContextFactory
 
 const store = new Store(reducers);
 
-const observer = (state, action) => {
-  console.log('执行的action: ', action);
-  console.log('改变后的state: ', state);
-};
-
-store.subscribe(observer);
+if (process.env.NODE_ENV === 'development') {
+  store.subscribe((state, action) => {
+    console.log('执行的action: ', action);
+    console.log('改变后的state: ', state);
+  });
+}
 
 export { WrapContainer, useDispatch, useSelecor, connect, store };
