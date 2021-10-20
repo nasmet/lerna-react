@@ -4,13 +4,14 @@
  * @Description: 图片压缩脚本
  * @Author: 吴锦辉
  * @Date: 2021-04-22 17:31:34
- * @LastEditTime: 2021-10-18 10:27:31
+ * @LastEditTime: 2021-10-20 14:11:02
  * reference: http://www.bubuko.com/infodetail-3616461.html
  */
 
 const path = require('path');
 const fs = require('fs');
 const https = require('https');
+const { argv } = require('yargs');
 
 /** 配置 */
 const config = {
@@ -149,4 +150,4 @@ function compressImage(root) {
   });
 }
 
-compressImage(process.cwd());
+compressImage(argv.path || process.cwd());

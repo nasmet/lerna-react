@@ -4,12 +4,13 @@
  * @Description: scss编译
  * @Author: 吴锦辉
  * @Date: 1985-10-26 16:15:00
- * @LastEditTime: 2021-10-18 11:20:50
+ * @LastEditTime: 2021-10-20 14:09:17
  */
 
 const gulp = require('gulp');
 const sass = require('gulp-sass')(require('sass'));
 const rename = require('gulp-rename');
+const { argv } = require('yargs');
 
 const root = process.cwd();
 
@@ -28,7 +29,7 @@ function watchSass(root) {
       .pipe(sass().on('error', sass.logError))
       .pipe(
         rename({
-          extname: '.css',
+          extname: argv.suffix || '.css',
         })
       )
       .pipe(gulp.dest('./'));
