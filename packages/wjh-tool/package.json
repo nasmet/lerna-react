@@ -9,13 +9,14 @@
     "gs": "./bin/git-simple.js",
     "ns": "./bin/npm-simple.js",
     "sc": "./bin/sass-compile.js",
-    "cr": "./bin/template.js"
+    "cr": "./bin/template.js",
+    "ast": "./bin/ast.js"
   },
   "devDependencies": {
+    "@babel/parser": "^7.15.4",
     "@babel/generator": "^7.14.5",
     "@babel/traverse": "^7.14.7",
     "@babel/types": "^7.14.5",
-    "babylon": "^6.18.0",
     "gulp": "^4.0.2",
     "gulp-imagemin": "^6.1.0",
     "gulp-rename": "^1.4.0",
