@@ -4,7 +4,7 @@
  * @Description: 使用ast删除console.log
  * @Author: 吴锦辉
  * @Date: 2021-10-18 10:44:42
- * @LastEditTime: 2021-10-20 11:52:25
+ * @LastEditTime: 2021-10-21 09:23:04
  */
 
 const fs = require('fs');
@@ -19,7 +19,7 @@ const { streamWriteFile, streamReadFile } = require('../utils/stream');
 const root = process.cwd();
 
 if (argv.dc) {
-  deleteLog(root);
+  deleteLog(argv.path || root);
 
   return;
 }
