@@ -1,9 +1,10 @@
 ## 简介
+基于axios二次封装的网络请求库
 
-基于 axios 二次封装的网络请求库
+## 安装
+npm i wjh-request -S
 
 ## 范例
-
 ```javascript
 import HttpUtils from 'wjh-request';
 import React, {useEffect} from 'react';
