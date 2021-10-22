@@ -2,7 +2,7 @@
  * @Description: test文件
  * @Author: 吴锦辉
  * @Date: 2021-10-21 13:32:45
- * @LastEditTime: 2021-10-22 14:00:58
+ * @LastEditTime: 2021-10-22 17:56:50
  */
 
 class Node {
@@ -28,22 +28,75 @@ node1.right = node4;
 node2.left = node5;
 node2.right = node6;
 
-/** 递归中序遍历 */
+/** 递归先序遍历二叉树 */
 function recursionTraverse(root) {
-  if (root.left) {
-    recursionTraverse(root.left);
+  const arr = [];
+
+  function fn(root) {
+    arr.push(root.val);
+
+    if (root.left) {
+      fn(root.left);
+    }
+
+    if (root.right) {
+      fn(root.right);
+    }
   }
 
-  console.log(root.val);
+  fn(root);
 
-  if (root.right) {
-    recursionTraverse(root.right);
-  }
+  console.log(arr);
 }
 
-// recursionTraverse(root);
+recursionTraverse(root);
 
-/** 循环中序遍历 */
-// function loopTraverse(root) {}
+/** 循环先序遍历二叉树 */
+function loopTraverse(root) {
+  let p = root;
+  p.parent = null;
 
-// loopTraverse(root);
+  const arr = [];
+
+  if (p) {
+    p.tag = true;
+
+    arr.push(p.val);
+  }
+
+  while (p) {
+    while (p.left) {
+      if (p.left.tag) {
+        break;
+      }
+
+      p.left.parent = p;
+      p = p.left;
+      p.tag = true;
+
+      arr.push(p.val);
+
+      continue;
+    }
+
+    while (p.right) {
+      if (p.right.tag) {
+        break;
+      }
+
+      p.right.parent = p;
+      p = p.right;
+      p.tag = true;
+
+      arr.push(p.val);
+
+      continue;
+    }
+
+    p = p.parent;
+  }
+
+  console.log(arr);
+}
+
+loopTraverse(root);
