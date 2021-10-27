@@ -1,18 +1,8 @@
-.DS_Store
 .idea
-.eslintcache
-.vscode
 lib
 dist
 build
-logs
-var
 node_modules
-npm-debug.log*
 package.json
 package-lock.json
-config.json
-*.min.js
-*.sh
-.temp/
 

@@ -2,7 +2,7 @@
  * @Description: 二叉树相关
  * @Author: 吴锦辉
  * @Date: 2021-10-25 09:58:59
- * @LastEditTime: 2021-10-25 09:59:00
+ * @LastEditTime: 2021-10-27 08:58:15
  */
 
 class Node {
@@ -100,3 +100,69 @@ function loopTraverse(root) {
 }
 
 loopTraverse(root);
+
+/** 创建一颗平衡二叉树 */
+function createBalanceBinaryTree(arr) {
+  let root;
+
+  let start = 1;
+  const end = arr.length;
+
+  if (end > 0) {
+    root = new Node(arr[0]);
+  }
+
+  while (start < end) {
+    let p = root;
+    const val = arr[start];
+
+    while (p) {
+      if (p.val > val) {
+        if (!p.left) {
+          p.left = new Node(val);
+
+          break;
+        }
+
+        p = p.left;
+      } else {
+        if (!p.right) {
+          p.right = new Node(val);
+
+          break;
+        }
+
+        p = p.right;
+      }
+    }
+
+    start += 1;
+  }
+
+  console.log('root: ', root);
+}
+
+// /** 判断是否平衡 */
+// function isBalance(root) {}
+
+// /** 右旋转，左边的树高度高于右边 */
+// function rightRotate(rotate, parent) {
+//   const rotateRight = rotate.right;
+
+//   rotate.right = parent;
+//   parent.left = rotateRight;
+
+//   return rotate;
+// }
+
+// /** 左旋转，左边的树高度低于右边 */
+// function leftRotate(rotate, parent) {
+//   const rotateLeft = rotate.left;
+
+//   rotate.left = parent;
+//   parent.right = rotateLeft;
+
+//   return rotate;
+// }
+
+createBalanceBinaryTree([10, 12, 8, 6, 9, 5, 7]);
