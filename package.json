@@ -34,7 +34,7 @@
     "start": "node ./scripts/inquirer.js",
     "service": "pm2 start ecosystem.config.js --env production",
     "stop": "pm2 delete ecosystem.config.js",
-    "release": "lerna publish"
+    "release": "npm login --registry http://registry.npmjs.org && lerna publish"
   },
   "engines": {
     "node": ">=14.15.3"
