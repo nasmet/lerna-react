@@ -10,5 +10,9 @@
   },
   "author": "jinhui wu",
   "license": "ISC",
+  "publishConfig": {
+    "access": "public",
+    "registry": "https://registry.npmjs.org"
+  },
   "gitHead": "9637b5a7ad72591fe09bfd8403907d2b44d2968f"
 }

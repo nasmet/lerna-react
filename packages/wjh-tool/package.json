@@ -25,5 +25,9 @@
     "shelljs": "^0.8.4",
     "yargs": "^17.1.0"
   },
-  "gitHead": "dc87547feb75699b11f50eaf014cb4b5af0d6e45"
+  "publishConfig": {
+    "access": "public",
+    "registry": "https://registry.npmjs.org"
+  },
+  "gitHead": "d42914d1649b47f3c344c1ab15b21650c7c40a74"
 }
