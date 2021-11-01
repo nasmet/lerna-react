@@ -1,6 +1,6 @@
 {
   "name": "wjh-test",
-  "version": "1.0.10",
+  "version": "1.0.11",
   "private": true,
   "description": "react相关模块测试",
   "author": "jinhuiwu",
@@ -21,7 +21,7 @@
     "wjh-keepalive": "^1.0.8",
     "wjh-request": "^1.0.8",
     "wjh-routers": "^1.0.8",
-    "wjh-store": "^1.0.10",
+    "wjh-store": "^1.0.11",
     "wjh-util": "^1.0.8"
   },
   "devDependencies": {

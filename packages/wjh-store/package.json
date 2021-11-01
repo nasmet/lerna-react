@@ -1,6 +1,6 @@
 {
   "name": "wjh-store",
-  "version": "1.0.10",
+  "version": "1.0.11",
   "description": "基于useContext和useReducer实现的状态管理",
   "main": "./src/index.js",
   "peerDependencies": {
