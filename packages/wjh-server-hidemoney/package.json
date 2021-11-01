@@ -1,6 +1,6 @@
 {
   "name": "wjh-server-hidemoney",
-  "version": "1.0.8",
+  "version": "1.0.12",
   "private": true,
   "description": "藏钱服务",
   "author": "jinhui wu",
@@ -15,6 +15,6 @@
     "mysql": "^2.18.1",
     "snowflake-id": "^1.1.0",
     "winston": "^3.3.3",
-    "wjh-request": "^1.0.8"
+    "wjh-request": "^1.0.12"
   }
 }
