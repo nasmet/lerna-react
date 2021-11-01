@@ -1,6 +1,6 @@
 {
   "name": "hide-money",
-  "version": "1.0.9",
+  "version": "1.0.10",
   "private": true,
   "description": "藏钱",
   "templateInfo": {
@@ -43,7 +43,7 @@
     "classnames": "^2.2.6",
     "react": "^16.13.1",
     "react-dom": "^16.13.1",
-    "wjh-store": "^1.0.9"
+    "wjh-store": "^1.0.10"
   },
   "devDependencies": {
     "@babel/core": "^7.10.5",
