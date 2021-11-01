@@ -1,6 +1,7 @@
 {
   "name": "wjh-routers",
   "version": "1.0.7",
+  "private": true,
   "description": "react路由分组渲染",
   "main": "./src/index.js",
   "peerDependencies": {

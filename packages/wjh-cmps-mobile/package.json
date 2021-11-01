@@ -1,6 +1,7 @@
 {
   "name": "wjh-cmps-mobile",
   "version": "1.0.7",
+  "private": true,
   "description": "适用于手机端的react通用组件",
   "main": "./src/index.js",
   "author": "jinhui wu",

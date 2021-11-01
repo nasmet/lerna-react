@@ -1,13 +1,19 @@
 ## 简介
-状态管理容器，适用于react
+
+状态管理容器，适用于 react
 
 ## 安装
+
 npm i wjh-store -S
 
 ## 范例
+
 ```javascript
 import React, { Component, useCallback } from 'react';
 import { createContextFactory, Store } from 'wjh-store';
+
+/** 创建一个状态容器 */
+const { WrapContainer, useDispatch, useSelecor, connet } = createContextFactory();
 
 /** action编写 */
 function updateUser(payload) {
@@ -17,55 +23,26 @@ function updateUser(payload) {
   };
 }
 
-function addCount(value) {
-  return {
-    type: 'add',
-    payload: {
-      count: value,
-    },
-  };
-}
-
 /** 异步action范例 */
-export function asyncAddCount(dispatch) {
-  return value => {
+export function asyncUpdateUser(dispatch) {
+  return payload => {
     setTimeout(() => {
       dispatch({
-        type: 'reduce',
-        payload: {
-          count: value,
-        },
+        type: 'updateUser',
+        payload,
       });
     }, 1000);
   };
 }
 
 /** reducer编写 */
-const initCountState = {
-  count: 0,
-};
-
-function counter(state = initCountState, action = {}) {
-  switch (action.type) {
-    case 'add':
-      const count = state.count + action.payload.count || 0;
-
-      return { ...state, count };
-    case 'reduce':
-      const count1 = state.count - action.payload.count || 0;
-
-      return { ...state, count: count1 };
-    default:
-      return state;
-  }
-}
-
-const initUserState = {
-  id: 1,
-  name: 'jack',
-};
-
-function user(state = initUserState, action = {}) {
+function user(
+  state = {
+    id: 1,
+    name: 'jack',
+  },
+  action = {}
+) {
   switch (action.type) {
     case 'updateUser':
       return { ...state, ...action.payload };
@@ -74,79 +51,31 @@ function user(state = initUserState, action = {}) {
   }
 }
 
-const { WrapContainer, useDispatch, useSelecor, connet } = createContextFactory();
-
-function App() {
+function App({ state, dispatch }) {
   return (
     <>
-      <AddCounter />
-      <Count />
-      <AddCounter2 />
-      <Count2 />
+      <User />
     </>
   );
 }
 
-function AddCounter() {
+/** 函数式组件使用，类组件使用connect获取跟dva用法相同 */
+function User() {
+  const user = useSelecor(state => state.user);
   const dispatch = useDispatch();
 
-  const onAdd = useCallback(() => {
-    dispatch(addCount(1));
-  }, [dispatch]);
-
-  return (
-    <>
-      <button onClick={onAdd} style={{ width: '100px', height: '60px' }}>
-        {' '}
-        +
-      </button>
-    </>
-  );
-}
-
-function Count() {
-  const counter = useSelecor(state => state.counter);
-
-  return <div>计数器：{counter.count}</div>;
-}
-
-class AddCounter1 extends Component {
-  onAdd = () => {
-    this.props.addCount(1);
-  };
-
-  render() {
-    return (
-      <>
-        <button onClick={this.onAdd} style={{ width: '100px', height: '60px' }}>
-          {' '}
-          +
-        </button>
-      </>
+  useEffect(() => {
+    dispatch(
+      updateUser({
+        name: 'jack',
+      })
     );
-  }
+  }, []);
+
+  return <>{user.name}</>;
 }
 
-const AddCounter2 = connet(null, dispatch => ({
-  addCount(value) {
-    dispatch(addCount(value));
-  },
-}))(AddCounter1);
-
-class Count1 extends Component {
-  render() {
-    return <div>计数器：{this.props.counter.count}</div>;
-  }
-}
-
-const Count2 = connet(
-  ({ counter }) => ({
-    counter,
-  }),
-  null
-)(Count1);
-
-const reducer = { user, counter };
+const reducer = { user };
 
 const store = new Store(reducers);
 
@@ -157,5 +86,6 @@ const observer = (state, action) => {
 
 store.subscribe(observer);
 
+/** store注入 */
 export default WrapContainer(App, store);
 ```

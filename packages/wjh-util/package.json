@@ -1,6 +1,7 @@
 {
   "name": "wjh-util",
   "version": "1.0.7",
+  "private": true,
   "description": "常用方法库",
   "author": "jinhuiwu",
   "license": "ISC",

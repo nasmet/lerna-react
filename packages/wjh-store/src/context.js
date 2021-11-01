@@ -2,7 +2,7 @@
  * @Description: context相关方法
  * @Author: 吴锦辉
  * @Date: 2021-07-30 11:07:00
- * @LastEditTime: 2021-09-22 16:06:22
+ * @LastEditTime: 2021-11-01 15:45:01
  */
 
 import React, { createContext, useReducer, useContext, useMemo } from 'react';
@@ -55,7 +55,7 @@ export default function createContextFactory() {
    * @param {funtion} actionParam
    * @return {function}
    */
-  function connet(stateParam, actionParam) {
+  function connect(stateParam, actionParam) {
     return WrapperComponent => {
       return function Container(props) {
         const { state, dispatch } = useContext(Context);
@@ -87,6 +87,6 @@ export default function createContextFactory() {
     WrapContainer,
     useDispatch,
     useSelecor,
-    connet,
+    connect,
   };
 }

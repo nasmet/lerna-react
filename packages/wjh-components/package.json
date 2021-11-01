@@ -1,6 +1,7 @@
 {
   "name": "wjh-components",
   "version": "1.0.7",
+  "private": true,
   "description": "适用于PC端react通用组件",
   "main": "./src/index.js",
   "author": "jinhui wu",

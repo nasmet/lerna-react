@@ -1,6 +1,7 @@
 {
   "name": "wjh-server-hidemoney",
-  "version": "1.0.7",
+  "version": "1.0.0",
+  "private": true,
   "description": "藏钱服务",
   "author": "jinhui wu",
   "license": "ISC",

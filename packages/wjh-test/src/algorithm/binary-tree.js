@@ -2,7 +2,7 @@
  * @Description: 二叉树相关
  * @Author: 吴锦辉
  * @Date: 2021-10-25 09:58:59
- * @LastEditTime: 2021-10-27 08:58:15
+ * @LastEditTime: 2021-10-27 10:45:38
  */
 
 class Node {
@@ -166,3 +166,5 @@ function createBalanceBinaryTree(arr) {
 // }
 
 createBalanceBinaryTree([10, 12, 8, 6, 9, 5, 7]);
+
+/** 深度优先遍历 */

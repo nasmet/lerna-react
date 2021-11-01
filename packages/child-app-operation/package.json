@@ -1,6 +1,7 @@
 {
   "name": "child-app-operation",
   "version": "1.0.0",
+  "private": true,
   "description": "基于qiankun搭建的子应用",
   "main": "index.js",
   "scripts": {

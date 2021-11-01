@@ -1,6 +1,7 @@
 {
   "name": "wjh-test",
   "version": "1.0.7",
+  "private": true,
   "description": "react相关模块测试",
   "author": "jinhuiwu",
   "license": "ISC",

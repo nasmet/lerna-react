@@ -28,9 +28,12 @@
   },
   "scripts": {
     "init": "lerna clean && lerna bootstrap",
-    "bootstrap": "lerna bootstrap",
     "start": "node ./scripts/inquirer.js",
     "service": "pm2 start ecosystem.config.js --env production",
-    "stop": "pm2 delete ecosystem.config.js"
+    "stop": "pm2 delete ecosystem.config.js",
+    "release": "lerna publish from-git"
+  },
+  "engines": {
+    "node": ">=14.15.3"
   }
 }

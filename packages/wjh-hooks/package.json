@@ -1,6 +1,7 @@
 {
   "name": "wjh-hooks",
   "version": "1.0.7",
+  "private": true,
   "description": "react自定义hooks",
   "author": "jinhui wu",
   "license": "ISC",

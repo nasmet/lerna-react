@@ -1,6 +1,7 @@
 {
   "name": "wjh-server",
-  "version": "1.0.7",
+  "version": "1.0.0",
+  "private": true,
   "description": "主应用服务",
   "author": "jinhui wu",
   "license": "ISC",
