@@ -1,13 +1,13 @@
 {
   "name": "wjh-server",
-  "version": "1.0.0",
+  "version": "1.0.8",
   "private": true,
   "description": "主应用服务",
   "author": "jinhui wu",
   "license": "ISC",
   "dependencies": {
-    "express": "^4.17.1",
     "body-parser": "^1.19.0",
+    "express": "^4.17.1",
     "mysql": "^2.18.1",
     "snowflake-id": "^1.1.0"
   }

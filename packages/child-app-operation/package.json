@@ -1,6 +1,6 @@
 {
   "name": "child-app-operation",
-  "version": "1.0.0",
+  "version": "1.0.8",
   "private": true,
   "description": "基于qiankun搭建的子应用",
   "main": "index.js",
@@ -17,11 +17,11 @@
     "react": "^16.13.1",
     "react-dom": "^16.13.1",
     "react-router-dom": "^5.2.0",
-    "wjh-components": "^1.0.7",
-    "wjh-keepalive": "^1.0.7",
-    "wjh-request": "^1.0.7",
-    "wjh-routers": "^1.0.7",
-    "wjh-util": "^1.0.7"
+    "wjh-components": "^1.0.8",
+    "wjh-keepalive": "^1.0.8",
+    "wjh-request": "^1.0.8",
+    "wjh-routers": "^1.0.8",
+    "wjh-util": "^1.0.8"
   },
   "devDependencies": {
     "@babel/core": "^7.10.5",

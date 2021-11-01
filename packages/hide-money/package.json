@@ -1,6 +1,6 @@
 {
   "name": "hide-money",
-  "version": "1.0.0",
+  "version": "1.0.8",
   "private": true,
   "description": "藏钱",
   "templateInfo": {
@@ -43,7 +43,7 @@
     "classnames": "^2.2.6",
     "react": "^16.13.1",
     "react-dom": "^16.13.1",
-    "wjh-store": "^1.0.7"
+    "wjh-store": "^1.0.8"
   },
   "devDependencies": {
     "@babel/core": "^7.10.5",
@@ -51,11 +51,11 @@
     "@tarojs/webpack-runner": "3.0.17",
     "@types/react": "^16.0.0",
     "@types/webpack-env": "^1.13.6",
-    "@typescript-eslint/parser": "^2.x",
     "@typescript-eslint/eslint-plugin": "^2.x",
+    "@typescript-eslint/parser": "^2.x",
     "babel-preset-taro": "3.0.17",
-    "eslint-config-taro": "3.0.17",
     "eslint": "^7.0.0",
+    "eslint-config-taro": "3.0.17",
     "eslint-plugin-import": "^2.20.2",
     "eslint-plugin-react": "^7.20.0",
     "eslint-plugin-react-hooks": "^4.0.2",
