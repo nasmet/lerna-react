@@ -2,10 +2,11 @@
   "name": "root",
   "private": true,
   "devDependencies": {
+    "@babel/core": "^7.16.0",
+    "@babel/eslint-parser": "^7.16.0",
     "@commitlint/config-conventional": "^13.1.0",
     "@commitlint/cli": "^13.1.0",
-    "babel-eslint": "^10.1.0",
-    "eslint": "^7.0.0",
+    "eslint": "^8.1.0",
     "eslint-config-airbnb": "^18.1.0",
     "eslint-config-prettier": "^6.11.0",
     "eslint-plugin-import": "^2.20.2",
@@ -29,7 +30,8 @@
   "scripts": {
     "init": "lerna clean && lerna bootstrap",
     "start": "node ./scripts/inquirer.js",
-    "service": "pm2 start ecosystem.config.js --env production",
+    "service-dev": "pm2 start ecosystem.config.js --env development",
+    "service-prod": "pm2 start ecosystem.config.js --env production",
     "stop": "pm2 delete ecosystem.config.js",
     "release": "npm login --registry https://registry.npmjs.org && lerna publish"
   },

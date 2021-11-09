@@ -1,8 +1,7 @@
-.idea
-lib
-dist
-build
-node_modules
+logs/
+lib/
+dist/
+build/
+node_modules/
 package.json
 package-lock.json
-

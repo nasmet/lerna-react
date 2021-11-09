@@ -1,11 +1,6 @@
+.DS_Store
+logs/
 lib/
 dist/
 build/
 node_modules/
-.DS_Store
-logs
-var
-npm-debug.log*
-.eslintcache
-.idea
-.vscode
