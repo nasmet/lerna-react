@@ -1,5 +1,14 @@
 {
   "parser": "@babel/eslint-parser",
+  "parserOptions": {
+    "ecmaFeatures": {
+      "jsx": true
+    },
+    "ecmaVersion": 2018,
+    "sourceType": "module",
+    "useJSXTextNode": true,
+    "requireConfigFile": false
+  },
   "env": {
     "browser": true,
     "node": true,
@@ -9,14 +18,6 @@
     "airbnb",
     "prettier"
   ],
-  "parserOptions": {
-    "ecmaFeatures": {
-      "jsx": true
-    },
-    "ecmaVersion": 2018,
-    "sourceType": "module",
-    "useJSXTextNode": true
-  },
   "plugins": [
     "react",
     "prettier",
