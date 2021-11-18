@@ -2,20 +2,23 @@
  * @Description: 文件流操作相关
  * @Author: 吴锦辉
  * @Date: 2021-10-08 16:22:32
- * @LastEditTime: 2021-10-08 16:31:55
+ * @LastEditTime: 2021-11-18 10:58:05
  */
+
+import JsZip from 'jszip';
+import FileSaver from 'file-saver';
 
 /**
  * @description: a标签下载
- * @param {Buffer} buffer
+ * @param {Blob} blob
  * @param {string} fileName
  * @return {void}
  */
-export function download(buffer, fileName) {
+export function download(blob, fileName) {
   const a = document.createElement('a');
-  const href = window.URL.createObjectURL(buffer);
+  const href = window.URL.createObjectURL(blob);
   a.href = href;
-  a.download = fileName;
+  a.download = fileName || blob.name;
   document.body.appendChild(a);
   a.click();
   document.body.removeChild(a);
@@ -28,7 +31,7 @@ export function download(buffer, fileName) {
  * @param  {string} fileName
  * @return {Blob}
  */
-export function base64UrlToFileObject(dataURL, fileName) {
+export function base64URLToBlob(dataURL, fileName) {
   const arr = dataURL.split(',');
   const mime = arr[0].match(/:(.*?);/)[1];
   const bstr = atob(arr[1]);
@@ -57,7 +60,7 @@ export function base64UrlToFileObject(dataURL, fileName) {
  * @param {Blob} blob
  * @return {Promise}
  */
-export function readFile(blob) {
+export function blobToBase64URL(blob) {
   const reader = new FileReader();
 
   return new Promise((resolve, reject) => {
@@ -68,5 +71,39 @@ export function readFile(blob) {
       reject(e);
     };
     reader.readAsDataURL(blob);
+  });
+}
+
+/**
+ * @description: 批量下载
+ * @param {object[]} urls
+ * @param {string} zipName
+ * @return {Promise}
+ */
+export function batchDownload(urls, zipName) {
+  return new Promise((resolve, reject) => {
+    Promise.all(urls)
+      .then(res => {
+        const zip = new JsZip();
+        const imgFolder = zip.folder(zipName);
+
+        res.forEach(v => {
+          imgFolder.file(`${v.name}.png`, v.url, {
+            base64: true,
+          });
+        });
+
+        zip
+          .generateAsync({ type: 'blob' })
+          .then(res => {
+            FileSaver.saveAs(res, `${zipName}.zip`);
+          })
+          .finally(() => {
+            resolve();
+          });
+      })
+      .catch(err => {
+        reject(err);
+      });
   });
 }

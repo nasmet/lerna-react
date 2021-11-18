@@ -6,6 +6,10 @@
   "author": "jinhuiwu",
   "license": "ISC",
   "main": "./src/index.js",
+  "peerDependencies": {
+    "jszip": "^3.7.1",
+    "file-saver": "^2.0.5"
+  },
   "publishConfig": {
     "access": "public",
     "registry": "https://registry.npmjs.org"
