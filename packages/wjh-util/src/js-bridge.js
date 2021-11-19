@@ -2,7 +2,7 @@
  * @Description: 桥接方法，原生h5互调方法
  * @Author: 吴锦辉
  * @Date: 2021-08-30 10:16:44
- * @LastEditTime: 2021-11-18 15:51:44
+ * @LastEditTime: 2021-11-18 15:56:24
  */
 
 class JsBridge {
@@ -91,6 +91,7 @@ class JsBridge {
 
 window.WebViewJavascriptBridge = new JsBridge();
 
+/** 注册桥接 */
 function setupWebViewJavascriptBridge(callback) {
   if (window.WebViewJavascriptBridge) {
     callback(window.WebViewJavascriptBridge);
