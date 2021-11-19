@@ -2,7 +2,7 @@
  * @Description: 文件流操作相关
  * @Author: 吴锦辉
  * @Date: 2021-10-08 16:22:32
- * @LastEditTime: 2021-11-19 14:47:10
+ * @LastEditTime: 2021-11-19 15:39:01
  */
 
 import JsZip from 'jszip';
@@ -114,7 +114,7 @@ export function batchDownload(urls, zipName) {
  * @return {string}
  */
 export function encodeBase64(str) {
-  return window.atob(str);
+  return window.btoa(str);
 }
 
 /**
@@ -123,5 +123,5 @@ export function encodeBase64(str) {
  * @return {string}
  */
 export function decodeBase64(str) {
-  return window.btoa(str);
+  return window.atob(str);
 }
