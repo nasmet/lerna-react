@@ -19,6 +19,6 @@
     ],
     "selector-type-no-unknown": null,
     "block-no-empty": null,
-    "font-family-no-missing-generic-family-keyword":null
+    "font-family-no-missing-generic-family-keyword": null
   }
 }
