@@ -1,8 +1,8 @@
 {
   "extends": [
-    "stylelint-config-standard",
     "stylelint-config-prettier",
-    "stylelint-config-rational-order"
+    "stylelint-config-rational-order",
+    "stylelint-config-standard"
   ],
   "plugins": [
     "stylelint-order",
@@ -16,9 +16,6 @@
         "border-in-box-model": false,
         "empty-line-between-groups": false
       }
-    ],
-    "selector-type-no-unknown": null,
-    "block-no-empty": null,
-    "font-family-no-missing-generic-family-keyword": null
+    ]
   }
 }
