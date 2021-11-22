@@ -1,0 +1,6 @@
+{
+  "presets": ["@babel/preset-react"],
+  "parserOpts": {
+    "plugins": ["jsx", "flow", "typescript"]
+  }
+}

@@ -14,6 +14,8 @@
   "dependencies": {
     "antd": "^4.16.10",
     "axios": "^0.19.0",
+    "file-saver": "^2.0.5",
+    "jszip": "^3.7.1",
     "moment": "^2.29.1",
     "qiankun": "^2.4.6",
     "react": "^16.13.1",

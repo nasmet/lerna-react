@@ -3,7 +3,18 @@ import * as wjhUtils from 'wjh-util';
 import { Button } from 'antd';
 import styles from './index.module.scss';
 
-const i18 = new wjhUtils.I18();
+const i18 = new wjhUtils.I18({
+  'zh-cn': {
+    themeColorSwitch: '主题色切换',
+    purpleTheme: '紫色主题',
+    blueTheme: '蓝色主题',
+  },
+  en: {
+    themeColorSwitch: 'theme color switch',
+    purpleTheme: 'purple theme',
+    blueTheme: 'blue theme',
+  },
+});
 
 export default function WjhUtils() {
   const [lang, setLang] = useState(() => i18.getLanguageByKey('zh-cn'));

@@ -1,13 +1,9 @@
 {
   "parser": "@babel/eslint-parser",
   "parserOptions": {
-    "ecmaFeatures": {
-      "jsx": true
-    },
-    "ecmaVersion": 2018,
-    "sourceType": "module",
-    "useJSXTextNode": true,
-    "requireConfigFile": false
+    "babelOptions": {
+      "configFile": "./.babelrc"
+    }
   },
   "env": {
     "browser": true,
