@@ -128,5 +128,5 @@ export default function RenderRouters({ routerConfig, loadingCmp, KeepAliveCmp }
     KeepAlive = KeepAliveCmp;
   }
 
-  return <Suspense fallback={loadingCmp || fallback}> {routerConfig.map(fn)}</Suspense>;
+  return <Suspense fallback={loadingCmp || fallback}>{routerConfig.map(fn)}</Suspense>;
 }
