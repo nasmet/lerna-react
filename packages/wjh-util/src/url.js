@@ -2,7 +2,7 @@
  * @Description: url扩展方法
  * @Author: 吴锦辉
  * @Date: 2021-05-08 16:24:06
- * @LastEditTime: 2021-10-18 10:51:32
+ * @LastEditTime: 2021-11-23 09:43:45
  */
 
 /**
@@ -12,11 +12,7 @@
  * @return {string}
  */
 export function spliceUrlParams(url, params) {
-  let str = '';
-
-  for (const [k, v] of Object.entries(params)) {
-    str += `${k}=${v}&`;
-  }
+  let str = Object.keys(params).reduce((pre, cur) => `${pre}${cur}=${params[cur]}&`, '');
 
   if (!str) {
     return url;

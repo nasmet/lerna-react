@@ -5,6 +5,7 @@
   "description": "react相关模块测试",
   "author": "jinhuiwu",
   "license": "ISC",
+  "type": "module",
   "scripts": {
     "start": "webpack server"
   },

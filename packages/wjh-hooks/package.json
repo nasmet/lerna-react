@@ -6,6 +6,7 @@
   "author": "jinhui wu",
   "license": "ISC",
   "main": "./src/index.js",
+  "type": "module",
   "peerDependencies": {
     "react": ">=16.8.0"
   },

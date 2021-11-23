@@ -6,6 +6,7 @@
   "main": "./src/index.js",
   "author": "jinhui wu",
   "license": "ISC",
+  "type": "module",
   "peerDependencies": {
     "antd": ">=4.16.10",
     "classnames": ">=2.2.6",

@@ -4,13 +4,14 @@
   "private": true,
   "description": "基于qiankun搭建的主应用",
   "main": "index.js",
+  "author": "jinhui wu",
+  "license": "ISC",
+  "type": "module",
   "scripts": {
     "start": "webpack serve --env=development --progress",
     "build": "webpack --env=production",
     "analyzer": "webpack --env=production --progress"
   },
-  "author": "jinhui wu",
-  "license": "ISC",
   "dependencies": {
     "antd": "^4.16.10",
     "axios": "^0.19.0",

@@ -4,6 +4,7 @@
   "description": "工具包",
   "author": "jinhuiwu",
   "license": "ISC",
+  "type": "commonjs",
   "bin": {
     "ic": "./bin/img-compress.js",
     "gs": "./bin/git-simple.js",
