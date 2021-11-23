@@ -23,8 +23,6 @@
     "react-hooks"
   ],
   "rules": {
-    "prettier/prettier": "error",
-
     "import-helpers/order-imports": [
       "error",
       {
@@ -32,11 +30,17 @@
         "groups": [
             "module",
             "/^@shared/",
-            ["parent", "sibling", "index"],
+            ["parent", "sibling", "index"]
           ],
         "alphabetize": { "order": "asc", "ignoreCase": true }
       }
     ],
+    "import/no-extraneous-dependencies": "off",
+
+    "no-console": "off",
+    "no-shadow": "off",
+
+    "prettier/prettier": "error",
 
     "react/jsx-filename-extension": [
       "error",
@@ -48,6 +52,7 @@
         ]
       }
     ],
+    "react/jsx-props-no-spreading": "off",
     "react/jsx-uses-react": "error",
     "react/jsx-uses-vars": "error",
 

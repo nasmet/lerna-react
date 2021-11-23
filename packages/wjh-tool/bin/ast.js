@@ -4,27 +4,20 @@
  * @Description: 使用ast删除console.log
  * @Author: 吴锦辉
  * @Date: 2021-10-18 10:44:42
- * @LastEditTime: 2021-10-21 09:23:04
+ * @LastEditTime: 2021-11-23 11:06:04
  */
 
-const fs = require('fs');
-const path = require('path');
+const generator = require('@babel/generator').default;
 const parser = require('@babel/parser');
 const traverse = require('@babel/traverse').default;
-const generator = require('@babel/generator').default;
+const fs = require('fs');
+const path = require('path');
 const { argv } = require('yargs');
+
 // const types = require('@babel/types');
 const { streamWriteFile, streamReadFile } = require('../utils/stream');
 
 const root = process.cwd();
-
-if (argv.dc) {
-  deleteLog(argv.path || root);
-
-  return;
-}
-
-console.log('命令参数有误');
 
 /**
  * @description: 通过抽象语法树递归删除log
@@ -137,3 +130,11 @@ function deleteLog(root) {
 
   recursionTraversal(root);
 }
+
+if (argv.dc) {
+  deleteLog(argv.path || root);
+
+  return;
+}
+
+console.log('命令参数有误');
