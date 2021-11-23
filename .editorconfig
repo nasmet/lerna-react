@@ -1,4 +1,6 @@
-# http://editorconfig.org
+# 编辑器配置
+# reference：http://editorconfig.org
+
 root = true
 
 [*]
