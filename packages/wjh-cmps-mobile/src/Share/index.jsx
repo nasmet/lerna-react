@@ -1,13 +1,13 @@
 import React, { useState, useEffect, useCallback, useMemo } from 'react';
 import wx from 'weixin-js-sdk';
-import styles from './index.module.scss';
+
 import icon3 from './img/icon-3.svg';
 import icon4 from './img/icon-4.svg';
 import icon5 from './img/icon-5.svg';
+import styles from './index.module.scss';
 
 function getUserAgent() {
   const u = navigator.userAgent.toLowerCase();
-  const app = navigator.appVersion;
   const android = u.includes('android');
   const ios = /iphone|ipod|ipad/i.test(u);
 
@@ -20,7 +20,6 @@ function getUserAgent() {
     weixin: u.includes('micromessenger'),
     qq: u.includes(' qq'),
     href: window.location.href,
-    app,
   };
 }
 
@@ -38,7 +37,7 @@ export default function Share(props) {
       shareDesc,
       shareLink,
       shareImgUrl,
-      fail,
+      fail = () => {},
     } = props;
 
     wx.config({
@@ -72,7 +71,7 @@ export default function Share(props) {
     wx.error(err => {
       // config信息验证失败会执行error函数，如签名过期导致验证失败，具体错误信息可以打开config的debug模式查看，
       // 也可以在返回的res参数中查看，对于SPA可以在这里更新签名。
-      fail && fail(err.message);
+      fail(err.message);
     });
   }, [props]);
 
@@ -83,12 +82,12 @@ export default function Share(props) {
     }
 
     if (userAgent.ios) {
-      location.href = userAgent.href;
+      window.location.href = userAgent.href;
 
       return;
     }
 
-    location.href = userAgent.href.replace('https', 'api');
+    window.location.href = userAgent.href.replace('https', 'api');
   }, [userAgent]);
 
   const onCloseGuide = () => {
@@ -105,7 +104,7 @@ export default function Share(props) {
 
 function Guide({ close }) {
   const onClose = useCallback(() => {
-    close && close();
+    close();
   }, [close]);
 
   return (

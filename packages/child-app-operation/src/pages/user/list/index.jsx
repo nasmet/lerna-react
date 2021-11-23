@@ -1,6 +1,4 @@
 import React, { useEffect, useCallback, useMemo, useState } from 'react';
-import { Button, Modal } from 'antd';
-import { ExclamationCircleOutlined } from '@ant-design/icons';
 import moment from 'moment';
 import { ConfigTable } from 'wjh-components';
 import apiCtrl from '@api';

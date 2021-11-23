@@ -1,5 +1,4 @@
 import React, { useCallback } from 'react';
-import { Link } from 'react-router-dom';
 import { ConfigForm } from 'wjh-components';
 import { message } from 'antd';
 import apiCtrl from '@api';

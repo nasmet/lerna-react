@@ -2,11 +2,12 @@
  * @Description: 弹层相关封装
  * @Author: 吴锦辉
  * @Date: 2021-09-09 09:06:53
- * @LastEditTime: 2021-09-09 09:07:11
+ * @LastEditTime: 2021-11-23 16:17:34
  */
 
 import React, { useCallback, useEffect } from 'react';
 import ReactDOM from 'react-dom';
+
 import styles from './index.module.scss';
 
 const iconMap = {
@@ -50,19 +51,19 @@ function Modal({
   showCancel = true,
   cancelColor = '#666',
   cancelText = '取消',
-  ok,
-  cancel,
+  ok = () => {},
+  cancel = () => {},
 }) {
   const onCancle = useCallback(() => {
     Toast.hideModal();
 
-    cancel && cancel();
+    cancel();
   }, [cancel]);
 
   const onOk = useCallback(() => {
     Toast.hideModal();
 
-    ok && ok();
+    ok();
   }, [ok]);
 
   return (
