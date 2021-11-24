@@ -6,7 +6,6 @@
   "author": "jinhui wu",
   "license": "ISC",
   "main": "./build/index.js",
-  "type": "module",
   "scripts": {
     "build": "webpack"
   },

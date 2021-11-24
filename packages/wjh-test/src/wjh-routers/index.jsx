@@ -25,7 +25,7 @@ function Layout(props) {
       <Link to="/home">切换路由到home</Link>
       <Link to="/destory">切换路由到销毁</Link>
       <div className={styles.word}>移动端html font-size动态计算设置</div>
-      {/* <WjhRequest /> */}
+      <WjhRequest />
       <WjhStore />
       <WjhComponents />
       <WjhCmpsMobile />
@@ -78,6 +78,7 @@ const routerConfig = [
   {
     path: '/',
     Component: Layout,
+    WrapperComponent,
     exact: true,
     children: [
       {

@@ -2,16 +2,17 @@
  * @Description: 应用文件
  * @Author: 吴锦辉
  * @Date: 2021-09-09 09:10:22
- * @LastEditTime: 2021-09-09 10:00:48
+ * @LastEditTime: 2021-11-24 17:57:58
  */
 
 import React, { useState, useCallback } from 'react';
 import { Button } from 'antd';
-import { Toast, List } from 'wjh-cmps-mobile';
+import { Toast, List, VirtualList } from 'wjh-cmps-mobile';
 import styles from './index.module.scss';
 
 export default function WjhCmpsMobile() {
   const [data, setData] = useState([]);
+  const [list] = useState(() => new Array(1000).fill(0).map((v, index) => index));
 
   const onShowToast = useCallback(() => {
     Toast.showToast({ title: '失败的toast显示，2s后隐藏', icon: 'fail' });
@@ -34,7 +35,7 @@ export default function WjhCmpsMobile() {
   const renderItem = useCallback((v, index) => {
     return (
       <div key={index} className={styles.item}>
-        {index}
+        {v}
       </div>
     );
   }, []);
@@ -98,6 +99,12 @@ export default function WjhCmpsMobile() {
           renderItem={renderItem}
           upDropEnd={upDropEnd}
           downDropEnd={downDropEnd}
+        />
+        <VirtualList
+          wrapStyle={{ height: '4rem' }}
+          data={list}
+          BodyCmp={BodyCmp}
+          renderItem={renderItem}
         />
       </div>
     </List.Pull>
