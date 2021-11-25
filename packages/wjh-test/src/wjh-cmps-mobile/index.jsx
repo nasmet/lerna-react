@@ -2,7 +2,7 @@
  * @Description: 应用文件
  * @Author: 吴锦辉
  * @Date: 2021-09-09 09:10:22
- * @LastEditTime: 2021-11-24 17:57:58
+ * @LastEditTime: 2021-11-25 09:47:35
  */
 
 import React, { useState, useCallback } from 'react';
@@ -69,44 +69,37 @@ export default function WjhCmpsMobile() {
     return <div className={styles.body}>{props.children}</div>;
   }, []);
 
-  const upDropEndList = useCallback(cb => {
-    setTimeout(() => {
-      cb();
-    }, 1000);
-  }, []);
-
   return (
-    <List.Pull upDropEnd={upDropEndList}>
-      <div style={{ overflow: 'hidden' }}>
-        <div className={styles.btnWrap}>
-          <Button type="primary" className={styles.btn} onClick={onShowToast}>
-            显示Toast
-          </Button>
-          <Button type="primary" className={styles.btn} onClick={onShowModal}>
-            显示Modal
-          </Button>
-          <Button type="primary" className={styles.btn} onClick={onShowLoading}>
-            显示Loading
-          </Button>
-          <Button type="primary" className={styles.btn} onClick={onHideLoading}>
-            隐藏Loading
-          </Button>
-        </div>
-        <List
-          wrapStyle={{ height: '4rem' }}
-          data={data}
-          BodyCmp={BodyCmp}
-          renderItem={renderItem}
-          upDropEnd={upDropEnd}
-          downDropEnd={downDropEnd}
-        />
-        <VirtualList
-          wrapStyle={{ height: '4rem' }}
-          data={list}
-          BodyCmp={BodyCmp}
-          renderItem={renderItem}
-        />
+    <div style={{ overflow: 'hidden' }}>
+      <div className={styles.btnWrap}>
+        <Button type="primary" className={styles.btn} onClick={onShowToast}>
+          显示Toast
+        </Button>
+        <Button type="primary" className={styles.btn} onClick={onShowModal}>
+          显示Modal
+        </Button>
+        <Button type="primary" className={styles.btn} onClick={onShowLoading}>
+          显示Loading
+        </Button>
+        <Button type="primary" className={styles.btn} onClick={onHideLoading}>
+          隐藏Loading
+        </Button>
       </div>
-    </List.Pull>
+      <List
+        wrapStyle={{ height: '4rem' }}
+        data={data}
+        BodyCmp={BodyCmp}
+        renderItem={renderItem}
+        upDropEnd={upDropEnd}
+        downDropEnd={downDropEnd}
+        PullCmp={List.Pull}
+      />
+      <VirtualList
+        wrapStyle={{ height: '4rem' }}
+        data={list}
+        BodyCmp={BodyCmp}
+        renderItem={renderItem}
+      />
+    </div>
   );
 }
