@@ -1,9 +1,7 @@
-import React, { useState, useEffect } from 'react';
+import React from 'react';
 import { BrowserRouter, Link } from 'react-router-dom';
 import RenderRouters from 'wjh-routers';
 import * as wjhUtils from 'wjh-util';
-import { useShow, useHide, active, destory } from 'wjh-keepalive';
-import styles from './index.module.scss';
 import WjhRequest from '../wjh-request';
 import { WrapContainer, WjhStore, store } from '../wjh-store';
 import WjhComponents from '../wjh-components';
@@ -18,18 +16,15 @@ wjhUtils.theme.changeTheme({
 });
 
 function Layout(props) {
+  console.log('12345');
   return (
-    <div>
+    <div style={{ display: 'flex', flexDirection: 'column' }}>
+      <Link to="/wjhrequest">WjhRequest组件测试</Link>
+      <Link to="/wjhstore">WjhStore组件测试</Link>
+      <Link to="/wjhcomponents">WjhComponents组件测试</Link>
+      <Link to="/wjhcmpsmobile">WjhCmpsMobile组件测试</Link>
+      <Link to="/wjhutil">WjhUtil组件测试</Link>
       {props.children}
-      <Link to="/user">切换路由到user</Link>
-      <Link to="/home">切换路由到home</Link>
-      <Link to="/destory">切换路由到销毁</Link>
-      <div className={styles.word}>移动端html font-size动态计算设置</div>
-      <WjhRequest />
-      <WjhStore />
-      <WjhComponents />
-      <WjhCmpsMobile />
-      <WjhUtil />
     </div>
   );
 }
@@ -43,56 +38,37 @@ const WrapperComponent = ({ children }) => {
   return children;
 };
 
-function User() {
-  const [count, setCount] = useState(1);
-
-  useShow(() => {
-    console.log('show');
-  }, '/user');
-
-  useHide(() => {
-    console.log('hide');
-  }, '/user');
-
-  useEffect(() => {
-    active('/user');
-  }, []);
-
-  return <div onClick={() => setCount(pre => pre + 1)}>userInfo: {count}</div>;
-}
-
-function Home() {
-  return <div>home</div>;
-}
-
-function Destory() {
-  useEffect(() => {
-    destory('/user');
-  }, []);
-
-  return <div>销毁路由/user</div>;
-}
-
 const routerConfig = [
   // 分组路由，children 里的路由会将父节点的 Component 作为布局组件
   {
     path: '/',
     Component: Layout,
     WrapperComponent,
-    exact: true,
     children: [
       {
-        path: '/user',
-        Component: User,
-        keepAlive: true,
+        path: '/wjhrequest',
+        Component: WjhRequest,
+        exact: true,
       },
       {
-        path: '/home',
-        Component: Home,
+        path: '/wjhstore',
+        Component: WjhStore,
+        exact: true,
       },
       {
-        path: '/destory',
-        Component: Destory,
+        path: '/wjhcomponents',
+        Component: WjhComponents,
+        exact: true,
+      },
+      {
+        path: '/wjhcmpsmobile',
+        Component: WjhCmpsMobile,
+        exact: true,
+      },
+      {
+        path: '/wjhutil',
+        Component: WjhUtil,
+        exact: true,
       },
     ],
   },

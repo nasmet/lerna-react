@@ -1,7 +1,7 @@
 import React, { useCallback } from 'react';
 import { createContextFactory, Store } from 'wjh-store';
-import reducers from './reducers/index.js';
-import { addCount, asyncReduceAction } from './actions/counter.js';
+import reducers from './reducers/index';
+import { addCount, asyncReduceAction } from './actions/counter';
 
 const { WrapContainer, useDispatch, useSelecor } = createContextFactory();
 
@@ -13,11 +13,9 @@ function AddCounter() {
   }, [dispatch]);
 
   return (
-    <>
-      <button onClick={onAdd} style={{ width: '100px', height: '60px' }}>
-        +
-      </button>
-    </>
+    <button onClick={onAdd} style={{ width: '100px', height: '60px' }}>
+      +
+    </button>
   );
 }
 
@@ -29,11 +27,9 @@ function ReduceCounter() {
   }, [dispatch]);
 
   return (
-    <>
-      <button onClick={onReduce} style={{ width: '100px', height: '60px' }}>
-        -
-      </button>
-    </>
+    <button onClick={onReduce} style={{ width: '100px', height: '60px' }}>
+      -
+    </button>
   );
 }
 
