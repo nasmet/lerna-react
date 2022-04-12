@@ -1,8 +1,8 @@
 /*
  * @Description: pm2配置文件
- * @Author:
+ * @Author: 吴锦辉
  * @Date: 2021-10-09 11:00:04
- * @LastEditTime: 2021-11-09 14:35:09
+ * @LastEditTime: 2022-04-12 10:15:48
  */
 
 module.exports = {

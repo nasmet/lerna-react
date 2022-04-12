@@ -1,0 +1,16 @@
+{
+  "name": "wjh-creeper",
+  "version": "1.0.0",
+  "private": true,
+  "description": "爬虫",
+  "author": "jinhui wu",
+  "license": "ISC",
+  "type": "commonjs",
+  "dependencies": {
+    "axios": "^0.26.1",
+    "download": "^8.0.0"
+  },
+  "scripts": {
+    "start": "node ./src/index.js"
+  }
+}
