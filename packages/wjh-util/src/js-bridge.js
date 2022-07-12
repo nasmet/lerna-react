@@ -2,7 +2,7 @@
  * @Description: 桥接方法，原生h5互调方法
  * @Author: 吴锦辉
  * @Date: 2021-08-30 10:16:44
- * @LastEditTime: 2021-11-18 15:56:24
+ * @LastEditTime: 2022-06-30 15:27:03
  */
 
 class JsBridge {
@@ -27,6 +27,7 @@ class JsBridge {
    * @param {object} message
    * @param {string} message.messageName 前端与Native协商好的方法名称
    * @param {object} message.data 参数
+   * @param {string} message.responseId 回调需要用到的相应标志
    * @param {function} responseCallback 响应回调
    * @return {}
    */
@@ -35,7 +36,9 @@ class JsBridge {
       // eslint-disable-next-line no-plusplus
       const responseId = `cb_${this.uniqueId++}_${new Date().getTime()}`;
       this.responseCallbacks[responseId] = responseCallback;
-      message['responseId'] = responseId;
+
+      // eslint-disable-next-line no-param-reassign
+      message.responseId = responseId;
     }
 
     const msg = JSON.stringify(message || {});
@@ -54,7 +57,7 @@ class JsBridge {
    * @param {string} message.responseData
    * @return {string}
    */
-  _dispatchMessageFromAPP(message) {
+  dispatchMessageFromAPP(message) {
     const { responseId, responseData, methodName, data } = message;
 
     const responseCallback = this.responseCallbacks[responseId];

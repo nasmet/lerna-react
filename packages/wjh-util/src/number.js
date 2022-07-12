@@ -2,7 +2,7 @@
  * @Description: 数字相关处理
  * @Author: 吴锦辉
  * @Date: 2021-09-09 16:35:40
- * @LastEditTime: 2021-10-18 10:39:35
+ * @LastEditTime: 2022-07-12 17:03:50
  */
 
 /**
@@ -11,10 +11,12 @@
  * @param {number} b
  * @return {*}
  */
-export function add(a, b) {
+export function add(num1, numb2) {
   /** 小数点的位数 */
   let aIndex = 0;
   let bIndex = 0;
+  let a = num1;
+  let b = numb2;
 
   if (!Number.isInteger(a)) {
     a += '';
@@ -51,9 +53,11 @@ export function add(a, b) {
  * @param {number | string} number
  * @return {string}
  */
-export function addZero(number) {
+export function addZero(num) {
+  let number = num;
+
   if (typeof number === 'string') {
-    if (isNaN(number)) {
+    if (Number.isNaN(number)) {
       return number;
     }
 
