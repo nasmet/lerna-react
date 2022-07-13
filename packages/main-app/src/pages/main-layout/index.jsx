@@ -5,7 +5,6 @@ import { Menu, Dropdown, message } from 'antd';
 import {
   MailOutlined,
   AppstoreOutlined,
-  SettingOutlined,
   DownOutlined,
   MenuUnfoldOutlined,
   MenuFoldOutlined,
@@ -168,9 +167,6 @@ function Aside() {
 
   return (
     <Menu mode="vertical">
-      <Menu.Item icon={<AppstoreOutlined />} key="sub0">
-        <Link to="/main/application">{i18Ctrl.formatterMessage('applicationManagement')}</Link>
-      </Menu.Item>
       <SubMenu
         key="sub2"
         icon={<AppstoreOutlined />}
@@ -182,6 +178,9 @@ function Aside() {
           </Menu.Item>
         ))}
       </SubMenu>
+      <Menu.Item icon={<AppstoreOutlined />} key="sub0">
+        <Link to="/main/application">{i18Ctrl.formatterMessage('applicationManagement')}</Link>
+      </Menu.Item>
       <SubMenu
         key="sub1"
         icon={<MailOutlined />}

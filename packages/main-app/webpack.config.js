@@ -2,7 +2,7 @@
  * @Description: webpack配置文件
  * @Author: 吴锦辉
  * @Date: 2021-08-16 09:19:32
- * @LastEditTime: 2021-10-18 15:08:59
+ * @LastEditTime: 2022-07-13 13:52:31
  */
 
 const { argv } = require('yargs');
