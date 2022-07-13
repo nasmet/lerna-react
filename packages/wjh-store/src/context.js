@@ -2,10 +2,10 @@
  * @Description: context相关方法
  * @Author: 吴锦辉
  * @Date: 2021-07-30 11:07:00
- * @LastEditTime: 2021-11-01 15:45:01
+ * @LastEditTime: 2022-07-13 09:34:28
  */
 
-import React, { createContext, useReducer, useContext, useMemo } from 'react';
+import React, { createContext, useReducer, useContext, useMemo, useRef } from 'react';
 
 /**
  * @description: 创建context工厂
@@ -42,9 +42,9 @@ export default function createContextFactory() {
    */
   function useSelecor(fn) {
     const { state } = useContext(Context);
+    const fnRef = useRef(fn);
 
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-    const value = useMemo(() => fn(state), [state]);
+    const value = useMemo(() => fnRef.current(state), [state]);
 
     return value;
   }

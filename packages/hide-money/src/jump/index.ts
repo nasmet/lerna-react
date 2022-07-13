@@ -2,7 +2,7 @@
  * @Description: 路由跳转（主要处理登陆返回）
  * @Author: 吴锦辉
  * @Date: 2021-09-27 09:49:49
- * @LastEditTime: 2021-09-28 16:17:20
+ * @LastEditTime: 2022-07-13 09:49:02
  */
 
 import Taro from '@tarojs/taro';
@@ -29,8 +29,6 @@ class JumpController {
     this.targetUrl = targetUrl;
     this.targetOptions = targetOptions;
     this.jumpType = jumpType;
-
-    console.log('this.targetUrl: ', this.targetUrl);
   }
 
   spliceUrlParams(url, params) {
@@ -55,8 +53,6 @@ class JumpController {
     const targetUrl = this.targetUrl || this.defalutUrl;
     const targetOptions = this.targetOptions || {};
     const jumpType = this.jumpType || this.defalutJumpType;
-
-    console.log('targetUrl: ', targetUrl);
 
     switch (jumpType) {
       case 'redirect':
