@@ -14,6 +14,7 @@
  *
  * @return {object} executeAnimate:动画执行函数 cancelAnimate:动画取消函数
  */
+// eslint-disable-next-line import/prefer-default-export
 export function createAnimate({
   /** 动画函数，默认线性动画 */
   timing = timeFraction => timeFraction,
