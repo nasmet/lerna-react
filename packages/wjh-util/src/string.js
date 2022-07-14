@@ -2,7 +2,7 @@
  * @Description: 字符串扩展方法
  * @Author: 吴锦辉
  * @Date: 2021-05-08 16:52:14
- * @LastEditTime: 2021-10-18 10:52:56
+ * @LastEditTime: 2022-07-14 10:36:18
  */
 
 /**
@@ -16,9 +16,26 @@ export function strToAsc(str) {
 
 /**
  * @description: ascii码转字符串
- * @param {number[]}
+ * @param {number[]} nums
  * @return {string}
  */
 export function ascToStr(nums) {
   return nums.map(v => String.fromCharCode(v)).join('');
+}
+
+/**
+ * @description: 字符串输入数字格式化
+ * @param {string} str
+ * @param {number} bit 小数点位数
+ * @return {string}
+ */
+export function formatStrToNum(str, bit) {
+  const regex = new RegExp(`\\.(\\d{${bit}})(\\d*)`);
+
+  return str
+    .replace(/[^\d.]/g, '')
+    .replace(/^0+/g, '0')
+    .replace(/^0(\d+)/g, '$1')
+    .replace(/\.+([^.]*)(\.*)/g, '.$1')
+    .replace(regex, '.$1');
 }
