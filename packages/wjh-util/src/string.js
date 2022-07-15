@@ -2,7 +2,7 @@
  * @Description: 字符串扩展方法
  * @Author: 吴锦辉
  * @Date: 2021-05-08 16:52:14
- * @LastEditTime: 2022-07-14 10:36:18
+ * @LastEditTime: 2022-07-15 10:17:05
  */
 
 /**
@@ -26,16 +26,30 @@ export function ascToStr(nums) {
 /**
  * @description: 字符串输入数字格式化
  * @param {string} str
- * @param {number} bit 小数点位数
+ * @param {number} integerDigits 整数位位数
+ * @param {number} decimalDigits 小数位位数
  * @return {string}
  */
-export function formatStrToNum(str, bit) {
-  const regex = new RegExp(`\\.(\\d{${bit}})(\\d*)`);
+export function formatStrToNum(str, integerDigits, decimalDigits) {
+  let val = str;
 
-  return str
+  val = val
     .replace(/[^\d.]/g, '')
-    .replace(/^0+/g, '0')
-    .replace(/^0(\d+)/g, '$1')
-    .replace(/\.+([^.]*)(\.*)/g, '.$1')
-    .replace(regex, '.$1');
+    .replace(/^0+/, '0')
+    .replace(/^0(\d+)/, '$1')
+    .replace(/\.+([^.]*)(\.*)/g, '.$1');
+
+  if (integerDigits && integerDigits > 0) {
+    const regex = new RegExp(`(\\d{${decimalDigits}})\\d+`);
+
+    val = val.replace(regex, '$1');
+  }
+
+  if (decimalDigits && decimalDigits > 0) {
+    const regex = new RegExp(`\\.(\\d{${decimalDigits}})(\\d*)`);
+
+    val = val.replace(regex, '.$1');
+  }
+
+  return val;
 }
