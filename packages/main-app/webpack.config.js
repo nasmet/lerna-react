@@ -2,7 +2,7 @@
  * @Description: webpack配置文件
  * @Author: 吴锦辉
  * @Date: 2021-08-16 09:19:32
- * @LastEditTime: 2022-07-13 13:52:31
+ * @LastEditTime: 2022-07-18 14:44:13
  */
 
 const { argv } = require('yargs');
@@ -14,6 +14,9 @@ const { merge } = require('webpack-merge');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
 const MiniCssExtractPlugin = require('mini-css-extract-plugin');
 const threadLoader = require('thread-loader');
+const PurgeCSSPlugin = require('purgecss-webpack-plugin');
+const glob = require('glob');
+const autoprefixer = require('autoprefixer');
 
 const loaderPoolOptions = {
   // 池选项，例如传递给 loader 选项
@@ -52,10 +55,10 @@ const loaderPoolOptions = {
 
 /* node-sass 中有个来自 Node.js 线程池的阻塞线程的 bug。
   当使用 thread-loader 时，需要设置 workerParallelJobs: 2 */
-const sassLoaderPoolOptions = {
-  ...loaderPoolOptions,
-  workerParallelJobs: 2,
-};
+// const sassLoaderPoolOptions = {
+//   ...loaderPoolOptions,
+//   workerParallelJobs: 2,
+// };
 
 threadLoader.warmup(loaderPoolOptions, [
   // 加载模块
@@ -63,7 +66,61 @@ threadLoader.warmup(loaderPoolOptions, [
   'babel-loader',
 ]);
 
-threadLoader.warmup(sassLoaderPoolOptions, ['sass-loader']);
+// threadLoader.warmup(sassLoaderPoolOptions, ['sass-loader']);
+
+const cssLoader = {
+  loader: 'css-loader',
+  options: {
+    importLoaders: 1,
+  },
+};
+
+/** 需要配置browserslist才能生效 */
+const postcssLoader = {
+  loader: 'postcss-loader',
+  options: {
+    postcssOptions: {
+      plugins: [
+        autoprefixer({
+          overrideBrowserslist: [
+            '>1%',
+            'last 2 versions',
+            'not ie<=8',
+            'IOS>=8',
+            'Firefox >= 20',
+            'Android > 4.4',
+          ],
+        }),
+      ],
+    },
+  },
+};
+
+const sassLoader = {
+  test: /\.scss$/,
+  use: [
+    MiniCssExtractPlugin.loader,
+    cssLoader,
+    postcssLoader,
+    // {
+    //   loader: 'thread-loader',
+    //   options: sassLoaderPoolOptions,
+    // },
+    'sass-loader',
+    {
+      loader: 'sass-resources-loader',
+      options: {
+        sourceMap: true,
+        resources: [path.resolve(__dirname, './src/global.scss')], // 一定是path.resolve的绝对路径
+      },
+    },
+  ],
+};
+
+const lessLoader = {
+  test: /\.less$/,
+  use: [MiniCssExtractPlugin.loader, cssLoader, postcssLoader, 'less-loader'],
+};
 
 const baseConfig = {
   entry: './src/index.js',
@@ -71,7 +128,14 @@ const baseConfig = {
     new HtmlWebpackPlugin({
       template: './public/index.html',
     }),
-    new MiniCssExtractPlugin(),
+    new MiniCssExtractPlugin({
+      filename: '[name].[contenthash].css',
+    }),
+    new PurgeCSSPlugin({
+      // 这里仅对vendor和bunder做多余样式移除，对内部样式移除目前有问题
+      paths: glob.sync(path.join(__dirname, 'src/**/*'), { nodir: true }),
+      only: ['bundle', 'vendor'],
+    }),
   ],
   module: {
     rules: [
@@ -93,27 +157,10 @@ const baseConfig = {
       },
       {
         test: /\.css$/,
-        use: [MiniCssExtractPlugin.loader, 'css-loader'],
+        use: [MiniCssExtractPlugin.loader, cssLoader, postcssLoader],
       },
-      {
-        test: /\.scss$/,
-        use: [
-          MiniCssExtractPlugin.loader,
-          'css-loader',
-          {
-            loader: 'thread-loader',
-            options: sassLoaderPoolOptions,
-          },
-          'sass-loader',
-          {
-            loader: 'sass-resources-loader',
-            options: {
-              sourceMap: true,
-              resources: [path.resolve(__dirname, './src/global.scss')], // 一定是path.resolve的绝对路径
-            },
-          },
-        ],
-      },
+      sassLoader,
+      lessLoader,
       {
         test: /\.(png|svg|jpg|jpeg|gif)$/i,
         type: 'asset/resource',

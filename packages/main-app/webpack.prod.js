@@ -2,7 +2,7 @@
  * @Description: webpack生产配置文件
  * @Author: 吴锦辉
  * @Date: 2021-08-16 09:20:19
- * @LastEditTime: 2022-07-13 14:49:02
+ * @LastEditTime: 2022-07-18 10:57:24
  */
 
 const { BundleAnalyzerPlugin } = require('webpack-bundle-analyzer');
@@ -36,6 +36,12 @@ module.exports = {
           test: /[\\/]node_modules[\\/]/,
           name: 'vendors',
           chunks: 'all',
+        },
+        styles: {
+          name: 'styles',
+          test: /\.css$/,
+          chunks: 'all',
+          enforce: true,
         },
       },
     },

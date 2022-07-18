@@ -1,5 +1,5 @@
 {
-  "name": "wjh-cmps-mobile",
+  "name": "wjh-cmps-mobile-vue",
   "version": "1.0.12",
   "private": true,
   "description": "适用于手机端的vue通用组件",

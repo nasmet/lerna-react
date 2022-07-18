@@ -1,4 +1,3 @@
-import 'antd/dist/antd.min.css';
 import React, { useMemo, useCallback, useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
 import { Menu, Dropdown, message } from 'antd';
