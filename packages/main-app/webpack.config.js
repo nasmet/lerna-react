@@ -2,7 +2,7 @@
  * @Description: webpack配置文件
  * @Author: 吴锦辉
  * @Date: 2021-08-16 09:19:32
- * @LastEditTime: 2022-07-18 14:44:13
+ * @LastEditTime: 2022-07-18 15:06:23
  */
 
 const { argv } = require('yargs');
@@ -53,20 +53,33 @@ const loaderPoolOptions = {
   name: 'loader-pool',
 };
 
+threadLoader.warmup(loaderPoolOptions, ['babel-loader']);
+
+const babelThreadLoader = {
+  loader: 'thread-loader',
+  options: loaderPoolOptions,
+};
+
 /* node-sass 中有个来自 Node.js 线程池的阻塞线程的 bug。
   当使用 thread-loader 时，需要设置 workerParallelJobs: 2 */
-// const sassLoaderPoolOptions = {
-//   ...loaderPoolOptions,
-//   workerParallelJobs: 2,
-// };
+const sassLoaderPoolOptions = {
+  ...loaderPoolOptions,
+  workerParallelJobs: 2,
+};
 
-threadLoader.warmup(loaderPoolOptions, [
-  // 加载模块
-  // 可以是任意模块，例如
-  'babel-loader',
-]);
+threadLoader.warmup(sassLoaderPoolOptions, ['sass-loader']);
 
-// threadLoader.warmup(sassLoaderPoolOptions, ['sass-loader']);
+const sassThreadLoader = {
+  loader: 'thread-loader',
+  options: sassLoaderPoolOptions,
+};
+
+const babelLoader = {
+  loader: 'babel-loader',
+  options: {
+    presets: ['@babel/env', '@babel/preset-react'],
+  },
+};
 
 const cssLoader = {
   loader: 'css-loader',
@@ -97,29 +110,15 @@ const postcssLoader = {
 };
 
 const sassLoader = {
-  test: /\.scss$/,
-  use: [
-    MiniCssExtractPlugin.loader,
-    cssLoader,
-    postcssLoader,
-    // {
-    //   loader: 'thread-loader',
-    //   options: sassLoaderPoolOptions,
-    // },
-    'sass-loader',
-    {
-      loader: 'sass-resources-loader',
-      options: {
-        sourceMap: true,
-        resources: [path.resolve(__dirname, './src/global.scss')], // 一定是path.resolve的绝对路径
-      },
-    },
-  ],
+  loader: 'sass-loader',
 };
 
-const lessLoader = {
-  test: /\.less$/,
-  use: [MiniCssExtractPlugin.loader, cssLoader, postcssLoader, 'less-loader'],
+const sassResourcesLoader = {
+  loader: 'sass-resources-loader',
+  options: {
+    sourceMap: true,
+    resources: [path.resolve(__dirname, './src/global.scss')], // 一定是path.resolve的绝对路径
+  },
 };
 
 const baseConfig = {
@@ -142,25 +141,23 @@ const baseConfig = {
       {
         test: /\.(js|jsx)$/,
         exclude: /node_modules/,
-        use: [
-          {
-            loader: 'thread-loader',
-            options: loaderPoolOptions,
-          },
-          {
-            loader: 'babel-loader',
-            options: {
-              presets: ['@babel/env', '@babel/preset-react'],
-            },
-          },
-        ],
+        use: [babelThreadLoader, babelLoader],
       },
       {
         test: /\.css$/,
         use: [MiniCssExtractPlugin.loader, cssLoader, postcssLoader],
       },
-      sassLoader,
-      lessLoader,
+      {
+        test: /\.scss$/,
+        use: [
+          MiniCssExtractPlugin.loader,
+          cssLoader,
+          postcssLoader,
+          sassThreadLoader,
+          sassLoader,
+          sassResourcesLoader,
+        ],
+      },
       {
         test: /\.(png|svg|jpg|jpeg|gif)$/i,
         type: 'asset/resource',
@@ -190,11 +187,13 @@ let buildConfig;
 
 switch (env) {
   case 'production':
-    buildConfig = require('./webpack.prod.js');
+    // eslint-disable-next-line global-require
+    buildConfig = require('./webpack.prod');
 
     break;
   case 'development':
-    buildConfig = require('./webpack.dev.js');
+    // eslint-disable-next-line global-require
+    buildConfig = require('./webpack.dev');
 
     break;
   default:
