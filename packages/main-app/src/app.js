@@ -2,7 +2,7 @@
  * @Description: app应用
  * @Author: 吴锦辉
  * @Date: 2021-08-16 08:55:25
- * @LastEditTime: 2022-07-18 14:47:52
+ * @LastEditTime: 2022-07-19 15:34:29
  */
 
 import React, { useEffect } from 'react';
@@ -14,7 +14,6 @@ import themeConfig from '@theme';
 import { WrapContainer, store } from '@store';
 import i18Ctrl from '@i18';
 import routers from './routers';
-import 'antd/dist/antd.min.css';
 
 theme.changeTheme(themeConfig.default);
 

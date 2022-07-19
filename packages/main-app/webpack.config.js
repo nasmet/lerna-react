@@ -2,7 +2,7 @@
  * @Description: webpack配置文件
  * @Author: 吴锦辉
  * @Date: 2021-08-16 09:19:32
- * @LastEditTime: 2022-07-18 15:06:23
+ * @LastEditTime: 2022-07-19 17:05:51
  */
 
 const { argv } = require('yargs');
@@ -74,10 +74,21 @@ const sassThreadLoader = {
   options: sassLoaderPoolOptions,
 };
 
+console.log('babelrc: ', path.resolve(__dirname, '.babelrc'));
+
 const babelLoader = {
   loader: 'babel-loader',
   options: {
-    presets: ['@babel/env', '@babel/preset-react'],
+    presets: [
+      [
+        '@babel/preset-env',
+        {
+          useBuiltIns: 'entry',
+          corejs: '3.22',
+        },
+      ],
+      '@babel/preset-react',
+    ],
   },
 };
 
@@ -88,23 +99,11 @@ const cssLoader = {
   },
 };
 
-/** 需要配置browserslist才能生效 */
 const postcssLoader = {
   loader: 'postcss-loader',
   options: {
     postcssOptions: {
-      plugins: [
-        autoprefixer({
-          overrideBrowserslist: [
-            '>1%',
-            'last 2 versions',
-            'not ie<=8',
-            'IOS>=8',
-            'Firefox >= 20',
-            'Android > 4.4',
-          ],
-        }),
-      ],
+      plugins: [autoprefixer()],
     },
   },
 };
@@ -119,6 +118,17 @@ const sassResourcesLoader = {
     sourceMap: true,
     resources: [path.resolve(__dirname, './src/global.scss')], // 一定是path.resolve的绝对路径
   },
+};
+
+const imageLoader = limit => ({
+  test: /\.(png|svg|jpg|jpeg|gif)$/,
+  type: 'asset',
+  parser: { dataUrlCondition: { maxSize: limit } },
+});
+
+const fontLoader = {
+  test: /\.(woff|woff2|eot|ttf|otf)$/i,
+  type: 'asset/resource',
 };
 
 const baseConfig = {
@@ -158,14 +168,8 @@ const baseConfig = {
           sassResourcesLoader,
         ],
       },
-      {
-        test: /\.(png|svg|jpg|jpeg|gif)$/i,
-        type: 'asset/resource',
-      },
-      {
-        test: /\.(woff|woff2|eot|ttf|otf)$/i,
-        type: 'asset/resource',
-      },
+      imageLoader(15000),
+      fontLoader,
     ],
   },
   resolve: {
