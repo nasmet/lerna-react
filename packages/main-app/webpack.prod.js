@@ -2,7 +2,7 @@
  * @Description: webpack生产配置文件
  * @Author: 吴锦辉
  * @Date: 2021-08-16 09:20:19
- * @LastEditTime: 2022-07-19 16:23:18
+ * @LastEditTime: 2022-07-20 13:40:39
  */
 
 const { BundleAnalyzerPlugin } = require('webpack-bundle-analyzer');
@@ -21,6 +21,15 @@ if (analyzer) {
 
 const path = require('path');
 
+const setChunkName = (module, chunks, cacheGroupKey) => {
+  const moduleFileName = module
+    .identifier()
+    .split('/')
+    .reduceRight(item => item);
+  const allChunksNames = chunks.map(item => item.name).join('~');
+  return `${cacheGroupKey}-${allChunksNames}-${moduleFileName}`;
+};
+
 module.exports = {
   output: {
     publicPath: 'http://120.78.195.150:80/',
@@ -34,18 +43,25 @@ module.exports = {
     moduleIds: 'deterministic',
     runtimeChunk: 'single',
     splitChunks: {
-      chunks: 'async',
-      minSize: 20000,
-      minRemainingSize: 0,
-      minChunks: 9,
-      maxAsyncRequests: 30,
-      maxInitialRequests: 30,
-      enforceSizeThreshold: 50000,
       cacheGroups: {
-        vendor: {
-          test: /[\\/]node_modules[\\/](react|react-dom|react-router-dom|antd|axios|file-saver|jszip|moment|qiankun)[\\/]/,
-          name: 'vendor',
+        styles: {
+          test: /\.css$/,
+          name: 'styles',
           chunks: 'all',
+          enforce: true,
+        },
+        vendors: {
+          test: /[\\/]node_modules[\\/]/,
+          name: setChunkName,
+          chunks: 'initial',
+          priority: -10,
+        },
+        commons: {
+          test: /[\\/]node_modules[\\/](react)/,
+          name: setChunkName,
+          chunks: 'all',
+          priority: -20,
+          reuseExistingChunk: true,
         },
       },
     },

@@ -2,7 +2,7 @@
  * @Description: webpack配置文件
  * @Author: 吴锦辉
  * @Date: 2021-08-16 09:19:32
- * @LastEditTime: 2022-07-19 17:05:51
+ * @LastEditTime: 2022-07-20 14:23:51
  */
 
 const { argv } = require('yargs');
@@ -74,8 +74,6 @@ const sassThreadLoader = {
   options: sassLoaderPoolOptions,
 };
 
-console.log('babelrc: ', path.resolve(__dirname, '.babelrc'));
-
 const babelLoader = {
   loader: 'babel-loader',
   options: {
@@ -141,9 +139,9 @@ const baseConfig = {
       filename: '[name].[contenthash].css',
     }),
     new PurgeCSSPlugin({
-      // 这里仅对vendor和bunder做多余样式移除，对内部样式移除目前有问题
+      // 这里只针对名称为styles的chunk, 主要优化antd的样式
       paths: glob.sync(path.join(__dirname, 'src/**/*'), { nodir: true }),
-      only: ['bundle', 'vendor'],
+      only: ['styles'],
     }),
   ],
   module: {

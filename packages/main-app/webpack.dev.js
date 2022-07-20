@@ -2,7 +2,7 @@
  * @Description: webpack开发配置文件
  * @Author: 吴锦辉
  * @Date: 2021-08-16 09:19:56
- * @LastEditTime: 2022-07-19 16:16:06
+ * @LastEditTime: 2022-07-20 14:12:12
  */
 
 const webpack = require('webpack');
@@ -14,6 +14,10 @@ module.exports = {
   mode: 'development',
   devtool: 'inline-source-map',
   plugins: [new webpack.HotModuleReplacementPlugin()],
+  cache: {
+    type: 'memory',
+    maxGenerations: 1,
+  },
   devServer: {
     hot: true,
     open: false,
