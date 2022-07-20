@@ -2,7 +2,7 @@
  * @Description: webpack生产配置文件
  * @Author: 吴锦辉
  * @Date: 2021-08-16 09:20:19
- * @LastEditTime: 2022-07-20 13:40:39
+ * @LastEditTime: 2022-07-20 16:19:26
  */
 
 const { BundleAnalyzerPlugin } = require('webpack-bundle-analyzer');
@@ -38,7 +38,7 @@ module.exports = {
     clean: true,
   },
   mode: 'production',
-  devtool: 'source-map',
+  devtool: false,
   optimization: {
     moduleIds: 'deterministic',
     runtimeChunk: 'single',
