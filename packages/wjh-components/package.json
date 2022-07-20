@@ -3,7 +3,7 @@
   "version": "1.0.12",
   "private": true,
   "description": "适用于PC端react通用组件",
-  "main": "./src/index.js",
+  "module": "./src/index.js",
   "author": "jinhui wu",
   "license": "ISC",
   "peerDependencies": {

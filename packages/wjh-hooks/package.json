@@ -5,7 +5,7 @@
   "description": "react自定义hooks",
   "author": "jinhui wu",
   "license": "ISC",
-  "main": "./src/index.js",
+  "module": "./src/index.js",
   "peerDependencies": {
     "react": ">=16.8.0"
   },

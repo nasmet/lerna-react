@@ -3,7 +3,6 @@
   "version": "1.0.12",
   "private": true,
   "description": "基于qiankun搭建的主应用",
-  "main": "index.js",
   "author": "jinhui wu",
   "license": "ISC",
   "scripts": {

@@ -5,7 +5,7 @@
   "description": "常用方法库",
   "author": "jinhuiwu",
   "license": "ISC",
-  "main": "./src/index.js",
+  "module": "./src/index.js",
   "peerDependencies": {
     "jszip": "^3.7.1",
     "file-saver": "^2.0.5"

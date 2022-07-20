@@ -2,7 +2,7 @@
   "name": "wjh-store",
   "version": "1.0.12",
   "description": "基于useContext和useReducer实现的状态管理",
-  "main": "./src/index.js",
+  "module": "./src/index.js",
   "peerDependencies": {
     "react": ">=16.8.0",
     "react-dom": ">=16.8.0"
