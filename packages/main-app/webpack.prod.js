@@ -2,7 +2,7 @@
  * @Description: webpack生产配置文件
  * @Author: 吴锦辉
  * @Date: 2021-08-16 09:20:19
- * @LastEditTime: 2022-07-20 16:19:26
+ * @LastEditTime: 2022-07-20 16:25:53
  */
 
 const { BundleAnalyzerPlugin } = require('webpack-bundle-analyzer');
@@ -34,6 +34,7 @@ module.exports = {
   output: {
     publicPath: 'http://120.78.195.150:80/',
     chunkFilename: '[name].[contenthash].js',
+    filename: '[name].[contenthash].js',
     path: path.resolve(__dirname, 'build'),
     clean: true,
   },
