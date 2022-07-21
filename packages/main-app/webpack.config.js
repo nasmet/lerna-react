@@ -2,7 +2,7 @@
  * @Description: webpack配置文件
  * @Author: 吴锦辉
  * @Date: 2021-08-16 09:19:32
- * @LastEditTime: 2022-07-21 10:41:58
+ * @LastEditTime: 2022-07-21 11:12:39
  */
 
 const { argv } = require('yargs');
@@ -17,15 +17,15 @@ const PurgeCSSPlugin = require('purgecss-webpack-plugin');
 const glob = require('glob');
 const {
   setFreeVariable,
-  fontLoader,
-  imageLoader,
-  sassResourcesLoader,
-  sassLoader,
-  postcssLoader,
-  cssLoader,
-  babelLoader,
-  sassThreadLoader,
-  babelThreadLoader,
+  setFontLoader,
+  setImageLoader,
+  setSassResourcesLoader,
+  setSassLoader,
+  setPostcssLoader,
+  setCssLoader,
+  setBabelLoader,
+  setSassThreadLoader,
+  setBabelThreadLoader,
   setContextReplacement,
 } = require('./webpack.part');
 
@@ -39,7 +39,7 @@ const baseConfig = {
       filename: '[name].[contenthash].css',
     }),
     new PurgeCSSPlugin({
-      // 这里只针对名称为styles的chunk, 主要优化antd的样式
+      // 这里只针对名称为styles的chunk, 主要移除antd的没有用到的样式
       paths: glob.sync(path.join(__dirname, 'src/**/*'), { nodir: true }),
       only: ['styles'],
     }),
@@ -54,25 +54,25 @@ const baseConfig = {
       {
         test: /\.(js|jsx)$/,
         exclude: /node_modules/,
-        use: [babelThreadLoader(), babelLoader()],
+        use: [setBabelThreadLoader(), setBabelLoader()],
       },
       {
         test: /\.css$/,
-        use: [MiniCssExtractPlugin.loader, cssLoader(), postcssLoader()],
+        use: [MiniCssExtractPlugin.loader, setCssLoader(), setPostcssLoader()],
       },
       {
         test: /\.scss$/,
         use: [
           MiniCssExtractPlugin.loader,
-          cssLoader(),
-          postcssLoader(),
-          sassThreadLoader(),
-          sassLoader(),
-          sassResourcesLoader(['./src/global.scss']),
+          setCssLoader(),
+          setPostcssLoader(),
+          setSassThreadLoader(),
+          setSassLoader(),
+          setSassResourcesLoader(['./src/global.scss']),
         ],
       },
-      imageLoader(15 * 1024),
-      fontLoader(),
+      setImageLoader(15 * 1024),
+      setFontLoader(),
     ],
   },
   resolve: {

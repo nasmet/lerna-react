@@ -3,13 +3,15 @@
  * @Author: 吴锦辉
  * @Date: 2022-07-20 15:49:03
  * @LastEditors: Please set LastEditors
- * @LastEditTime: 2022-07-21 10:42:52
+ * @LastEditTime: 2022-07-21 11:12:33
  */
 
 const path = require('path');
 const threadLoader = require('thread-loader');
 const autoprefixer = require('autoprefixer');
 const { DefinePlugin, ContextReplacementPlugin } = require('webpack');
+const UnusedWebpackPlugin = require('unused-webpack-plugin');
+const { BundleAnalyzerPlugin } = require('webpack-bundle-analyzer');
 
 const loaderPoolOptions = {
   // 池选项，例如传递给 loader 选项
@@ -48,7 +50,7 @@ const loaderPoolOptions = {
 
 threadLoader.warmup(loaderPoolOptions, ['babel-loader']);
 
-const babelThreadLoader = () => {
+const setBabelThreadLoader = () => {
   return {
     loader: 'thread-loader',
     options: loaderPoolOptions,
@@ -64,14 +66,14 @@ const sassLoaderPoolOptions = {
 
 threadLoader.warmup(sassLoaderPoolOptions, ['sass-loader']);
 
-const sassThreadLoader = () => {
+const setSassThreadLoader = () => {
   return {
     loader: 'thread-loader',
     options: sassLoaderPoolOptions,
   };
 };
 
-const babelLoader = () => {
+const setBabelLoader = () => {
   return {
     loader: 'babel-loader',
     options: {
@@ -89,7 +91,7 @@ const babelLoader = () => {
   };
 };
 
-const cssLoader = (options = {}) => {
+const setCssLoader = (options = {}) => {
   return {
     loader: 'css-loader',
     options: {
@@ -99,7 +101,7 @@ const cssLoader = (options = {}) => {
   };
 };
 
-const postcssLoader = () => {
+const setPostcssLoader = () => {
   return {
     loader: 'postcss-loader',
     options: {
@@ -110,7 +112,7 @@ const postcssLoader = () => {
   };
 };
 
-const sassLoader = (options = {}) => {
+const setSassLoader = (options = {}) => {
   return {
     loader: 'sass-loader',
     options: {
@@ -119,7 +121,7 @@ const sassLoader = (options = {}) => {
   };
 };
 
-const sassResourcesLoader = (files = []) => {
+const setSassResourcesLoader = (files = []) => {
   return {
     loader: 'sass-resources-loader',
     options: {
@@ -129,13 +131,13 @@ const sassResourcesLoader = (files = []) => {
   };
 };
 
-const imageLoader = (limit = 20 * 1024) => ({
+const setImageLoader = (limit = 20 * 1024) => ({
   test: /\.(png|svg|jpg|jpeg|gif)$/,
   type: 'asset',
   parser: { dataUrlCondition: { maxSize: limit } },
 });
 
-const fontLoader = (options = {}) => {
+const setFontLoader = (options = {}) => {
   return {
     test: /\.(woff|woff2|eot|ttf|otf)$/i,
     type: 'asset/resource',
@@ -168,16 +170,45 @@ const setContextReplacement = (
   );
 };
 
+const setUnusedWebpack = () => {
+  return new UnusedWebpackPlugin({
+    // Source directories
+    directories: [path.join(__dirname, 'src')],
+    // Exclude patterns
+    exclude: ['*.test.js'],
+    // Root directory (optional)
+    root: __dirname,
+  });
+};
+
+const setBundleAnalyzer = (analyzerPort = 8888) => {
+  return new BundleAnalyzerPlugin({
+    analyzerPort,
+  });
+};
+
+const setChunkName = (module, chunks, cacheGroupKey) => {
+  const moduleFileName = module
+    .identifier()
+    .split('/')
+    .reduceRight(item => item);
+  const allChunksNames = chunks.map(item => item.name).join('~');
+  return `${cacheGroupKey}-${allChunksNames}-${moduleFileName}`;
+};
+
 module.exports = {
   setFreeVariable,
-  fontLoader,
-  imageLoader,
-  sassResourcesLoader,
-  sassLoader,
-  postcssLoader,
-  cssLoader,
-  babelLoader,
-  sassThreadLoader,
-  babelThreadLoader,
+  setFontLoader,
+  setImageLoader,
+  setSassResourcesLoader,
+  setSassLoader,
+  setPostcssLoader,
+  setCssLoader,
+  setBabelLoader,
+  setSassThreadLoader,
+  setBabelThreadLoader,
   setContextReplacement,
+  setUnusedWebpack,
+  setBundleAnalyzer,
+  setChunkName,
 };

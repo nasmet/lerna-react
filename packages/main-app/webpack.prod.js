@@ -2,38 +2,24 @@
  * @Description: webpack生产配置文件
  * @Author: 吴锦辉
  * @Date: 2021-08-16 09:20:19
- * @LastEditTime: 2022-07-21 10:34:11
+ * @LastEditTime: 2022-07-21 11:12:54
  */
 
-const { BundleAnalyzerPlugin } = require('webpack-bundle-analyzer');
+const path = require('path');
+const { setUnusedWebpack, setBundleAnalyzer, setChunkName } = require('./webpack.part');
 
 const { analyzer } = process.env;
 
-const plugins = [];
+const plugins = [setUnusedWebpack()];
 
 if (analyzer) {
-  plugins.push(
-    new BundleAnalyzerPlugin({
-      analyzerPort: 8888,
-    })
-  );
+  plugins.push(setBundleAnalyzer());
 }
-
-const path = require('path');
-
-const setChunkName = (module, chunks, cacheGroupKey) => {
-  const moduleFileName = module
-    .identifier()
-    .split('/')
-    .reduceRight(item => item);
-  const allChunksNames = chunks.map(item => item.name).join('~');
-  return `${cacheGroupKey}-${allChunksNames}-${moduleFileName}`;
-};
 
 module.exports = {
   performance: {
     hints: 'warning', // "error" or false are valid too
-    maxEntrypointSize: 500 * 1024, // in bytes, default 250k
+    maxEntrypointSize: 200 * 1024, // in bytes, default 250k
     maxAssetSize: 500 * 1024, // in bytes
   },
   output: {
