@@ -8,7 +8,8 @@
   "scripts": {
     "start": "webpack serve --env=development",
     "build": "webpack --env=production",
-    "analyzer": "cross-env analyzer=true  webpack --env=production"
+    "analyzer": "cross-env analyzer=true  npm run build",
+    "stats": "webpack --env=production --json > stats.json"
   },
   "dependencies": {
     "antd": "^4.16.10",

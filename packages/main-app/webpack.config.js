@@ -2,7 +2,7 @@
  * @Description: webpack配置文件
  * @Author: 吴锦辉
  * @Date: 2021-08-16 09:19:32
- * @LastEditTime: 2022-07-20 16:13:32
+ * @LastEditTime: 2022-07-21 10:41:58
  */
 
 const { argv } = require('yargs');
@@ -26,6 +26,7 @@ const {
   babelLoader,
   sassThreadLoader,
   babelThreadLoader,
+  setContextReplacement,
 } = require('./webpack.part');
 
 const baseConfig = {
@@ -45,6 +46,8 @@ const baseConfig = {
     setFreeVariable({
       __name__: 'wujinhui',
     }),
+    /** 只加载zh-cn语言 */
+    setContextReplacement(/moment[/\\]locale$/, /zh-cn/),
   ],
   module: {
     rules: [
@@ -68,7 +71,7 @@ const baseConfig = {
           sassResourcesLoader(['./src/global.scss']),
         ],
       },
-      imageLoader(15000),
+      imageLoader(15 * 1024),
       fontLoader(),
     ],
   },

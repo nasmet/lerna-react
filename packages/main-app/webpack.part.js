@@ -3,13 +3,13 @@
  * @Author: 吴锦辉
  * @Date: 2022-07-20 15:49:03
  * @LastEditors: Please set LastEditors
- * @LastEditTime: 2022-07-20 16:05:04
+ * @LastEditTime: 2022-07-21 10:42:52
  */
 
 const path = require('path');
 const threadLoader = require('thread-loader');
 const autoprefixer = require('autoprefixer');
-const { DefinePlugin } = require('webpack');
+const { DefinePlugin, ContextReplacementPlugin } = require('webpack');
 
 const loaderPoolOptions = {
   // 池选项，例如传递给 loader 选项
@@ -129,7 +129,7 @@ const sassResourcesLoader = (files = []) => {
   };
 };
 
-const imageLoader = (limit = 20000) => ({
+const imageLoader = (limit = 20 * 1024) => ({
   test: /\.(png|svg|jpg|jpeg|gif)$/,
   type: 'asset',
   parser: { dataUrlCondition: { maxSize: limit } },
@@ -154,6 +154,20 @@ const setFreeVariable = (obj = {}) => {
   return new DefinePlugin(env);
 };
 
+const setContextReplacement = (
+  resourceRegExp,
+  newContentResource,
+  newContentRecursive,
+  newContentRegExp
+) => {
+  return new ContextReplacementPlugin(
+    resourceRegExp,
+    newContentResource,
+    newContentRecursive,
+    newContentRegExp
+  );
+};
+
 module.exports = {
   setFreeVariable,
   fontLoader,
@@ -165,4 +179,5 @@ module.exports = {
   babelLoader,
   sassThreadLoader,
   babelThreadLoader,
+  setContextReplacement,
 };

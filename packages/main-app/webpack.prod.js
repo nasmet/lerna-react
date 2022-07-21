@@ -2,7 +2,7 @@
  * @Description: webpack生产配置文件
  * @Author: 吴锦辉
  * @Date: 2021-08-16 09:20:19
- * @LastEditTime: 2022-07-20 16:25:53
+ * @LastEditTime: 2022-07-21 10:34:11
  */
 
 const { BundleAnalyzerPlugin } = require('webpack-bundle-analyzer');
@@ -31,6 +31,11 @@ const setChunkName = (module, chunks, cacheGroupKey) => {
 };
 
 module.exports = {
+  performance: {
+    hints: 'warning', // "error" or false are valid too
+    maxEntrypointSize: 500 * 1024, // in bytes, default 250k
+    maxAssetSize: 500 * 1024, // in bytes
+  },
   output: {
     publicPath: 'http://120.78.195.150:80/',
     chunkFilename: '[name].[contenthash].js',
