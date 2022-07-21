@@ -1,0 +1,32 @@
+{
+  "compilerOptions": {
+    "sourceMap": true,
+    "noImplicitAny": true,
+    "module": "commonjs",
+    "target": "es5",
+    "jsx": "react",
+    "typeRoots": [
+      "node_modules/@types",
+      "./typing"
+    ],
+    "baseUrl": ".",
+    "paths": {
+      "@theme": [
+        "src/theme"
+      ],
+      "@store": [
+        "src/store"
+      ],
+      "@i18": [
+        "src/i18"
+      ],
+    }
+  },
+  "include": [
+    "src/**/*"
+  ],
+  "exclude": [
+    "node_modules",
+    "**/*.spec.ts"
+  ]
+}

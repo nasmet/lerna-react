@@ -3,7 +3,7 @@
  * @Author: 吴锦辉
  * @Date: 2022-07-20 15:49:03
  * @LastEditors: Please set LastEditors
- * @LastEditTime: 2022-07-21 11:21:14
+ * @LastEditTime: 2022-07-21 14:10:59
  */
 
 const path = require('path');
@@ -90,6 +90,16 @@ const setBabelLoader = () => {
           },
         ],
         '@babel/preset-react',
+        '@babel/preset-typescript',
+      ],
+      plugins: [
+        [
+          'import',
+          {
+            libraryName: 'antd',
+            style: 'css', // style为true会加载less文件
+          },
+        ],
       ],
     },
   };

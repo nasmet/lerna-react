@@ -2,7 +2,7 @@
  * @Description: 国际化控制器
  * @Author: 吴锦辉
  * @Date: 2021-09-22 14:59:03
- * @LastEditTime: 2021-09-24 09:16:16
+ * @LastEditTime: 2022-07-21 15:10:03
  */
 
 import { I18 } from 'wjh-util';
@@ -23,6 +23,7 @@ class I18Controller {
     this.switchLanguage(this.language);
   }
 
+  // eslint-disable-next-line class-methods-use-this
   formatterMessage(key, prefix = '') {
     return store.getState().i18[prefix + key];
   }
