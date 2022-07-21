@@ -2,7 +2,7 @@
  * @Description: webpack配置文件
  * @Author: 吴锦辉
  * @Date: 2021-08-16 09:19:32
- * @LastEditTime: 2022-07-21 11:22:44
+ * @LastEditTime: 2022-07-21 13:40:59
  */
 
 const path = require('path');
@@ -49,12 +49,12 @@ const baseConfig = {
       },
       {
         test: /\.css$/,
-        use: [setMiniCssExtract.loader, setCssLoader(), setPostcssLoader()],
+        use: [setMiniCssExtract.Instance.loader, setCssLoader(), setPostcssLoader()],
       },
       {
         test: /\.scss$/,
         use: [
-          setMiniCssExtract.loader,
+          setMiniCssExtract.Instance.loader,
           setCssLoader(),
           setPostcssLoader(),
           setSassThreadLoader(),

@@ -2,7 +2,7 @@
  * @Description: webpack开发配置文件
  * @Author: 吴锦辉
  * @Date: 2021-08-16 09:19:56
- * @LastEditTime: 2022-07-20 16:19:15
+ * @LastEditTime: 2022-07-21 13:40:03
  */
 
 const webpack = require('webpack');

@@ -6,10 +6,12 @@
   "author": "jinhui wu",
   "license": "ISC",
   "scripts": {
+    "watch": "nodemon --watch \"./webpack.*.js\" --exec \"npm start\"",
     "start": "webpack serve --env=development",
     "build": "webpack --env=production",
     "analyzer": "cross-env analyzer=true  npm run build",
-    "stats": "webpack --env=production --json > stats.json"
+    "stats": "webpack --env=production --json > stats.json",
+    "memory": "node --max-old-space-size=4096 npm run start"
   },
   "dependencies": {
     "antd": "^4.16.10",
@@ -39,6 +41,7 @@
     "glob": "^7.1.6",
     "html-webpack-plugin": "^5.3.2",
     "mini-css-extract-plugin": "^2.4.2",
+    "nodemon": "^2.0.19",
     "postcss": "^8.4.14",
     "postcss-loader": "^7.0.1",
     "purgecss-webpack-plugin": "^4.1.3",
