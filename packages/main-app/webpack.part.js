@@ -3,7 +3,7 @@
  * @Author: 吴锦辉
  * @Date: 2022-07-20 15:49:03
  * @LastEditors: Please set LastEditors
- * @LastEditTime: 2022-07-21 11:12:33
+ * @LastEditTime: 2022-07-21 11:21:14
  */
 
 const path = require('path');
@@ -12,6 +12,10 @@ const autoprefixer = require('autoprefixer');
 const { DefinePlugin, ContextReplacementPlugin } = require('webpack');
 const UnusedWebpackPlugin = require('unused-webpack-plugin');
 const { BundleAnalyzerPlugin } = require('webpack-bundle-analyzer');
+const HtmlWebpackPlugin = require('html-webpack-plugin');
+const MiniCssExtractPlugin = require('mini-css-extract-plugin');
+const glob = require('glob');
+const PurgeCSSPlugin = require('purgecss-webpack-plugin');
 
 const loaderPoolOptions = {
   // 池选项，例如传递给 loader 选项
@@ -196,6 +200,28 @@ const setChunkName = (module, chunks, cacheGroupKey) => {
   return `${cacheGroupKey}-${allChunksNames}-${moduleFileName}`;
 };
 
+const setHtmlWebpack = (template = './public/index.html') => {
+  return new HtmlWebpackPlugin({
+    template,
+  });
+};
+
+const setPurgeCSS = (options = { only: ['styles'] }) => {
+  return new PurgeCSSPlugin({
+    // 这里只针对名称为styles的chunk, 主要移除antd的没有用到的样式
+    paths: glob.sync(path.join(__dirname, 'src/**/*'), { nodir: true }),
+    ...options,
+  });
+};
+
+const setMiniCssExtract = (filename = '[name].[contenthash].css') => {
+  return new MiniCssExtractPlugin({
+    filename,
+  });
+};
+
+setMiniCssExtract.Instance = MiniCssExtractPlugin;
+
 module.exports = {
   setFreeVariable,
   setFontLoader,
@@ -211,4 +237,7 @@ module.exports = {
   setUnusedWebpack,
   setBundleAnalyzer,
   setChunkName,
+  setHtmlWebpack,
+  setPurgeCSS,
+  setMiniCssExtract,
 };

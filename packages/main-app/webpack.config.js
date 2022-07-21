@@ -2,19 +2,15 @@
  * @Description: webpack配置文件
  * @Author: 吴锦辉
  * @Date: 2021-08-16 09:19:32
- * @LastEditTime: 2022-07-21 11:12:39
+ * @LastEditTime: 2022-07-21 11:22:44
  */
 
+const path = require('path');
 const { argv } = require('yargs');
+const { merge } = require('webpack-merge');
 
 const { env } = argv;
 
-const path = require('path');
-const { merge } = require('webpack-merge');
-const HtmlWebpackPlugin = require('html-webpack-plugin');
-const MiniCssExtractPlugin = require('mini-css-extract-plugin');
-const PurgeCSSPlugin = require('purgecss-webpack-plugin');
-const glob = require('glob');
 const {
   setFreeVariable,
   setFontLoader,
@@ -27,22 +23,17 @@ const {
   setSassThreadLoader,
   setBabelThreadLoader,
   setContextReplacement,
+  setHtmlWebpack,
+  setPurgeCSS,
+  setMiniCssExtract,
 } = require('./webpack.part');
 
 const baseConfig = {
   entry: './src/index.js',
   plugins: [
-    new HtmlWebpackPlugin({
-      template: './public/index.html',
-    }),
-    new MiniCssExtractPlugin({
-      filename: '[name].[contenthash].css',
-    }),
-    new PurgeCSSPlugin({
-      // 这里只针对名称为styles的chunk, 主要移除antd的没有用到的样式
-      paths: glob.sync(path.join(__dirname, 'src/**/*'), { nodir: true }),
-      only: ['styles'],
-    }),
+    setHtmlWebpack(),
+    setMiniCssExtract(),
+    setPurgeCSS(),
     setFreeVariable({
       __name__: 'wujinhui',
     }),
@@ -58,12 +49,12 @@ const baseConfig = {
       },
       {
         test: /\.css$/,
-        use: [MiniCssExtractPlugin.loader, setCssLoader(), setPostcssLoader()],
+        use: [setMiniCssExtract.loader, setCssLoader(), setPostcssLoader()],
       },
       {
         test: /\.scss$/,
         use: [
-          MiniCssExtractPlugin.loader,
+          setMiniCssExtract.loader,
           setCssLoader(),
           setPostcssLoader(),
           setSassThreadLoader(),
