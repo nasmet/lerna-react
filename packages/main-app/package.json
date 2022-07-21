@@ -6,7 +6,7 @@
   "author": "jinhui wu",
   "license": "ISC",
   "scripts": {
-    "watch": "nodemon --watch \"./webpack.*.js\" --exec \"npm start\"",
+    "start:watch": "nodemon --watch \"./webpack.*.js\" --exec \"npm start\"",
     "start": "webpack serve --env=development",
     "build": "webpack --env=production",
     "analyzer": "cross-env analyzer=true  npm run build",
