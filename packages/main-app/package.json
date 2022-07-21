@@ -11,7 +11,7 @@
     "build": "webpack --env=production",
     "analyzer": "cross-env analyzer=true  npm run build",
     "stats": "webpack --env=production --json > stats.json",
-    "memory": "node --max-old-space-size=4096 npm run start"
+    "memory": "node --max-old-space-size=4096 npm run start:watch"
   },
   "dependencies": {
     "antd": "^4.16.10",
