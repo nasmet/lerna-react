@@ -34,6 +34,7 @@
     "@typescript-eslint/no-use-before-define": [
       1
     ],
+    "class-methods-use-this": "off",
     "import/extensions": [
       0,
       1,
