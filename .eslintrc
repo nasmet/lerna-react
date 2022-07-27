@@ -1,15 +1,13 @@
-/*
- * @Description: eslint配置
- * @Author: 吴锦辉
- * @Date: 2021-11-23 14:09:22
- * @LastEditTime: 2021-11-25 11:12:08
- */
-
 {
-  "parser": "@babel/eslint-parser",
+  "parser": "@typescript-eslint/parser",
   "parserOptions": {
     "babelOptions": {
       "configFile": "./.babelrc"
+    },
+    "sourceType": "module",
+    "ecmaVersion": 2018,
+    "ecmaFeatures": {
+      "jsx": true
     }
   },
   "env": {
@@ -26,22 +24,37 @@
     "jsx-a11y",
     "prettier",
     "react",
-    "react-hooks"
+    "react-hooks",
+    "@typescript-eslint"
   ],
   "rules": {
+    "no-use-before-define": [
+      0
+    ],
+    "@typescript-eslint/no-use-before-define": [
+      1
+    ],
+    "import/extensions": [
+      0,
+      1,
+      2,
+      {
+        ".js": 0,
+        ".ts": 0,
+        ".jsx": 0,
+        ".tsx": 0
+      }
+    ],
     "import/no-extraneous-dependencies": "off",
     "import/no-unresolved": "off",
-
+    "import/prefer-default-export": "off",
     "jsx-a11y/click-events-have-key-events": "off",
     "jsx-a11y/no-static-element-interactions": "off",
-
     "no-console": "off",
     "no-nested-ternary": "off",
     "no-shadow": "off",
     "no-unused-expressions": "off",
-
     "prettier/prettier": "error",
-
     "react/button-has-type": "off",
     "react/destructuring-assignment": "off",
     "react/jsx-filename-extension": [
@@ -49,6 +62,7 @@
       {
         "extensions": [
           ".js",
+          ".ts",
           ".jsx",
           ".tsx"
         ]
@@ -59,7 +73,6 @@
     "react/jsx-uses-react": "error",
     "react/jsx-uses-vars": "error",
     "react/prop-types": "off",
-
     "react-hooks/exhaustive-deps": "error",
     "react-hooks/rules-of-hooks": "error"
   }

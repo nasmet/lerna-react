@@ -2,7 +2,7 @@
  * @Description: webpack配置文件
  * @Author: 吴锦辉
  * @Date: 2021-08-16 09:19:32
- * @LastEditTime: 2022-07-21 15:07:00
+ * @LastEditTime: 2022-07-26 14:04:01
  */
 
 const path = require('path');
@@ -29,7 +29,7 @@ const {
 } = require('./webpack.part');
 
 const baseConfig = {
-  entry: './src/index.tsx',
+  entry: './src/index.jsx',
   plugins: [
     setHtmlWebpack(),
     setMiniCssExtract(),

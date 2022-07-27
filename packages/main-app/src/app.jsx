@@ -2,7 +2,7 @@
  * @Description: app应用
  * @Author: 吴锦辉
  * @Date: 2021-08-16 08:55:25
- * @LastEditTime: 2022-07-21 15:20:24
+ * @LastEditTime: 2022-07-26 14:40:33
  */
 
 import React, { useEffect } from 'react';
@@ -20,6 +20,9 @@ theme.changeTheme(themeConfig.default);
 function App() {
   useEffect(() => {
     i18Ctrl.initLanguage();
+    import('./utils').then(res => {
+      console.log(res.getName('jack'));
+    });
   }, []);
 
   return (
