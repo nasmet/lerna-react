@@ -1,0 +1,321 @@
+<!--
+ * @Description: html文件
+ * @Author: 吴锦辉
+ * @Date: 2021-08-16 08:52:08
+ * @LastEditTime: 2022-08-02 11:28:11
+-->
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Three.js</title>
+  </head>
+  <style>
+    body {
+      margin: 0;
+      padding: 0;
+    }
+  </style>
+  <body>
+    <div id="app"></div>
+    <script src="https://cdn.bootcdn.net/ajax/libs/three.js/r99/three.min.js"></script>
+    <script>
+      function createScene() {
+        const scene = new THREE.Scene();
+
+        return scene;
+      }
+
+      function createCamera() {
+        const camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1);
+
+        camera.position.set(0, 0, 5);
+
+        return camera;
+      }
+
+      function createRenderer() {
+        const renderer = new THREE.WebGLRenderer();
+
+        renderer.setSize(window.innerWidth, window.innerHeight);
+
+        return renderer;
+      }
+
+      function createCube() {
+        const boxGeometry = new THREE.BoxGeometry(1, 1, 1);
+        const meshBasicMaterial = new THREE.MeshBasicMaterial({ color: 0x00ff00 });
+        const cube = new THREE.Mesh(boxGeometry, meshBasicMaterial);
+
+        cube.position.set(0, 0, 0);
+
+        return cube;
+      }
+
+      function listenResize(renderer, camera) {
+        window.addEventListener('resize', () => {
+          camera.aspect = window.innerWidth / window.innerHeight;
+
+          camera.updateProjectionMatrix();
+
+          renderer.setSize(window.innerWidth, window.innerHeight);
+        });
+      }
+
+      const renderer = createRenderer();
+      const camera = createCamera();
+      const scene = createScene();
+      const cube = createCube();
+
+      listenResize(renderer, camera);
+
+      scene.add(cube);
+
+      document.body.appendChild(renderer.domElement);
+
+      class RoleFSM {
+        constructor(role) {
+          this.direct = 1; // 1: 正向 0: 反向
+          this.stateEnum = {
+            idea: -1, // 默认
+            up: 0, // 向上
+            rightUp: 1, // 右上
+            right: 2, // 向右
+            rightDown: 4, // 右下
+            down: 5, // 向下
+            leftDown: 6, // 左下
+            left: 7, // 向左
+            leftUp: 8, // 左上
+          };
+          this.curState = this.stateEnum.idea;
+
+          this.speed = 0.02;
+          this.offset = 0.001;
+          this.boundaryX = window.innerWidth / window.innerHeight;
+          this.boundaryY = 1;
+
+          this.role = role;
+        }
+
+        canTransform() {
+          if (
+            Math.abs(this.role.position.x) <= this.offset &&
+            Math.abs(this.role.position.y) <= this.offset
+          ) {
+            this.transform();
+          }
+        }
+
+        transform() {
+          switch (this.curState) {
+            case this.stateEnum.idea:
+              this.curState = this.stateEnum.up;
+              break;
+            case this.stateEnum.up:
+              this.curState = this.stateEnum.rightUp;
+              break;
+            case this.stateEnum.rightUp:
+              this.curState = this.stateEnum.right;
+              break;
+            case this.stateEnum.right:
+              this.curState = this.stateEnum.rightDown;
+              break;
+            case this.stateEnum.rightDown:
+              this.curState = this.stateEnum.down;
+              break;
+            case this.stateEnum.down:
+              this.curState = this.stateEnum.leftDown;
+              break;
+            case this.stateEnum.leftDown:
+              this.curState = this.stateEnum.left;
+              break;
+            case this.stateEnum.left:
+              this.curState = this.stateEnum.leftUp;
+              break;
+            case this.stateEnum.leftUp:
+              this.curState = this.stateEnum.idea;
+              break;
+            default:
+              break;
+          }
+        }
+
+        move() {
+          switch (this.curState) {
+            case this.stateEnum.up:
+              if (Math.abs(this.role.position.y) <= this.offset) {
+                this.direct = 1;
+              }
+
+              if (this.role.position.y >= this.boundaryY) {
+                this.direct = 0;
+              }
+
+              if (this.direct === 1) {
+                this.role.position.y += this.speed;
+              } else {
+                this.role.position.y -= this.speed;
+              }
+
+              break;
+            case this.stateEnum.rightUp:
+              if (
+                Math.abs(this.role.position.y) <= this.offset ||
+                Math.abs(this.role.position.x) <= this.offset
+              ) {
+                this.direct = 1;
+              }
+
+              if (
+                this.role.position.x >= this.boundaryX ||
+                this.role.position.y >= this.boundaryY
+              ) {
+                this.direct = 0;
+              }
+
+              if (this.direct === 1) {
+                this.role.position.x += this.speed;
+                this.role.position.y += this.speed;
+              } else {
+                this.role.position.x -= this.speed;
+                this.role.position.y -= this.speed;
+              }
+              break;
+            case this.stateEnum.right:
+              if (Math.abs(this.role.position.x) <= this.offset) {
+                this.direct = 1;
+              }
+
+              if (this.role.position.x >= this.boundaryX) {
+                this.direct = 0;
+              }
+
+              if (this.direct === 1) {
+                this.role.position.x += this.speed;
+              } else {
+                this.role.position.x -= this.speed;
+              }
+              break;
+            case this.stateEnum.rightDown:
+              if (
+                Math.abs(this.role.position.y) <= this.offset ||
+                Math.abs(this.role.position.x) <= this.offset
+              ) {
+                this.direct = 1;
+              }
+
+              if (
+                this.role.position.x >= this.boundaryX ||
+                this.role.position.y <= -this.boundaryY
+              ) {
+                this.direct = 0;
+              }
+
+              if (this.direct === 1) {
+                this.role.position.x += this.speed;
+                this.role.position.y -= this.speed;
+              } else {
+                this.role.position.x -= this.speed;
+                this.role.position.y += this.speed;
+              }
+              break;
+            case this.stateEnum.down:
+              if (Math.abs(this.role.position.y) <= this.offset) {
+                this.direct = 1;
+              }
+
+              if (this.role.position.y <= -this.boundaryY) {
+                this.direct = 0;
+              }
+
+              if (this.direct === 1) {
+                this.role.position.y -= this.speed;
+              } else {
+                this.role.position.y += this.speed;
+              }
+
+              break;
+            case this.stateEnum.leftDown:
+              if (
+                Math.abs(this.role.position.y) <= this.offset ||
+                Math.abs(this.role.position.x) <= this.offset
+              ) {
+                this.direct = 1;
+              }
+
+              if (
+                this.role.position.x <= -this.boundaryX ||
+                this.role.position.y <= -this.boundaryY
+              ) {
+                this.direct = 0;
+              }
+
+              if (this.direct === 1) {
+                this.role.position.x -= this.speed;
+                this.role.position.y -= this.speed;
+              } else {
+                this.role.position.x += this.speed;
+                this.role.position.y += this.speed;
+              }
+              break;
+            case this.stateEnum.left:
+              if (Math.abs(this.role.position.x) <= this.offset) {
+                this.direct = 1;
+              }
+
+              if (this.role.position.x <= -this.boundaryX) {
+                this.direct = 0;
+              }
+
+              if (this.direct === 1) {
+                this.role.position.x -= this.speed;
+              } else {
+                this.role.position.x += this.speed;
+              }
+              break;
+            case this.stateEnum.leftUp:
+              if (
+                Math.abs(this.role.position.y) <= this.offset ||
+                Math.abs(this.role.position.x) <= this.offset
+              ) {
+                this.direct = 1;
+              }
+
+              if (
+                this.role.position.x <= -this.boundaryX ||
+                this.role.position.y >= this.boundaryY
+              ) {
+                this.direct = 0;
+              }
+
+              if (this.direct === 1) {
+                this.role.position.x -= this.speed;
+                this.role.position.y += this.speed;
+              } else {
+                this.role.position.x += this.speed;
+                this.role.position.y -= this.speed;
+              }
+              break;
+            default:
+              break;
+          }
+        }
+      }
+
+      const roleFSM = new RoleFSM(cube);
+
+      function render() {
+        requestAnimationFrame(render);
+
+        roleFSM.canTransform();
+
+        roleFSM.move();
+
+        renderer.render(scene, camera);
+      }
+
+      render();
+    </script>
+  </body>
+</html>
