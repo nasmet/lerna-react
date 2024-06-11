@@ -2,7 +2,7 @@
   "miniprogramRoot": "./dist",
   "projectname": "hide-money",
   "description": "藏钱",
-  "appid": "wx3d9ec401e55391fa",
+  "appid": "",
   "setting": {
     "urlCheck": true,
     "es6": false,
