@@ -11,8 +11,8 @@ const baseConfig = {
   connectionLimit: 10,
   host: '127.0.0.1',
   user: 'root',
-  password: '824966Wjh.',
-  database: 'wjh',
+  password: '',
+  database: '',
   port: 3306,
 };
 
